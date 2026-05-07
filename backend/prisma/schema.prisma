@@ -76,11 +76,23 @@ model Proizvod {
   defaultProizvod DefaultProizvod  @relation(fields: [defaultProizvodId], references: [id], onDelete: Restrict)
   skladiste       Skladiste        @relation(fields: [skladisteId], references: [id], onDelete: Cascade)
   stanje          StanjeProizvoda?
+  lokacija        Lokacija?
   upozorenja      Upozorenje[]
   stavkeProdaje   StavkaProdaje[]
   stavkeDostave   StavkaDostave[]
 
   @@unique([defaultProizvodId, skladisteId])
+}
+
+model Lokacija {
+  id         Int      @id @default(autoincrement())
+  proizvodId Int      @unique
+  zona       String
+  polica     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  proizvod Proizvod @relation(fields: [proizvodId], references: [id], onDelete: Cascade)
 }
 
 model StanjeProizvoda {
