@@ -11,3 +11,177 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Korisnik {
+  id        Int      @id @default(autoincrement())
+  ime       String
+  prezime   String
+  email     String   @unique
+  lozinka   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  korisnikSkladiste KorisnikSkladiste[]
+  unosiProdaje      UnosProdaje[]
+  unosiDostave      UnosDostave[]
+}
+
+model Skladiste {
+  id        Int      @id @default(autoincrement())
+  naziv     String
+  adresa    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  korisnikSkladiste KorisnikSkladiste[]
+  proizvodi         Proizvod[]
+  unosiProdaje      UnosProdaje[]
+  unosiDostave      UnosDostave[]
+}
+
+model KorisnikSkladiste {
+  id          Int      @id @default(autoincrement())
+  korisnikId  Int
+  skladisteId Int
+  uloga       Uloga    @default(KONOBAR)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  korisnik  Korisnik  @relation(fields: [korisnikId], references: [id], onDelete: Cascade)
+  skladiste Skladiste @relation(fields: [skladisteId], references: [id], onDelete: Cascade)
+
+  @@unique([korisnikId, skladisteId])
+}
+
+model DefaultProizvod {
+  id            Int           @id @default(autoincrement())
+  naziv         String
+  kategorija    String?
+  jedinicaMjere JedinicaMjere
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  proizvodi Proizvod[]
+}
+
+model Proizvod {
+  id                Int      @id @default(autoincrement())
+  defaultProizvodId Int
+  skladisteId       Int
+  minimalnaKolicina Float?
+  customNaziv       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  defaultProizvod DefaultProizvod  @relation(fields: [defaultProizvodId], references: [id], onDelete: Restrict)
+  skladiste       Skladiste        @relation(fields: [skladisteId], references: [id], onDelete: Cascade)
+  stanje          StanjeProizvoda?
+  upozorenja      Upozorenje[]
+  stavkeProdaje   StavkaProdaje[]
+  stavkeDostave   StavkaDostave[]
+
+  @@unique([defaultProizvodId, skladisteId])
+}
+
+model StanjeProizvoda {
+  id         Int      @id @default(autoincrement())
+  proizvodId Int      @unique
+  kolicina   Float    @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  proizvod Proizvod @relation(fields: [proizvodId], references: [id], onDelete: Cascade)
+}
+
+model Upozorenje {
+  id         Int             @id @default(autoincrement())
+  proizvodId Int
+  tip        TipUpozorenja
+  poruka     String
+  datum      DateTime        @default(now())
+  rijeseno   Boolean         @default(false)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  proizvod Proizvod @relation(fields: [proizvodId], references: [id], onDelete: Cascade)
+}
+
+model UnosProdaje {
+  id          Int      @id @default(autoincrement())
+  skladisteId Int
+  korisnikId  Int
+  datum       DateTime @default(now())
+  smjena      Smjena
+  napomena    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  skladiste Skladiste       @relation(fields: [skladisteId], references: [id], onDelete: Restrict)
+  korisnik  Korisnik        @relation(fields: [korisnikId], references: [id], onDelete: Restrict)
+  stavke    StavkaProdaje[]
+}
+
+model StavkaProdaje {
+  id            Int      @id @default(autoincrement())
+  unosProdajeId Int
+  proizvodId    Int
+  kolicina      Float
+  cijena        Float?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  unosProdaje UnosProdaje @relation(fields: [unosProdajeId], references: [id], onDelete: Cascade)
+  proizvod    Proizvod    @relation(fields: [proizvodId], references: [id], onDelete: Restrict)
+}
+
+model UnosDostave {
+  id          Int      @id @default(autoincrement())
+  skladisteId Int
+  korisnikId  Int
+  datum       DateTime @default(now())
+  smjena      Smjena
+  napomena    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  skladiste Skladiste       @relation(fields: [skladisteId], references: [id], onDelete: Restrict)
+  korisnik  Korisnik        @relation(fields: [korisnikId], references: [id], onDelete: Restrict)
+  stavke    StavkaDostave[]
+}
+
+model StavkaDostave {
+  id            Int      @id @default(autoincrement())
+  unosDostaveId Int
+  proizvodId    Int
+  kolicina      Float
+  cijena        Float?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  unosDostave UnosDostave @relation(fields: [unosDostaveId], references: [id], onDelete: Cascade)
+  proizvod    Proizvod    @relation(fields: [proizvodId], references: [id], onDelete: Restrict)
+}
+
+enum Uloga {
+  ADMIN
+  KONOBAR
+  SKLADISTAR
+}
+
+enum JedinicaMjere {
+  KG
+  L
+  KOM
+}
+
+enum TipUpozorenja {
+  ZUTO
+  CRVENO
+}
+
+enum Smjena {
+  JUTARNJA
+  POPODNEVNA
+  NOCNA
+}
+
