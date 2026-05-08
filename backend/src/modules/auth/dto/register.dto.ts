@@ -10,15 +10,15 @@ export class RegisterDto {
   @ApiProperty({ example: 'StrongPass1!' })
   @IsString()
   @IsDefined()
-  lozinka: string;
+  password: string;
 
   @ApiProperty({ example: 'Ana' })
   @IsString()
   @IsDefined()
-  ime: string;
+  firstName: string;
 
   @ApiProperty({ example: 'Anić' })
   @IsString()
   @IsDefined()
-  prezime: string;
+  lastName: string;
 }

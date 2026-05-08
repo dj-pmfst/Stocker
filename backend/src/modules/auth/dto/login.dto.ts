@@ -10,5 +10,5 @@ export class LoginDto {
   @ApiProperty({ example: 'StrongPass1!' })
   @IsString()
   @IsDefined()
-  lozinka: string;
+  password: string;
 }

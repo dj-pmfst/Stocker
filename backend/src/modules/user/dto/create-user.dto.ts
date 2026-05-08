@@ -7,13 +7,13 @@ export class CreateUserDto {
 
   @IsString()
   @IsDefined()
-  lozinka: string;
+  password: string;
 
   @IsString()
   @IsDefined()
-  ime: string;
+  firstName: string;
 
   @IsString()
   @IsDefined()
-  prezime: string;
+  lastName: string;
 }

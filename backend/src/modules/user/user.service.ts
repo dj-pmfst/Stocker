@@ -8,39 +8,39 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   create(createUserDto: CreateUserDto) {
-    return this.prisma.korisnik.create({
+    return this.prisma.user.create({
       data: createUserDto,
     });
   }
 
   findByEmail(email: string) {
-    return this.prisma.korisnik.findUnique({
+    return this.prisma.user.findUnique({
       where: { email },
     });
   }
 
   findAll() {
-  return this.prisma.korisnik.findMany({
-    select: { id: true, email: true, ime: true, prezime: true, createdAt: true, updatedAt: true },
+  return this.prisma.user.findMany({
+    select: { id: true, email: true, firstName: true, lastName: true, createdAt: true, updatedAt: true },
   });
 }
 
   async findOne(id: number) {
-    const korisnik = await this.prisma.korisnik.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
-    if (!korisnik) throw new NotFoundException('Korisnik not found');
-    const { lozinka, ...result } = korisnik;
+    if (!user) throw new NotFoundException('User not found');
+    const { password, ...result } = user;
     return result;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     await this.findOne(id);
-    const korisnik = await this.prisma.korisnik.update({
+    const user = await this.prisma.user.update({
       where: { id },
       data: updateUserDto,
     });
-    const { lozinka, ...result } = korisnik;
+    const { password, ...result } = user;
     return result;
   }
 }

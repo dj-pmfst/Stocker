@@ -13,188 +13,188 @@ datasource db {
   provider = "postgresql"
 }
 
-model Korisnik {
+model User {
   id        Int      @id @default(autoincrement())
-  ime       String
-  prezime   String
+  firstName String
+  lastName  String
   email     String   @unique
-  lozinka   String
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  korisnikSkladiste KorisnikSkladiste[]
-  unosiProdaje      UnosProdaje[]
-  unosiDostave      UnosDostave[]
+  userWarehouses  UserWarehouse[]
+  saleEntries     SaleEntry[]
+  deliveryEntries DeliveryEntry[]
 }
 
-model Skladiste {
+model Warehouse {
   id        Int      @id @default(autoincrement())
-  naziv     String
-  adresa    String?
+  name      String
+  address   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  korisnikSkladiste KorisnikSkladiste[]
-  proizvodi         Proizvod[]
-  unosiProdaje      UnosProdaje[]
-  unosiDostave      UnosDostave[]
+  userWarehouses  UserWarehouse[]
+  products        Product[]
+  saleEntries     SaleEntry[]
+  deliveryEntries DeliveryEntry[]
 }
 
-model KorisnikSkladiste {
+model UserWarehouse {
   id          Int      @id @default(autoincrement())
-  korisnikId  Int
-  skladisteId Int
-  uloga       Uloga    @default(KONOBAR)
+  userId      Int
+  warehouseId Int
+  role        Role     @default(WAITER)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  korisnik  Korisnik  @relation(fields: [korisnikId], references: [id], onDelete: Cascade)
-  skladiste Skladiste @relation(fields: [skladisteId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
 
-  @@unique([korisnikId, skladisteId])
+  @@unique([userId, warehouseId])
 }
 
-model DefaultProizvod {
-  id            Int           @id @default(autoincrement())
-  naziv         String
-  kategorija    String?
-  jedinicaMjere JedinicaMjere
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+model DefaultProduct {
+  id          Int           @id @default(autoincrement())
+  name        String
+  category    String?
+  unitOfMeasure UnitOfMeasure
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
-  proizvodi Proizvod[]
+  products Product[]
 }
 
-model Proizvod {
-  id                Int      @id @default(autoincrement())
-  defaultProizvodId Int
-  skladisteId       Int
-  minimalnaKolicina Float?
-  customNaziv       String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+model Product {
+  id               Int      @id @default(autoincrement())
+  defaultProductId Int
+  warehouseId      Int
+  minimumQuantity  Float?
+  customName       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  defaultProizvod DefaultProizvod  @relation(fields: [defaultProizvodId], references: [id], onDelete: Restrict)
-  skladiste       Skladiste        @relation(fields: [skladisteId], references: [id], onDelete: Cascade)
-  stanje          StanjeProizvoda?
-  lokacija        Lokacija?
-  upozorenja      Upozorenje[]
-  stavkeProdaje   StavkaProdaje[]
-  stavkeDostave   StavkaDostave[]
+  defaultProduct DefaultProduct @relation(fields: [defaultProductId], references: [id], onDelete: Restrict)
+  warehouse      Warehouse      @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  stock          ProductStock?
+  location       Location?
+  alerts         Alert[]
+  saleItems      SaleItem[]
+  deliveryItems  DeliveryItem[]
 
-  @@unique([defaultProizvodId, skladisteId])
+  @@unique([defaultProductId, warehouseId])
 }
 
-model Lokacija {
-  id         Int      @id @default(autoincrement())
-  proizvodId Int      @unique
-  zona       String
-  polica     String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model Location {
+  id        Int      @id @default(autoincrement())
+  productId Int      @unique
+  zone      String
+  shelf     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  proizvod Proizvod @relation(fields: [proizvodId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
-model StanjeProizvoda {
-  id         Int      @id @default(autoincrement())
-  proizvodId Int      @unique
-  kolicina   Float    @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model ProductStock {
+  id        Int      @id @default(autoincrement())
+  productId Int      @unique
+  quantity  Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  proizvod Proizvod @relation(fields: [proizvodId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
-model Upozorenje {
-  id         Int             @id @default(autoincrement())
-  proizvodId Int
-  tip        TipUpozorenja
-  poruka     String
-  datum      DateTime        @default(now())
-  rijeseno   Boolean         @default(false)
-  createdAt  DateTime        @default(now())
-  updatedAt  DateTime        @updatedAt
+model Alert {
+  id        Int       @id @default(autoincrement())
+  productId Int
+  type      AlertType
+  message   String
+  date      DateTime  @default(now())
+  resolved  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  proizvod Proizvod @relation(fields: [proizvodId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
-model UnosProdaje {
+model SaleEntry {
   id          Int      @id @default(autoincrement())
-  skladisteId Int
-  korisnikId  Int
-  datum       DateTime @default(now())
-  smjena      Smjena
-  napomena    String?
+  warehouseId Int
+  userId      Int
+  date        DateTime @default(now())
+  shift       Shift
+  note        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  skladiste Skladiste       @relation(fields: [skladisteId], references: [id], onDelete: Restrict)
-  korisnik  Korisnik        @relation(fields: [korisnikId], references: [id], onDelete: Restrict)
-  stavke    StavkaProdaje[]
+  warehouse Warehouse  @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items     SaleItem[]
 }
 
-model StavkaProdaje {
-  id            Int      @id @default(autoincrement())
-  unosProdajeId Int
-  proizvodId    Int
-  kolicina      Float
-  cijena        Float?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  unosProdaje UnosProdaje @relation(fields: [unosProdajeId], references: [id], onDelete: Cascade)
-  proizvod    Proizvod    @relation(fields: [proizvodId], references: [id], onDelete: Restrict)
-}
-
-model UnosDostave {
+model SaleItem {
   id          Int      @id @default(autoincrement())
-  skladisteId Int
-  korisnikId  Int
-  datum       DateTime @default(now())
-  smjena      Smjena
-  napomena    String?
+  saleEntryId Int
+  productId   Int
+  quantity    Float
+  price       Float?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  skladiste Skladiste       @relation(fields: [skladisteId], references: [id], onDelete: Restrict)
-  korisnik  Korisnik        @relation(fields: [korisnikId], references: [id], onDelete: Restrict)
-  stavke    StavkaDostave[]
+  saleEntry SaleEntry @relation(fields: [saleEntryId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
 }
 
-model StavkaDostave {
-  id            Int      @id @default(autoincrement())
-  unosDostaveId Int
-  proizvodId    Int
-  kolicina      Float
-  cijena        Float?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+model DeliveryEntry {
+  id          Int      @id @default(autoincrement())
+  warehouseId Int
+  userId      Int
+  date        DateTime @default(now())
+  shift       Shift
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  unosDostave UnosDostave @relation(fields: [unosDostaveId], references: [id], onDelete: Cascade)
-  proizvod    Proizvod    @relation(fields: [proizvodId], references: [id], onDelete: Restrict)
+  warehouse Warehouse      @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items     DeliveryItem[]
 }
 
-enum Uloga {
+model DeliveryItem {
+  id              Int      @id @default(autoincrement())
+  deliveryEntryId Int
+  productId       Int
+  quantity        Float
+  price           Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  deliveryEntry DeliveryEntry @relation(fields: [deliveryEntryId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+enum Role {
   ADMIN
-  KONOBAR
-  SKLADISTAR
+  WAITER
+  WAREHOUSE_MANAGER
 }
 
-enum JedinicaMjere {
+enum UnitOfMeasure {
   KG
   L
-  KOM
+  PCS
 }
 
-enum TipUpozorenja {
-  ZUTO
-  CRVENO
+enum AlertType {
+  YELLOW
+  RED
 }
 
-enum Smjena {
-  JUTARNJA
-  POPODNEVNA
-  NOCNA
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
 }
 
