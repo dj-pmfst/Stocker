@@ -19,6 +19,12 @@ export class UserService {
     });
   }
 
+  findAll() {
+  return this.prisma.korisnik.findMany({
+    select: { id: true, email: true, ime: true, prezime: true, createdAt: true, updatedAt: true },
+  });
+}
+
   async findOne(id: number) {
     const korisnik = await this.prisma.korisnik.findUnique({
       where: { id },
