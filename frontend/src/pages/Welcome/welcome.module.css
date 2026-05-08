@@ -1,0 +1,28 @@
+.welcome {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.logo-cart {
+  animation-name: rotate;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.logo {
+  max-width: 180px;
+  height: auto;
+  filter: none !important;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}

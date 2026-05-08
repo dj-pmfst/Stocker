@@ -1,0 +1,8 @@
+.container {
+    min-height: 100vh;
+    background: var(--bg);
+  }
+  
+  .withNavbar {
+    padding-bottom: var(--navbar-h);
+  }

@@ -1,0 +1,109 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 200;
+  }
+  
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 75%;
+    max-width: 320px;
+    height: 100dvh;
+    background: white;
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    animation: slideIn 0.25s ease;
+  }
+
+  .drawer img{
+    max-width: 120px;
+  }
+  
+  @keyframes slideIn {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.25rem 1rem;
+    width: 100%;
+  }
+  
+  .title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  .closeBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--brown);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0 1.25rem;
+    width: 100%;
+  }
+  
+  .accordion {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .accordionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .accordionTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .emptyText {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--brown);
+    line-height: 1.5;
+  }
+  
+  .drawer img {
+    max-width: 120px;
+  }

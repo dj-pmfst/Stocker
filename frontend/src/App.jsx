@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
+import Login from './pages/Login/Login';
 import Home from './pages/Home';
 import Storage from './pages/Storage';
-import Scan from './pages/Scan';
+import Scan from './pages/Scan/Scan';
 import Order from './pages/Order';
 import Profile from './pages/Profile';
 
