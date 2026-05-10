@@ -65,11 +65,11 @@ export default function Pricing({ onClose, onSelect }) {
               </div>
             </button>
           ))}
-        </div>
 
-        <button className={styles.ctaBtn} onClick={handleStart}>
-          Start my free trial
-        </button>
+        </div>
+          <button className={styles.ctaBtn} onClick={handleStart}>
+            Start my free trial
+          </button>
         <p className={styles.cancelNote}>Cancel anytime</p>
       </div>
     </div>
