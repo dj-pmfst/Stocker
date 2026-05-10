@@ -7,6 +7,8 @@ const PLANS = [
   { id: 'biannual',label: '6 Months', price: '$109.99', per: '/month' },
 ];
 
+//prebacit ovo u konstante folder??
+
 export default function PricingModal({ onClose, onSelect }) {
   const [selected, setSelected] = useState('yearly');
 
@@ -22,13 +24,30 @@ export default function PricingModal({ onClose, onSelect }) {
           ✕
         </button>
 
-      <div className={styles.card}>
+        <div className={styles.card}>
         <div className={styles.trialRow}>
           <span className={styles.trialTitle}>7 DAY FREE TRIAL</span>
+          <span className={styles.trialIcon}><img src="/assets/gem.svg"/></span>
         </div>
 
         <div className={styles.plans}>
-
+          {PLANS.map(plan => (
+            <button
+              key={plan.id}
+              className={`${styles.planOption} ${selected === plan.id ? styles.selected : ''}`}
+              onClick={() => setSelected(plan.id)}
+            >
+              <div className={styles.planLeft}>
+                <span className={styles.planPeriod}>{plan.label}</span>
+                <span className={styles.planPrice}>
+                  <strong>{plan.price}</strong>{plan.per}
+                </span>
+              </div>
+              <div className={`${styles.radio} ${selected === plan.id ? styles.checked : ''}`}>
+                {selected === plan.id && <div className={styles.radioDot} />}
+              </div>
+            </button>
+          ))}
         </div>
 
         <button className={styles.ctaBtn} onClick={handleStart}>

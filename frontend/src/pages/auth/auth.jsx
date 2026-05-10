@@ -58,7 +58,7 @@ export default function Login() {
         localStorage.setItem("token", token);
         const payload = JSON.parse(atob(token.split(".")[1]));
         initCart(payload.id);
-        navigate("/home");
+        navigate("/pricing");
       } else {
         setSuccess("Account created");
         switchTab("login");
