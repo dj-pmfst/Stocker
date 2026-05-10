@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./login.module.css";
+import styles from "./auth.module.css";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -75,24 +75,26 @@ export default function Login() {
   return (
     <div className="app-shell">
       <div className={styles.container}>
+
         <div className={styles.logo}>
-          <img src="/assets/logo.svg" alt="Stocker" />
+          <img src="/assets/TextLogo.svg" alt="Stocker" />
         </div>
         <p className={styles.tagline}>your smart warehouse app</p>
 
         <div className={styles.tabGroup}>
-          {["login", "register"].map((t) => (
+          {['login', 'register'].map(t => (
             <button
               key={t}
               type="button"
-              className={`${styles.tabBtn} ${tab === t ? styles.active : ""}`}
-              onClick={() => switchTab(t)}>
-              {t === "login" ? "Log In" : "Register"}
+              className={`${styles.tabBtn} ${tab === t ? styles.active : ''}`}
+              onClick={() => switchTab(t)}
+            >
+              {t === 'login' ? 'Log In' : 'Register'}
             </button>
           ))}
         </div>
 
-        {error && <div className={styles.error}>{error}</div>}
+        {error   && <div className={styles.error}>{error}</div>}
         {success && <div className={styles.success}>{success}</div>}
 
         <form onSubmit={handleSubmit}>
@@ -100,13 +102,8 @@ export default function Login() {
             <label className="form-label">Email</label>
             <div className="form-input-wrap">
               <img src="/assets/mail.svg" alt="" />
-              <input
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <input type="email" placeholder="name@example.com"
+                value={email} onChange={e => setEmail(e.target.value)} required />
             </div>
           </div>
 
@@ -114,16 +111,10 @@ export default function Login() {
             <label className="form-label">Password</label>
             <div className="form-input-wrap">
               <img src="/assets/lock.svg" alt="" />
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <span onClick={() => setShowPassword((v) => !v)}>
-                <img src="/assets/eye.svg" alt="toggle visibility" />
-              </span>
+              <input type={showPassword ? 'text' : 'password'} placeholder="••••••••••"
+                value={password} onChange={e => setPassword(e.target.value)} required />
+              <img src="/assets/eye.svg" alt="toggle" style={{ cursor: 'pointer', opacity: 1 }}
+                onClick={() => setShowPassword(v => !v)} />
             </div>
           </div>
 
@@ -132,42 +123,34 @@ export default function Login() {
               <label className="form-label">Confirm Password</label>
               <div className="form-input-wrap">
                 <img src="/assets/lock.svg" alt="" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••••"
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  required
-                />
+                <input type={showPassword ? 'text' : 'password'} placeholder="••••••••••"
+                  value={confirm} onChange={e => setConfirm(e.target.value)} required />
               </div>
             </div>
           )}
 
           {isLogin && (
             <div className={styles.forgotWrap}>
-              <span className="forgot-link">Forgot password</span>
+              <span className="form-label">Remember me</span>
+              <span className={styles.forgotLink}>Forgot password</span>
             </div>
           )}
 
-          <button className="login-btn" type="submit" disabled={loading}>
+          <button className={styles.submitBtn} type="submit" disabled={loading}>
             {loading
-              ? isLogin
-                ? "Logging in…"
-                : "Creating account…"
-              : isLogin
-              ? "Sign In"
-              : "Create Account"}
+              ? isLogin ? 'Logging in…' : 'Creating account…'
+              : isLogin ? 'Sign In' : 'Create Account'}
           </button>
         </form>
 
         {isLogin && (
           <>
-            <div className="divider">Or</div>
-            <button type="button" className="social-btn">
+            <div className={styles.divider}>Or</div>
+            <button type="button" className={styles.socialBtn}>
               <img src="/assets/google.svg" alt="Google" />
               Sign in with Google
             </button>
-            <button type="button" className="social-btn">
+            <button type="button" className={styles.socialBtn}>
               <img src="/assets/facebook.svg" alt="Facebook" />
               Sign in with Facebook
             </button>
