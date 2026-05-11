@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import searchStyles from "./search.module.css";
+import styles from "./search.module.css";
 
-const SearchIcon = () => (
-    <img src="/assets/search.svg"/>
-);
+const SearchIcon = () => <img src="/assets/search.svg" />;
 
 export default function Search({
   items = [],
@@ -44,8 +42,8 @@ export default function Search({
   };
 
   return (
-    <div className={searchStyles.wrap} ref={wrapRef}>
-      <div className="search-bar">
+    <div className={styles.wrap} ref={wrapRef}>
+      <div className={styles.searchBar}>
         <input
           type="text"
           placeholder={placeholder}
@@ -57,11 +55,11 @@ export default function Search({
       </div>
 
       {showDropdown && (
-        <div className={searchStyles.dropdown}>
+        <div className={styles.dropdown}>
           {suggestions.map((item) => (
             <button
               key={item.id}
-              className={searchStyles.item}
+              className={styles.item}
               onMouseDown={() => handleSelect(item)}>
               {item.name} ({item.size})
             </button>

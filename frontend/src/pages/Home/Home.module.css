@@ -21,13 +21,8 @@
   gap: 14px;
 }
 
-.emptyIllustration {
-  width: 160px;
-  height: 160px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.emptyState button, .emptyState img{
+    margin-top: 60px;
 }
 
 .emptyTitle {

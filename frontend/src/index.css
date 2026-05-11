@@ -80,8 +80,10 @@ body {
   cursor: pointer;
   transition: background 0.15s;
 }
-.btn-primary:hover {
-  background: var(--navy-light);
+.btn-primary:active {
+  background: transparent;
+  color: var(--navy);
+  border: 2px solid var(--navy);
 }
 
 .btn-outline {
@@ -96,6 +98,11 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.btn-outline:active{
+  background: var(--navy);
+  color: white;
 }
 
 .form-group {
