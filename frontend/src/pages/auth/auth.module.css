@@ -8,14 +8,32 @@
 
 .logo {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 14px;
   margin-bottom: 6px;
 }
 
-.logoIcon {
-  width: 52px;
-  height: 52px;
+.logo p {
+  margin-right: 120px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--gray-mid);
+  font-size: 13px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--gray-border);
 }
 
 .tagline {
@@ -25,30 +43,94 @@
   font-weight: bold;
 }
 
-.tabGroup {
-  display: flex;
-  background: var(--gray-bg);
-  border-radius: 999px;
-  padding: 4px;
+.registerHint {
+  font-size: 14px;
+  color: var(--text-muted);
   margin-bottom: 24px;
 }
 
-.tabBtn {
-  flex: 1;
-  padding: 10px 0;
-  border: none;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  background: transparent;
-  color: var(--text-muted);
+.nameRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 0;
 }
 
-.tabBtn.active {
+.nameField {
+  flex: 1;
+}
+
+.plainInput {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--gray-border);
+  border-radius: 999px;
+  padding: 13px 18px;
+  background: var(--white);
+  transition: border-color 0.15s;
+}
+
+.plainInput:focus-within {
+  border-color: var(--navy);
+}
+
+.plainInput input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  background: transparent;
+  width: 100%;
+}
+
+.forgotWrap {
+  text-align: right;
+  margin-bottom: 30px;
+  margin-top: -6px;
+}
+
+.forgotLink {
+  font-size: 14px;
+  color: #3b82f6;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 16px;
+  background: var(--navy);
+  color: white;
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: opacity 0.15s;
+}
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.registerBtn {
+  width: 100%;
+  padding: 14px;
+  background: none;
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  color: var(--navy);
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 24px;
+  transition: background 0.15s, color 0.15s;
+}
+.registerBtn:hover {
   background: var(--navy);
   color: white;
 }
@@ -63,87 +145,15 @@
   margin-bottom: 14px;
 }
 
-.success {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #16a34a;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 13px;
-  margin-bottom: 14px;
-}
-
-.forgotWrap {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 5px;
-  padding-left: 5px;
-  margin-bottom: 20px;
-  margin-top: -6px;
-}
-
-.forgotLink {
+.switchRow {
+  text-align: center;
   font-size: 14px;
-  color: #3b82f6;
-  font-weight: 500;
+  color: var(--text-muted);
+  padding-top: 16px;
+}
+
+.switchLink {
+  color: var(--navy);
+  font-weight: 700;
   cursor: pointer;
-}
-
-.submitBtn {
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
-  color: white;
-  border: none;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  transition: opacity 0.15s;
-}
-.submitBtn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--gray-mid);
-  font-size: 13px;
-  margin-bottom: 16px;
-}
-
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--gray-border);
-}
-
-.socialBtn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px;
-  border: 1.5px solid var(--gray-border);
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  background: white;
-  color: var(--text);
-  margin-bottom: 10px;
-}
-
-.socialBtn img {
-  width: 20px;
-  height: 20px;
 }
