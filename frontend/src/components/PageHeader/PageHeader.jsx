@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./PageHeader.module.css";
-import Notifications from "src/components/notifications/notifications";
+import Notifications from "../notifications/notifications";
 
 export function PageHeader() {
   const [notifOpen, setNotifOpen] = useState(false);
@@ -9,10 +9,11 @@ export function PageHeader() {
     <>
       <header className={styles.header}>
         <div className={styles.logo}>
-          <img src="/assets//logo.svg" />
+          <img src="/assets/logo.svg" />
         </div>
+        <p className={styles.title}>stocker</p>
         <button className={styles.notifBtn} onClick={() => setNotifOpen(true)}>
-          <img src="/assets//notification.svg" />
+          <img src="/assets/Notification.svg" />
         </button>
       </header>
 

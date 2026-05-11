@@ -8,17 +8,16 @@ export default function Notifications({ open, onClose }) {
       <div className={styles.overlay} onClick={onClose} />
       <div className={styles.drawer}>
         <div className={styles.header}>
-          <span className={styles.title}>Notifikacije</span>
+          <span className={styles.title}>Notifications</span>
           <button className={styles.closeBtn} onClick={onClose}>
             ×
           </button>
         </div>
-        <div className={styles.divider} />
         <div className={styles.empty}>
           <p className={styles.emptyText}>
-            Prazno ☹
+            No new notifications yet. 
           </p>
-          <img src="/assets//IkonaNotifikacije.svg" />
+          <img src="/assets/Notification.svg" />
         </div>
       </div>
     </>

@@ -6,6 +6,13 @@
     padding: 1rem;
 }
 
+.title{
+  text-transform:uppercase;
+  color: var(--navy);
+  font-weight: bolder;
+  font-size: 40px;
+}
+
 .header img{
     max-height: 30px;
 }
