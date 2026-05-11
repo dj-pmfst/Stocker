@@ -1,0 +1,117 @@
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  animation: fadeIn 0.25s ease;
+}
+
+.panel {
+  position: absolute;
+  top: 180px;
+  right: 0;
+  bottom: 0;
+  width: 88%;
+  background: none;
+  z-index: 90;
+  padding: 20px 16px;
+  overflow-y: auto;
+  animation: slideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.panel::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.closeBtn {
+  position: relative;
+  z-index: 200;
+  top: 76px;
+  right: -300px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  filter: brightness(10);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.card {
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 4/3;
+}
+
+.cardBg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.productImg {
+  position: relative;
+  height: 75%;
+  width: auto;
+  object-fit: contain;
+}
+
+.tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #f5c842;
+  color: var(--white);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 2px solid rgb(225, 66, 66);
+}
+
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 14px 14px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 100%);
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  line-height: 1.3;
+}
+
+.highlight {
+  font-weight: 800;
+  color: #f5c842;
+}

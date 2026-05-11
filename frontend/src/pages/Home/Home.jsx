@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import Search from "../../components/Search/Search";
+import New from "../../components/New/New";
 import styles from "./Home.module.css";
 
 const ALL_ITEMS = [
@@ -14,6 +15,7 @@ const ALL_ITEMS = [
 
 export default function Home() {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [showWhatsNew, setShowWhatsNew] = useState(false);
 
   return (
     <Layout>
@@ -61,10 +63,11 @@ export default function Home() {
               <br />
               to your storage
             </p>
-            <button className="btn-primary" onClick={() => navigate(route)}>WHAT'S NEW?</button>
+            <button className="btn-primary" onClick={() => setShowWhatsNew(true)}>WHAT'S NEW?</button>
           </div>
         )}
       </div>
+      {showWhatsNew && <New onClose={() => setShowWhatsNew(false)} />}
     </Layout>
   );
 }
