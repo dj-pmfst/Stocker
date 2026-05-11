@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Commissioner:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
   --navy: #1a1f5e;
-  --navy-dark: #17144C;
+  --navy-dark: #17144c;
   --navy-light: #2d347a;
-  --gray-bg: #FFFFFF;
+  --gray-bg: #ffffff;
   --gray-mid: #9ca3af;
-  --gray-border: #C9CDD2;
+  --gray-border: #c9cdd2;
   --white: #ffffff;
   --danger: #ef4444;
   --text: #111827;

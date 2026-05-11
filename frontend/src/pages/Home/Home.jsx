@@ -11,7 +11,7 @@ export default function Home() {
       <div className={styles.container}>
         <p className={styles.sectionLabel}>ADD ITEMS</p>
 
-        <div className="search-bar" style={{ marginBottom: 20 }}>
+        <div className="search-bar">
           <input
             type="text"
             placeholder="Coca Cola (0.33 l)"
