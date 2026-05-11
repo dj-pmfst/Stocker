@@ -23,6 +23,8 @@ const NAV_ITEMS = [
 
 //prebacit isto u konstante myb
 
+//moran dodat i uppeercase efekt umisto da je tekst auto caps 
+
 export default function Layout({ children }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -33,7 +35,7 @@ export default function Layout({ children }) {
         <div className={styles.topbarLogo}>
           <div className={styles.topbarLogoIcon}>
             <img src="/assets/logo.svg" alt="stocker logo"/>
-            STOCKER
+            STOCKER 
           </div>
         </div>
       </header>

@@ -70,6 +70,7 @@
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.03em;
+  color: var(--gray-mid);
 }
 
 .navIcon {
@@ -109,6 +110,10 @@
     0 4px 16px rgba(26, 31, 94, 0.35);
 }
 
+.scanCircle.active{
+  background: var(--gray-mid);
+}
+
 .navItem img,
 .scanCircle img {
   filter: grayscale(100%);
@@ -137,4 +142,8 @@
   border-radius: 999px;
 
   background: var(--navy);
+}
+
+.navItem.active span{
+  color: var(--navy);
 }

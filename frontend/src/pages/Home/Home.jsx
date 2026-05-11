@@ -1,31 +1,40 @@
-import { useState } from 'react';
-import Layout from '../components/Layout';
-import styles from './Home.module.css';
+import { useState } from "react";
+import Layout from "../../components/Layout/Layout";
+import Search from "../../components/Search/Search";
+import styles from "./Home.module.css";
+
+const ALL_ITEMS = [
+  { id: 1, name: "Coca Cola", size: "0.33 l" },
+  { id: 2, name: "Fanta", size: "0.33 l" },
+  { id: 3, name: "Sprite", size: "0.33 l" },
+  { id: 4, name: "Espresso beans", size: "0.5 kg" },
+  { id: 5, name: "Milk", size: "1 l" },
+  { id: 6, name: "Matcha", size: "1 kg" },
+];
 
 export default function Home() {
-  const [query, setQuery] = useState('');
-  const itemFound = query.toLowerCase().includes('coca');
+  const [selectedItem, setSelectedItem] = useState(null);
 
   return (
     <Layout>
       <div className={styles.container}>
         <p className={styles.sectionLabel}>ADD ITEMS</p>
 
-        <div className="search-bar" style={{ marginBottom: 20 }}>
-          <input
-            type="text"
-            placeholder="Coca Cola (0.33 l)"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
-          <img src="/assets/search.svg" />
-        </div>
+        <Search
+          items={ALL_ITEMS}
+          placeholder="Coca Cola (0.33 l)"
+          onSelect={setSelectedItem}
+        />
 
-        {itemFound ? (
+        {selectedItem ? (
           <>
             <div className={styles.foundBanner}>
-              <p className={styles.foundTitle}>THE ITEM HAS<br />BEEN MADE!</p>
-              <img src="/assets/wand.svg"/>
+              <p className={styles.foundTitle}>
+                THE ITEM HAS
+                <br />
+                BEEN MADE!
+              </p>
+              <img src="/assets/wand.svg" />
             </div>
 
             <div className={`product-card ${styles.cardWrap}`}>
@@ -47,7 +56,12 @@ export default function Home() {
         ) : (
           <div className={styles.emptyState}>
             <img src="/assets/storage.png" />
-            <p className={styles.emptyTitle}>ADD NEW ITEMS<br />TO YOUR STORAGE</p>
+            <p className={styles.emptyTitle}>
+              add new items
+              <br />
+              to your storage
+            </p>
+            <button className="btn-primary" onClick={() => navigate(route)}>WHAT'S NEW?</button>
           </div>
         )}
       </div>
