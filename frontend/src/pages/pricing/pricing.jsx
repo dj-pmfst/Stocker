@@ -30,7 +30,7 @@ export default function Pricing({ onClose, onSelect }) {
           className={styles.closeBtn}
           onClick={onClose}
           aria-label="Close">
-          ✕
+          <img src="/assets/close.svg"/>
         </button>
       </div>
 
