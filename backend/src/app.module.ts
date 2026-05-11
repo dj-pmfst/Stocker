@@ -7,6 +7,8 @@ import { PrismaModule } from './config/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { WarehouseModule } from './modules/warehouse/warehouse.module';
 import { WarehouseMemberModule } from './modules/warehouse-member/warehouse-member.module';
+import { DefaultProductModule } from './modules/default-product/default-product.module';
+import { ProductModule } from './modules/product/product.module';
 
 
 @Module({
@@ -17,6 +19,8 @@ import { WarehouseMemberModule } from './modules/warehouse-member/warehouse-memb
     AuthModule,
     WarehouseModule,
     WarehouseMemberModule,
+    DefaultProductModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
