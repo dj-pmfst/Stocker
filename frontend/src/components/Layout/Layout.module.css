@@ -58,7 +58,6 @@
   border-radius: 10px;
   background: none;
   border: none;
-  color: var(--gray-mid);
   min-width: 56px;
   transition: color 0.15s;
 }
@@ -91,32 +90,51 @@
 }
 
 .scanCircle {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: var(--navy);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 16px rgba(26, 31, 94, 0.35);
-}
-
-.scanCircle svg {
-  width: 26px;
-  height: 26px;
-  color: white;
-}
-
-.scanFab span {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--navy);
-  text-transform: uppercase;
+  color: var(--white);
+  font-weight: bold;
+  gap: 8px;
 }
 
 .scanFab.active .scanCircle {
   box-shadow: 0 0 0 4px rgba(26, 31, 94, 0.15),
     0 4px 16px rgba(26, 31, 94, 0.35);
+}
+
+.navItem img,
+.scanCircle img {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.navItem.active img,
+.scanFab.active img {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+.navItem {
+  position: relative;
+}
+
+.navItem.active::before {
+  content: "";
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 32px;
+  height: 3px;
+  border-radius: 999px;
+
+  background: var(--navy);
 }
