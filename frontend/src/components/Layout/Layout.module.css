@@ -128,7 +128,7 @@
 .navItem.active::before {
   content: "";
   position: absolute;
-  top: -13px;
+  top: -15px;
   left: 50%;
   transform: translateX(-50%);
 
