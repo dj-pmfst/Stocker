@@ -6,7 +6,7 @@ export default function Welcome() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const t = setTimeout(() => navigate('/home'), 2800)
+    const t = setTimeout(() => navigate('/auth'), 2800)
     return () => clearTimeout(t)
   }, [navigate])
   const cartRef = useRef(null);
@@ -31,9 +31,9 @@ export default function Welcome() {
       <img
         ref={cartRef}
         className={styles["logo-cart"]}
-        src="/assets//cart-logo.svg"
+        src="/assets/logo.svg"
       />
-      <img ref={logoRef} className={styles.logo} src="/assets//Logo.svg" />
+      <img ref={logoRef} className={styles.logo} src="/assets/TextLogo.svg" />
     </div>
   );
 }

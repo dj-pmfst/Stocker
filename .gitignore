@@ -5,3 +5,4 @@ build
 .env
 *.local
 node_modules/
+.turbo
