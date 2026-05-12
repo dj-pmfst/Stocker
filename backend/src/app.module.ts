@@ -9,6 +9,8 @@ import { WarehouseModule } from './modules/warehouse/warehouse.module';
 import { WarehouseMemberModule } from './modules/warehouse-member/warehouse-member.module';
 import { DefaultProductModule } from './modules/default-product/default-product.module';
 import { ProductModule } from './modules/product/product.module';
+import { StockModule } from './modules/stock/stock.module';
+import { LocationModule } from './modules/location/location.module';
 
 
 @Module({
@@ -21,6 +23,8 @@ import { ProductModule } from './modules/product/product.module';
     WarehouseMemberModule,
     DefaultProductModule,
     ProductModule,
+    StockModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
