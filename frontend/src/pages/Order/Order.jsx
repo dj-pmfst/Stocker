@@ -33,7 +33,7 @@ export default function Order() {
       <div className={styles.container}>
         <p className={styles.pageTitle}>order more items</p>
 
-        <p className={styles.searchLabel}>search</p>
+        {/* <p className={styles.searchLabel}>search</p> */}
         <Search
           items={products}
           placeholder="Coca Cola (0.33 l)"

@@ -3,7 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import Search from "../../components/Search/Search";
 import New from "../../components/New/New";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import styles from "./Home.module.css";
+import styles from "./home.module.css";
 
 const ALL_ITEMS = [
   { id: 1, name: "Coca Cola", size: "0.33 l" },
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <Layout>
       <div className={styles.container}>
-        <p className={styles.sectionLabel}>ADD ITEMS</p>
+        <p className={styles.sectionLabel}>add items</p>
 
         <Search
           items={ALL_ITEMS}
@@ -33,9 +33,9 @@ export default function Home() {
           <>
             <div className={styles.foundBanner}>
               <p className={styles.foundTitle}>
-                THE ITEM HAS
+                the item has
                 <br />
-                BEEN MADE!
+                been made!
               </p>
               <img src="/assets/wand.svg" />
             </div>
@@ -50,8 +50,8 @@ export default function Home() {
             </div>
 
             <div className={styles.foundActions}>
-              <button className="btn-primary">ADD QUANTITY</button>
-              <button className="btn-outline">TRANSFER TO STORAGE</button>
+              <button className="btn-primary">add quantity</button>
+              <button className="btn-outline">transfer to storage</button>
             </div>
           </>
         ) : (
@@ -62,7 +62,7 @@ export default function Home() {
               <br />
               to your storage
             </p>
-            <button className="btn-primary" onClick={() => setShowWhatsNew(true)}>WHAT'S NEW?</button>
+            <button className="btn-primary" onClick={() => setShowWhatsNew(true)}>what's new?</button>
           </div>
         )}
       </div>

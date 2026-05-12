@@ -104,6 +104,7 @@
   text-transform: uppercase;
   color: var(--navy);
   line-height: 100%;
+  font-family: 'VenscaBold';
 }
 
 .loadingSection {
@@ -117,6 +118,7 @@
   text-transform: uppercase;
   color: var(--navy-dark);
   margin-bottom: 16px;
+  font-family: 'VenscaBold';
 }
 
 .loadingCenter {
@@ -203,6 +205,7 @@
   font-weight: 700;
   letter-spacing: 0;
   text-transform: uppercase;
+  font-family: 'VenscaBold';
 }
 
 .successFullscreen {
@@ -226,4 +229,5 @@
   line-height: 100%;
   font-weight: 700;
   letter-spacing: 0;
+  font-family: 'VenscaBold';
 }

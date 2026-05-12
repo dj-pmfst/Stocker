@@ -68,9 +68,10 @@
 .trialTitle {
   font-weight: 800;
   font-size: 20px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
   text-transform: uppercase;
   color: var(--navy);
+  font-family: 'VenscaBold', 'Roboto';
 }
 
 .trialIcon img {
@@ -186,6 +187,7 @@
   transition: background 0.15s;
   margin-bottom: 12px;
   margin-top: 8em;
+  font-family: 'VenscaBold';
 }
 .ctaBtn:hover {
   background: var(--navy-light);

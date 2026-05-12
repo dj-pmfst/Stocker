@@ -4,11 +4,12 @@
 
 .sectionLabel {
   font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.06em;
+  font-size: 20px;
+  letter-spacing: 0;
   color: var(--navy);
   text-transform: uppercase;
   margin-bottom: 12px;
+  font-family: 'VenscaBold';
 }
 
 .emptyState {
@@ -28,10 +29,11 @@
 .emptyTitle {
   font-weight: 800;
   font-size: 20px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
   color: var(--navy);
   text-transform: uppercase;
   line-height: 1.2;
+  font-family: 'VenscaBold';
 }
 
 .foundBanner {
@@ -42,11 +44,12 @@
 .foundTitle {
   font-weight: 800;
   font-size: 24px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0;
   color: var(--navy);
   text-transform: uppercase;
   line-height: 1.2;
   margin-bottom: 8px;
+  font-family: 'VenscaBold';
 }
 
 .cardWrap {
