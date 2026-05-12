@@ -23,7 +23,7 @@ export default function Storage() {
   return (
     <Layout>
       <div className={styles.container}>
-        <p className={styles.pageTitle}>YOUR STORAGE</p>
+        <p className={styles.pageTitle}>your storage</p>
 
         {STORAGE_DATA.map((section, i) => (
           <div key={i} className={styles.section}>

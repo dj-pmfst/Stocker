@@ -11,6 +11,7 @@
   color: var(--navy);
   font-weight: bolder;
   font-size: 40px;
+  font-family: 'VenscaBold';
 }
 
 .header img{

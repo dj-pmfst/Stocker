@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./PageHeader.module.css";
+import styles from "./pageHeader.module.css";
 import Notifications from "../notifications/notifications";
 
 export function PageHeader() {

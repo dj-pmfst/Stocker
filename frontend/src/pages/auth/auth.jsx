@@ -199,7 +199,7 @@ export default function Login() {
           </div>
 
           <button className={styles.submitBtn} type="submit" disabled={loading}>
-            {loading ? 'Logging in…' : 'Sign In'}
+            {loading ? 'Logging in…' : 'Log in'}
           </button>
         </form>
         <div className={styles.divider}>Or</div>

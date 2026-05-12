@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./pricing.module.css";
 
 const PLANS = [
@@ -11,10 +12,16 @@ const PLANS = [
 
 export default function Pricing({ onClose, onSelect }) {
   const [selected, setSelected] = useState("yearly");
+  const navigate = useNavigate();
 
   const handleStart = () => {
     onSelect?.(selected);
+    navigate("/home");
+  };
+  
+  const handleClose = () => {
     onClose?.();
+    navigate("/home");
   };
 
   return (
@@ -28,7 +35,7 @@ export default function Pricing({ onClose, onSelect }) {
         </div>
         <button
           className={styles.closeBtn}
-          onClick={onClose}
+          onClick={handleClose}
           aria-label="Close">
           <img src="/assets/close.svg"/>
         </button>
@@ -36,7 +43,7 @@ export default function Pricing({ onClose, onSelect }) {
 
       <div className={styles.card}>
         <div className={styles.trialRow}>
-          <span className={styles.trialTitle}>7 DAY FREE TRIAL</span>
+          <span className={styles.trialTitle}>7 day free trial</span>
           <span className={styles.trialIcon}>
             <img src="/assets/gem.svg" />
           </span>
