@@ -1,0 +1,68 @@
+.container {
+  padding: 16px 20px;
+}
+
+.sectionLabel {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0;
+  color: var(--navy);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  font-family: 'VenscaBold';
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  gap: 14px;
+}
+
+.emptyState button, .emptyState img{
+    margin-top: 60px;
+}
+
+.emptyTitle {
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0;
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 1.2;
+  font-family: 'VenscaBold';
+}
+
+.foundBanner {
+  text-align: center;
+  padding: 20px 0 10px;
+}
+
+.foundTitle {
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: 0;
+  color: var(--navy);
+  text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  font-family: 'VenscaBold';
+}
+
+.cardWrap {
+  margin: 16px 0;
+}
+
+.foundActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.foundActions .btn-primary,
+.foundActions .btn-outline {
+  flex: 1;
+}

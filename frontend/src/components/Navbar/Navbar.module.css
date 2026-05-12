@@ -1,0 +1,64 @@
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  height: var(--navbar-h);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  z-index: 100;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brown);
+  text-decoration: none;
+}
+
+.active img{
+  opacity: 1;
+}
+
+.cartWrap {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--brown);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar a img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  opacity: 0.5;
+}

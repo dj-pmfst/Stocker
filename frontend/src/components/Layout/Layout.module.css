@@ -1,0 +1,149 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 12px;
+  background: var(--white);
+  flex-shrink: 0;
+}
+
+.topbarLogo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbarLogoIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topbarLogoIcon svg,
+.topbarLogoIcon img {
+  width: 100%;
+  height: 100%;
+}
+
+.topbarWordmark {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.05em;
+  color: var(--navy);
+}
+
+.bottomNav {
+  height: var(--nav-height);
+  background: var(--white);
+  border-top: 1px solid var(--gray-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: none;
+  border: none;
+  min-width: 56px;
+  transition: color 0.15s;
+}
+
+.navItem.active {
+  color: var(--navy);
+}
+
+.navItem span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--gray-mid);
+}
+
+.navIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.scanFab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  position: relative;
+  top: -10px;
+}
+
+.scanCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(26, 31, 94, 0.35);
+  color: var(--white);
+  font-weight: bold;
+  gap: 8px;
+}
+
+.scanFab.active .scanCircle {
+  box-shadow: 0 0 0 4px rgba(26, 31, 94, 0.15),
+    0 4px 16px rgba(26, 31, 94, 0.35);
+}
+
+.scanCircle.active{
+  background: var(--gray-mid);
+}
+
+.navItem img,
+.scanCircle img {
+  filter: grayscale(100%);
+  opacity: 0.5;
+}
+
+.navItem.active img,
+.scanFab.active img {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+.navItem {
+  position: relative;
+}
+
+.navItem.active::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 32px;
+  height: 3px;
+  border-radius: 999px;
+
+  background: var(--navy);
+}
+
+.navItem.active span{
+  color: var(--navy);
+}

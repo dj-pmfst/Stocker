@@ -1,0 +1,65 @@
+.container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+}
+
+.pageTitle {
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0;
+  color: var(--navy-dark);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-family: 'VenscaBold';
+}
+
+.searchLabel {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--navy-dark);
+  text-align: center;
+  margin-bottom: 8px;
+  font-family: 'VenscaBold';
+}
+
+.searchWrap {
+  margin-bottom: 20px;
+}
+
+.usualTitle {
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--navy-dark);
+  text-align: center;
+  margin-bottom: 16px;
+  margin-top: 28px;
+  font-family: 'VenscaBold';
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.resultTitle {
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: 0;
+  color: var(--navy-dark);
+  text-align: center;
+  margin: 20px 0 14px;
+}
+
+.orderBtnWrap {
+  margin-top: auto;
+  padding-top: 28px;
+  max-width: 220px;
+  margin-left: 80px;
+}
