@@ -7,8 +7,9 @@ const EditIcon = () => <img src="/assets/pencil.svg" />;
 const CardIcon = () => <img src="/assets/card.svg" />;
 const BuildingIcon = () => <img src="/assets/store.svg" />;
 const RegisterIcon = () => <img src="/assets/screen.svg" />;
-const PersonAddIcon = () => <img src="/assets/plus.svg" />;
+const PersonAddIcon = () => <img src="/assets/profile.svg" />;
 const PlusIcon = () => <img src="/assets/plus.svg" />;
+const StatIcon = () => <img src="/assets/graph.svg"/>;
 
 const DOCS = [
   {
@@ -45,13 +46,14 @@ export default function Profile() {
           <p className={styles.name}>Franko Oceanović</p>
         </div>
 
-        <div className={styles.field}>
+      <div className={styles.fieldGrid}>
+                <div className={styles.field}>
           <MailIcon />
           <div className={styles.fieldInfo}>
             <p className={styles.fieldLabel}>E-mail</p>
             <p className={styles.fieldValue}>franko.oceanovic@gmail.com</p>
           </div>
-          <EditIcon />
+          <button className={styles.addBtn}><EditIcon /></button>
         </div>
 
         <div className={styles.field}>
@@ -60,10 +62,19 @@ export default function Profile() {
             <p className={styles.fieldLabel}>Phone</p>
             <p className={styles.fieldValue}>099 123 4567</p>
           </div>
-          <EditIcon />
+          <button className={styles.addBtn}><EditIcon /></button>
         </div>
 
-        <p className={styles.sectionLabel} style={{ marginTop: 10 }}>
+        <div className={`${styles.field} ${styles.analyticsField}`}>
+          <StatIcon />
+          <div className={styles.fieldInfo}>
+            <p>View Analytics</p>
+          </div>
+        </div>
+
+      </div>
+
+        <p className={styles.sectionLabel}>
           my documents
         </p>
         <div className={styles.docGrid}>
@@ -81,10 +92,13 @@ export default function Profile() {
         </div>
 
         <div className={styles.addEmployeesRow}>
-          <p className={styles.sectionLabel} style={{ marginBottom: 0 }}>
+          <p className={styles.sectionLabel}>
             add employees
           </p>
-          <PlusIcon />
+          <button className={styles.addBtn}>
+            <PlusIcon />
+          </button>
+          
         </div>
 
         {EMPLOYEES.map((emp) => (
@@ -94,7 +108,8 @@ export default function Profile() {
               <p className={styles.employeeName}>{emp.name}</p>
               <p className={styles.employeeEmail}>{emp.email}</p>
             </div>
-            <EditIcon />
+            <button className={styles.addBtn}><EditIcon /></button>
+            
           </div>
         ))}
       </div>
