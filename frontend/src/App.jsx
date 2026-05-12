@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Home from './pages/Home/Home';
 import Storage from './pages/Storage/Storage';
 // import Scan from './pages/Scan/Scan';
-// import Order from './pages/Order';
+import Order from './pages/Order/Order';
 // import Profile from './pages/Profile';
 
 export default function App() {
@@ -15,9 +15,9 @@ export default function App() {
       {/* <Route path="/pricing" element={<Pricing/>} /> */}
       <Route path="/home" element={<Home />} />
         <Route path="/storage" element={<Storage />} />
-        {/* <Route path="/scan" element={<Scan />} />
+        {/* <Route path="/scan" element={<Scan />} /> */}
         <Route path="/order" element={<Order />} />
-        <Route path="/profile" element={<Profile />} /> */}
+        {/* <Route path="/profile" element={<Profile />} /> */}
     </Routes>
   );
 }
