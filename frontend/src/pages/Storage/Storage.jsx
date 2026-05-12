@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import Layout from "../../components/Layout/Layout";
 import styles from "./storage.module.css";
 
 const PlusIcon = () => <img src="/assets/plus.svg" />;
