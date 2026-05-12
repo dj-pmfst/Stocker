@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { PageHeader } from '../PageHeader/PageHeader';
 import styles from './Layout.module.css';
 
 const HomeIcon = ({ active }) => (
@@ -31,14 +32,7 @@ export default function Layout({ children }) {
 
   return (
     <div className="app-shell">
-      <header className={styles.topbar}>
-        <div className={styles.topbarLogo}>
-          <div className={styles.topbarLogoIcon}>
-            <img src="/assets/logo.svg" alt="stocker logo"/>
-            STOCKER 
-          </div>
-        </div>
-      </header>
+      <PageHeader></PageHeader>
 
       <main className="page">{children}</main>
 

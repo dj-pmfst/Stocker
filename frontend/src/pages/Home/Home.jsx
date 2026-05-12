@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import Search from "../../components/Search/Search";
+import New from "../../components/New/New";
+import ProductCard from "../../components/ProductCard/ProductCard";
 import styles from "./Home.module.css";
 
 const ALL_ITEMS = [
@@ -14,6 +16,7 @@ const ALL_ITEMS = [
 
 export default function Home() {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [showWhatsNew, setShowWhatsNew] = useState(false);
 
   return (
     <Layout>
@@ -37,15 +40,13 @@ export default function Home() {
               <img src="/assets/wand.svg" />
             </div>
 
-            <div className={`product-card ${styles.cardWrap}`}>
-              <img src="/assets/cola.png" />
-              <div className="product-info">
-                <p className="product-name">Coca Cola</p>
-                <p className="product-sub">330 ml</p>
-              </div>
-              <button className="add-btn">
-                <img src="/assets/plus.svg" />
-              </button>
+            <div className={styles.cardWrap}>
+              <ProductCard
+                name={selectedItem.name}
+                sub={selectedItem.size}
+                image={selectedItem.image}
+                onAdd={() => {}}
+              />
             </div>
 
             <div className={styles.foundActions}>
@@ -61,10 +62,11 @@ export default function Home() {
               <br />
               to your storage
             </p>
-            <button className="btn-primary" onClick={() => navigate(route)}>WHAT'S NEW?</button>
+            <button className="btn-primary" onClick={() => setShowWhatsNew(true)}>WHAT'S NEW?</button>
           </div>
         )}
       </div>
+      {showWhatsNew && <New onClose={() => setShowWhatsNew(false)} />}
     </Layout>
   );
 }

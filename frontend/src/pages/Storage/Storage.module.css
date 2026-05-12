@@ -1,1 +1,36 @@
-    
+.container {
+  padding: 16px 20px;
+}
+
+.pageTitle {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--navy);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section {
+  margin-bottom: 24px;
+}
+
+.shelfZone {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--navy-dark);
+  margin-bottom: 2px;
+}
+
+.shelfName {
+  font-size: 16px;
+  color: var(--navy);
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

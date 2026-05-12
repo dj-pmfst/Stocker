@@ -1,0 +1,75 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--gray-border);
+}
+
+.img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.imgPlaceholder {
+  width: 56px;
+  height: 56px;
+  background: var(--gray-bg);
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-mid);
+  font-size: 10px;
+  text-align: center;
+}
+
+.info {
+  flex: 1;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--navy-dark);
+}
+
+.sub {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-top: 2px;
+}
+
+.warning {
+  font-size: 13px;
+  color: var(--danger);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.addBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--navy);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--navy);
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.addBtn:hover {
+  background: var(--navy);
+  filter: brightness(10);
+}
