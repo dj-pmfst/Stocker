@@ -5,7 +5,7 @@ import Home from './pages/Home/Home';
 import Storage from './pages/Storage/Storage';
 import Scan from './pages/Scan/Scan';
 import Order from './pages/Order/Order';
-// import Profile from './pages/Profile';
+import Profile from './pages/Profile/Profile';
 
 export default function App() {
   return (
@@ -17,7 +17,7 @@ export default function App() {
         <Route path="/storage" element={<Storage />} />
         <Route path="/scan" element={<Scan />} />
         <Route path="/order" element={<Order />} />
-        {/* <Route path="/profile" element={<Profile />} /> */}
+        <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }
