@@ -10,6 +10,7 @@ import { WarehouseMemberModule } from './modules/warehouse-member/warehouse-memb
 import { DefaultProductModule } from './modules/default-product/default-product.module';
 import { ProductModule } from './modules/product/product.module';
 import { StockModule } from './modules/stock/stock.module';
+import { LocationModule } from './modules/location/location.module';
 
 
 @Module({
@@ -23,6 +24,7 @@ import { StockModule } from './modules/stock/stock.module';
     DefaultProductModule,
     ProductModule,
     StockModule,
+    LocationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
