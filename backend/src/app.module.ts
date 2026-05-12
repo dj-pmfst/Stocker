@@ -11,6 +11,7 @@ import { DefaultProductModule } from './modules/default-product/default-product.
 import { ProductModule } from './modules/product/product.module';
 import { StockModule } from './modules/stock/stock.module';
 import { LocationModule } from './modules/location/location.module';
+import { SalesModule } from './modules/sales/sales.module';
 
 
 @Module({
@@ -25,6 +26,7 @@ import { LocationModule } from './modules/location/location.module';
     ProductModule,
     StockModule,
     LocationModule,
+    SalesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
