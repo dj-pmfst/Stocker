@@ -1,7 +1,7 @@
 import Layout from "../../components/Layout/Layout";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import EditModal from "../../components/EditModal/EditModal";
 import { useProductActions } from "../../hooks/useProductActions";
+import EditModal from "../../components/EditModal/EditModal";
 import { QUANTITY_FIELDS } from "../../constants/productFields";
 import styles from "./storage.module.css";
 

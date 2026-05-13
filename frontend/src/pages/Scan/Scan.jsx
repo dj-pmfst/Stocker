@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import EditModal from "../../components/EditModal/EditModal";
+import { useProductActions } from "../../hooks/useProductActions";
+import { QUANTITY_FIELDS } from "../../constants/productFields";
 import styles from "./scan.module.css";
 
 const CameraIcon = () => <img src="/assets/camera.svg" />;
@@ -60,7 +63,7 @@ function ScanLoading() {
   );
 }
 
-function ScanFeedback({ onApply, onBack }) {
+function ScanFeedback({ onApply, onEdit }) {
   return (
     <>
       <div className={styles.cameraIconWrap}>
@@ -74,7 +77,7 @@ function ScanFeedback({ onApply, onBack }) {
             name={item.name}
             sub={`${item.size} · ${item.qty} remaining`}
             image={item.image}
-            onAdd={() => {}}
+            onEdit={() => onEdit(item)}
           />
         ))}
         <div className={styles.orderBtnWrap}>
@@ -111,6 +114,8 @@ function ScanSuccess() {
 
 export default function Scan() {
   const [state, setState] = useState("camera");
+  const { handleUpdateStock, editingProduct, setEditingProduct, saving } =
+    useProductActions();
 
   const handleScan = () => setState("feedback");
 
@@ -124,14 +129,20 @@ export default function Scan() {
       <div className={styles.container}>
         {state === "camera" && <ScanCamera onScan={handleScan} />}
         {state === "feedback" && (
-          <ScanFeedback
-            onApply={handleApply}
-            onBack={() => setState("camera")}
-          />
+          <ScanFeedback onApply={handleApply} onEdit={setEditingProduct} />
         )}
         {state === "loading" && <ScanLoading />}
         {state === "success" && <ScanSuccess />}
       </div>
+
+      <EditModal
+        open={!!editingProduct}
+        onClose={() => setEditingProduct(null)}
+        onSave={handleUpdateStock}
+        title="update quantity"
+        fields={QUANTITY_FIELDS}
+        saving={saving}
+      />
     </Layout>
   );
 }
