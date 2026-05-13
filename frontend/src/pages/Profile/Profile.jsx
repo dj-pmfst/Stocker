@@ -1,15 +1,18 @@
+import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import styles from "./profile.module.css";
+import { useProfile } from "../../hooks/useProfile";
+import EditModal from "../../components/EditModal/EditModal";
 
-const MailIcon = () => <img src="/assets/email.svg" />;
-const PhoneIcon = () => <img src="/assets/phone.svg" />;
-const EditIcon = () => <img src="/assets/pencil.svg" />;
-const CardIcon = () => <img src="/assets/card.svg" />;
-const BuildingIcon = () => <img src="/assets/store.svg" />;
-const RegisterIcon = () => <img src="/assets/screen.svg" />;
-const PersonAddIcon = () => <img src="/assets/profile.svg" />;
-const PlusIcon = () => <img src="/assets/plus.svg" />;
-const StatIcon = () => <img src="/assets/graph.svg"/>;
+const MailIcon = () => <img src="/assets/email.svg" alt="email icon" />;
+const PhoneIcon = () => <img src="/assets/phone.svg" alt="phone icon" />;
+const EditIcon = () => <img src="/assets/pencil.svg" alt="edit icon" />;
+const CardIcon = () => <img src="/assets/card.svg" alt="card icon" />;
+const BuildingIcon = () => <img src="/assets/store.svg" alt="store icon" />;
+const RegisterIcon = () => <img src="/assets/screen.svg" alt="screen icon" />;
+const PersonAddIcon = () => <img src="/assets/profile.svg" alt="person icon" />;
+const PlusIcon = () => <img src="/assets/plus.svg" alt="plus icon" />;
+const StatIcon = () => <img src="/assets/graph.svg" alt="graph icon" />;
 
 const DOCS = [
   {
@@ -25,9 +28,78 @@ const DOCS = [
   },
 ];
 
-const EMPLOYEES = [{ name: "Toni Tonić", email: "toni.tonic@gmail.com" }];
+function emailModalConfig(user) {
+  return {
+    title: "Edit E-mail",
+    fields: [
+      {
+        key: "email",
+        label: "E-mail",
+        value: user?.email ?? "",
+        type: "email",
+      },
+    ],
+  };
+}
+
+function phoneModalConfig(user) {
+  return {
+    title: "Edit Phone",
+    fields: [
+      { key: "phone", label: "Phone", value: user?.phone ?? "", type: "tel" },
+    ],
+  };
+}
+
+function employeeModalConfig(emp = null) {
+  return {
+    title: emp ? "Edit Employee" : "Add Employee",
+    fields: [
+      { key: "name", label: "Name", value: emp?.name ?? "" },
+      { key: "email", label: "E-mail", value: emp?.email ?? "", type: "email" },
+    ],
+  };
+}
 
 export default function Profile() {
+  const {
+    user,
+    employees,
+    loading,
+    saving,
+    updateUserField,
+    addEmployee,
+    updateEmployee,
+  } = useProfile();
+
+  const [modal, setModal] = useState({
+    open: false,
+    config: null,
+    onSave: null,
+  });
+
+  const openModal = (config, onSave) =>
+    setModal({ open: true, config, onSave });
+  const closeModal = () => setModal((m) => ({ ...m, open: false }));
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className={styles.container}>
+          <p className={styles.pageTitle}>profile</p>
+          <p
+            style={{
+              textAlign: "center",
+              color: "var(--text-muted)",
+              marginTop: 40,
+            }}>
+            Loading…
+          </p>
+        </div>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -36,47 +108,70 @@ export default function Profile() {
         <div className={styles.avatarWrap}>
           <div className={styles.avatarOuter}>
             <div className={styles.avatar}>
-              <span>Photo</span>
+              {user?.avatarUrl ? (
+                <img
+                  src={user.avatarUrl}
+                  alt="avatar"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              ) : (
+                <span>Photo</span>
+              )}
             </div>
-            <button className={styles.avatarEditBtn}>
+            <button className={styles.avatarEditBtn} aria-label="Edit photo">
               <EditIcon />
             </button>
           </div>
-          <p className={styles.role}>Admin</p>
-          <p className={styles.name}>Franko Oceanović</p>
+          <p className={styles.role}>{user?.role ?? "Admin"}</p>
+          <p className={styles.name}>{user?.name ?? "—"}</p>
         </div>
 
-      <div className={styles.fieldGrid}>
-                <div className={styles.field}>
-          <MailIcon />
-          <div className={styles.fieldInfo}>
-            <p className={styles.fieldLabel}>E-mail</p>
-            <p className={styles.fieldValue}>franko.oceanovic@gmail.com</p>
+        <div className={styles.fieldGrid}>
+          <div className={styles.field}>
+            <MailIcon />
+            <div className={styles.fieldInfo}>
+              <p className={styles.fieldLabel}>E-mail</p>
+              <p className={styles.fieldValue}>{user?.email ?? "—"}</p>
+            </div>
+            <button
+              className={styles.addBtn}
+              aria-label="Edit e-mail"
+              onClick={() =>
+                openModal(emailModalConfig(user), (vals) =>
+                  updateUserField({ email: vals.email })
+                )
+              }>
+              <EditIcon />
+            </button>
           </div>
-          <button className={styles.addBtn}><EditIcon /></button>
-        </div>
 
-        <div className={styles.field}>
-          <PhoneIcon />
-          <div className={styles.fieldInfo}>
-            <p className={styles.fieldLabel}>Phone</p>
-            <p className={styles.fieldValue}>099 123 4567</p>
+          <div className={styles.field}>
+            <PhoneIcon />
+            <div className={styles.fieldInfo}>
+              <p className={styles.fieldLabel}>Phone</p>
+              <p className={styles.fieldValue}>{user?.phone ?? "—"}</p>
+            </div>
+            <button
+              className={styles.addBtn}
+              aria-label="Edit phone"
+              onClick={() =>
+                openModal(phoneModalConfig(user), (vals) =>
+                  updateUserField({ phone: vals.phone })
+                )
+              }>
+              <EditIcon />
+            </button>
           </div>
-          <button className={styles.addBtn}><EditIcon /></button>
-        </div>
 
-        <div className={`${styles.field} ${styles.analyticsField}`}>
-          <StatIcon />
-          <div className={styles.fieldInfo}>
-            <p>View Analytics</p>
+          <div className={`${styles.field} ${styles.analyticsField}`}>
+            <StatIcon />
+            <div className={styles.fieldInfo}>
+              <p>View Analytics</p>
+            </div>
           </div>
         </div>
 
-      </div>
-
-        <p className={styles.sectionLabel}>
-          my documents
-        </p>
+        <p className={styles.sectionLabel}>my documents</p>
         <div className={styles.docGrid}>
           {DOCS.map(({ Icon, name, sub }) => (
             <div key={name} className={styles.docCard}>
@@ -92,27 +187,50 @@ export default function Profile() {
         </div>
 
         <div className={styles.addEmployeesRow}>
-          <p className={styles.sectionLabel}>
-            add employees
-          </p>
-          <button className={styles.addBtn}>
+          <p className={styles.sectionLabel}>add employees</p>
+          <button
+            className={styles.addBtn}
+            aria-label="Add employee"
+            onClick={() =>
+              openModal(employeeModalConfig(null), (vals) =>
+                addEmployee({ name: vals.name, email: vals.email })
+              )
+            }>
             <PlusIcon />
           </button>
-          
         </div>
 
-        {EMPLOYEES.map((emp) => (
-          <div key={emp.email} className={styles.employeeRow}>
+        {employees.map((emp) => (
+          <div key={emp.id ?? emp.email} className={styles.employeeRow}>
             <PersonAddIcon />
             <div className={styles.employeeInfo}>
               <p className={styles.employeeName}>{emp.name}</p>
               <p className={styles.employeeEmail}>{emp.email}</p>
             </div>
-            <button className={styles.addBtn}><EditIcon /></button>
-            
+            <button
+              className={styles.addBtn}
+              aria-label={`Edit ${emp.name}`}
+              onClick={() =>
+                openModal(employeeModalConfig(emp), (vals) =>
+                  updateEmployee(emp.id, { name: vals.name, email: vals.email })
+                )
+              }>
+              <EditIcon />
+            </button>
           </div>
         ))}
       </div>
+
+      {modal.config && (
+        <EditModal
+          open={modal.open}
+          onClose={closeModal}
+          onSave={modal.onSave}
+          title={modal.config.title}
+          fields={modal.config.fields}
+          saving={saving}
+        />
+      )}
     </Layout>
   );
 }
