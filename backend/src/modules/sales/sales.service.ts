@@ -53,10 +53,28 @@ export class SalesService {
       });
 
       for (const item of dto.items) {
-        await tx.productStock.update({
+        const updatedStock = await tx.productStock.update({
           where: { productId: item.productId },
           data: { quantity: { decrement: item.quantity } },
         });
+
+        const product = products.find((p) => p.id === item.productId);
+        const minimum = product?.minimumQuantity;
+        if (minimum != null && updatedStock.quantity < minimum) {
+          const existing = await tx.alert.findFirst({
+            where: { productId: item.productId, resolved: false },
+          });
+          if (!existing) {
+            const type = updatedStock.quantity <= 0 ? 'RED' : 'YELLOW';
+            const message =
+              updatedStock.quantity <= 0
+                ? 'Nema na stanju!'
+                : `Stanje ispod minimuma (${updatedStock.quantity} < ${minimum})`;
+            await tx.alert.create({
+              data: { productId: item.productId, type, message },
+            });
+          }
+        }
       }
 
       return sale;
