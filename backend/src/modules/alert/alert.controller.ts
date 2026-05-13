@@ -24,13 +24,7 @@ import { AlertService } from './alert.service';
 import { CreateAlertDto } from './dto/create-alert.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
 
-class AlertQueryDto {
-  @ApiPropertyOptional({ example: false, description: 'Filtriraj po riješenosti (true/false)' })
-  @Transform(({ value }) => value === 'true' || value === true)
-  @IsBoolean()
-  @IsOptional()
-  resolved?: boolean;
-}
+
 
 @ApiTags('Alerts')
 @UseGuards(UserAuthGuard)
@@ -55,14 +49,14 @@ export class AlertController {
   @Get()
   @ApiOperation({
     summary: 'Lista upozorenja',
-    description: 'Vraća sva upozorenja za proizvode u skladištu. Filter `?rijeseno=false` za samo aktivna.',
+    description: 'Vraća sva upozorenja za proizvode u skladištu.',
   })
   @ApiOkResponse({ description: 'List of alerts.' })
   findAll(
-    @Param('warehouseId', ParseIntPipe) warehouseId: number,
-    @Query() query: AlertQueryDto,
+    @Param('warehouseId', ParseIntPipe) warehouseId: number
+    
   ) {
-    return this.alertService.findAll(warehouseId, query.resolved);
+    return this.alertService.findAll(warehouseId);
   }
 
   @Get(':id')

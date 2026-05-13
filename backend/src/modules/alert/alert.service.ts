@@ -29,11 +29,11 @@ export class AlertService {
     });
   }
 
-  findAll(warehouseId: number, resolved?: boolean) {
+  findAll(warehouseId: number) {
     return this.prisma.alert.findMany({
       where: {
-        product: { warehouseId: warehouseId   },
-        ...(resolved !== undefined && { resolved }),
+        product: { warehouseId },
+        resolved: false,
       },
       include: {
         product: { include: { defaultProduct: true } },
