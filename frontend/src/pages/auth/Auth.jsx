@@ -1,73 +1,28 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
+import PasswordInput from '../../components/PasswordInput/PasswordInput';
 import styles from './auth.module.css';
 
-const API = import.meta.env.VITE_API_URL;
-
 export default function Login() {
-  const navigate = useNavigate();
-
   const [isRegister, setIsRegister] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { fields, set, reset, error, loading, submit } = useAuth();
 
-  const resetForm = () => {
-    setFirstName(''); setLastName('');
-    setEmail(''); setPassword('');
-    setError('');
-  };
-
-  const switchToRegister = () => { resetForm(); setIsRegister(true); };
-  const switchToLogin    = () => { resetForm(); setIsRegister(false); };
+  const switchMode = (register) => { reset(); setIsRegister(register); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      const endpoint = isRegister ? 'register' : 'login';
-      const body = isRegister
-        ? { firstName, lastName, email, password }
-        : { email, password };
-
-      const res = await fetch(`${API}/auth/${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || (isRegister ? 'Registration failed' : 'Login failed'));
-
-      if (isRegister) {
-        resetForm();
-        setIsRegister(false);
-      } else {
-        const token = data.data.token;
-        localStorage.setItem('token', token);
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        initCart(payload.id);
-        navigate('/home');
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    const result = await submit(isRegister);
+    if (result?.registered) setIsRegister(false);
   };
 
   if (isRegister) {
     return (
       <div className="app-shell">
         <div className={styles.container}>
-        <div className={styles.logo}>
-          <img src="/assets/TextLogo.svg" alt="Stocker" />
-          <p className={styles.tagline}>your smart warehouse app</p>
-        </div> 
+          <div className={styles.logo}>
+            <img src="/assets/TextLogo.svg" alt="Stocker" />
+            <p className={styles.tagline}>your smart warehouse app</p>
+          </div>
 
           <p className={styles.registerHint}>Please enter your details below to register.</p>
 
@@ -81,8 +36,8 @@ export default function Login() {
                   <input
                     type="text"
                     placeholder="John"
-                    value={firstName}
-                    onChange={e => setFirstName(e.target.value)}
+                    value={fields.firstName}
+                    onChange={set('firstName')}
                     required
                   />
                 </div>
@@ -93,8 +48,8 @@ export default function Login() {
                   <input
                     type="text"
                     placeholder="Smith"
-                    value={lastName}
-                    onChange={e => setLastName(e.target.value)}
+                    value={fields.lastName}
+                    onChange={set('lastName')}
                     required
                   />
                 </div>
@@ -108,8 +63,8 @@ export default function Login() {
                 <input
                   type="email"
                   placeholder="name@example.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  value={fields.email}
+                  onChange={set('email')}
                   required
                 />
               </div>
@@ -117,22 +72,7 @@ export default function Login() {
 
             <div className="form-group">
               <label className="form-label">Password</label>
-              <div className="form-input-wrap">
-                <img src="/assets/lock.svg" alt="" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••••"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                />
-                <img
-                  src="/assets/eye.svg"
-                  alt="toggle"
-                  style={{ cursor: 'pointer', opacity: 1 }}
-                  onClick={() => setShowPassword(v => !v)}
-                />
-              </div>
+              <PasswordInput value={fields.password} onChange={set('password')} />
             </div>
 
             <button className={styles.registerBtn} type="submit" disabled={loading}>
@@ -142,7 +82,7 @@ export default function Login() {
 
           <p className={styles.switchRow}>
             Already have an account?{' '}
-            <span className={styles.switchLink} onClick={switchToLogin}>Login</span>
+            <span className={styles.switchLink} onClick={() => switchMode(false)}>Login</span>
           </p>
         </div>
       </div>
@@ -155,7 +95,7 @@ export default function Login() {
         <div className={styles.logo}>
           <img src="/assets/TextLogo.svg" alt="Stocker" />
           <p className={styles.tagline}>your smart warehouse app</p>
-        </div>     
+        </div>
 
         {error && <div className={styles.error}>{error}</div>}
 
@@ -167,8 +107,8 @@ export default function Login() {
               <input
                 type="email"
                 placeholder="name@example.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                value={fields.email}
+                onChange={set('email')}
                 required
               />
             </div>
@@ -176,22 +116,7 @@ export default function Login() {
 
           <div className="form-group">
             <label className="form-label">Password</label>
-            <div className="form-input-wrap">
-              <img src="/assets/lock.svg" alt="" />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="••••••••••"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-              />
-              <img
-                src="/assets/eye.svg"
-                alt="toggle"
-                style={{ cursor: 'pointer', opacity: 1 }}
-                onClick={() => setShowPassword(v => !v)}
-              />
-            </div>
+            <PasswordInput value={fields.password} onChange={set('password')} />
           </div>
 
           <div className={styles.forgotWrap}>
@@ -202,8 +127,9 @@ export default function Login() {
             {loading ? 'Logging in…' : 'Log in'}
           </button>
         </form>
+
         <div className={styles.divider}>Or</div>
-        <button className={styles.registerBtn} onClick={switchToRegister}>
+        <button className={styles.registerBtn} onClick={() => switchMode(true)}>
           Register
         </button>
       </div>

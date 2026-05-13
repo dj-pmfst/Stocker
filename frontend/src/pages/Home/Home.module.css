@@ -83,9 +83,9 @@
   font-size: 20px;
   color: var(--navy-dark);
   border: 2px solid var(--navy-dark);
-  padding: 8px;
-  padding-left: 14px;
-  padding-right: 14px;
+  padding: 10px;
+  padding-left: 18px;
+  padding-right: 18px;
   border-radius: 24px;
   cursor: pointer;
 }

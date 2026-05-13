@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "./pages/Welcome/Welcome";
-import Login from "./pages/auth/auth";
-import Pricing from "./pages/pricing/Pricing";
+import Login from "./pages/Auth/Auth";
+import Pricing from "./pages/Pricing/Pricing";
 import Home from "./pages/Home/Home";
 import Storage from "./pages/Storage/Storage";
 import Scan from "./pages/Scan/Scan";

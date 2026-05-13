@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
-import styles from "./profile.module.css";
+import Loader from "../../components/Loader/Loader";
 import { useProfile } from "../../hooks/useProfile";
 import EditModal from "../../components/EditModal/EditModal";
+import styles from "./profile.module.css";
 
 const MailIcon = () => <img src="/assets/email.svg" alt="email icon" />;
 const PhoneIcon = () => <img src="/assets/phone.svg" alt="phone icon" />;
@@ -82,23 +83,7 @@ export default function Profile() {
     setModal({ open: true, config, onSave });
   const closeModal = () => setModal((m) => ({ ...m, open: false }));
 
-  if (loading) {
-    return (
-      <Layout>
-        <div className={styles.container}>
-          <p className={styles.pageTitle}>profile</p>
-          <p
-            style={{
-              textAlign: "center",
-              color: "var(--text-muted)",
-              marginTop: 40,
-            }}>
-            Loading…
-          </p>
-        </div>
-      </Layout>
-    );
-  }
+  if (loading) return <Layout><Loader /></Layout>;
 
   return (
     <Layout>
@@ -122,7 +107,7 @@ export default function Profile() {
               <EditIcon />
             </button>
           </div>
-          <p className={styles.role}>{user?.role ?? "Admin"}</p>
+          <p className={styles.role}>{user?.role ?? "Dev_Test"}</p>
           <p className={styles.name}>{user?.name ?? "—"}</p>
         </div>
 
