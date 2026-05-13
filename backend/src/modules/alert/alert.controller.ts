@@ -7,19 +7,15 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseIntPipe,
-  Query,
+  ParseIntPipe
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiPropertyOptional,
   ApiTags,
 } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { IsBoolean, IsOptional } from 'class-validator';
 import { AlertService } from './alert.service';
 import { CreateAlertDto } from './dto/create-alert.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
