@@ -60,11 +60,16 @@
   display: flex;
   gap: 12px;
   margin-top: 16px;
+  justify-content: center;
 }
 
 .foundActions .btn-primary,
 .foundActions .btn-outline {
   flex: 1;
+  max-width: 280px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .whatsNewRow {

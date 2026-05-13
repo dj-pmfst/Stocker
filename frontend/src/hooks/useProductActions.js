@@ -6,8 +6,8 @@ export function useProductActions(selectedItem, setSelectedItem) {
   const [saving, setSaving] = useState(false);
   const [transferring, setTransferring] = useState(false);
 
-  const handleTransfer = async () => {
-    if (!selectedItem) return;
+  const handleTransfer = async (values) => {
+    if (!selectedItem) return { ok: false, error: "No item selected." };
     setTransferring(true);
     try {
       const res = await fetch(`${API}/products`, {
@@ -16,13 +16,27 @@ export function useProductActions(selectedItem, setSelectedItem) {
         body: JSON.stringify({
           defaultProductId: selectedItem.defaultProductId,
           customName: selectedItem.name,
+          minimumQuantity: values.minimumQuantity
+            ? Number(values.minimumQuantity)
+            : undefined,
         }),
       });
       if (!res.ok) throw new Error();
       const json = await res.json();
-      setSelectedItem((prev) => ({ ...prev, id: json.data?.id ?? json.id }));
+      const id = json.data?.id ?? json.id;
+
+      if (values.quantity && Number(values.quantity) > 0) {
+        await fetch(`${API}/products/${id}/stock`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ quantity: Number(values.quantity) }),
+        });
+      }
+
+      setSelectedItem((prev) => ({ ...prev, id }));
+      return { ok: true };
     } catch {
-      alert("Failed to transfer to storage.");
+      return { ok: false, error: "Failed to transfer to storage." };
     } finally {
       setTransferring(false);
     }
