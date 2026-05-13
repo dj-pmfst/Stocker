@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import EditModal from "../../components/EditModal/EditModal";
+import { useProductActions } from "../../hooks/useProductActions";
+import { QUANTITY_FIELDS } from "../../constants/productFields";
 import styles from "./scan.module.css";
 
 const CameraIcon = () => <img src="/assets/camera.svg" />;
@@ -13,7 +16,7 @@ const SCAN_RESULTS = [
 ];
 
 const PulsatingLoader = () => (
-  <img src="/assets/pulse.svg" className={styles.pulseLoader}/>
+  <img src="/assets/pulse.svg" className={styles.pulseLoader} />
 );
 
 function ScanCamera({ onScan }) {
@@ -60,7 +63,7 @@ function ScanLoading() {
   );
 }
 
-function ScanFeedback({ onApply }) {
+function ScanFeedback({ onApply, onEdit }) {
   return (
     <>
       <div className={styles.cameraIconWrap}>
@@ -74,15 +77,14 @@ function ScanFeedback({ onApply }) {
             name={item.name}
             sub={`${item.size} · ${item.qty} remaining`}
             image={item.image}
-            onAdd={() => {}}
+            onEdit={() => onEdit(item)}
           />
         ))}
         <div className={styles.orderBtnWrap}>
           <button
             className="btn-primary"
             style={{ width: "100%" }}
-            onClick={onApply}
-          >
+            onClick={onApply}>
             apply
           </button>
         </div>
@@ -106,6 +108,8 @@ function ScanSuccess() {
 
 export default function Scan() {
   const [state, setState] = useState("camera");
+  const { handleUpdateStock, editingProduct, setEditingProduct, saving } =
+    useProductActions();
 
   const handleScan = () => setState("feedback");
 
@@ -117,11 +121,22 @@ export default function Scan() {
   return (
     <Layout>
       <div className={styles.container}>
-        {state === "camera"   && <ScanCamera onScan={handleScan} />}
-        {state === "feedback" && <ScanFeedback onApply={handleApply} />}
-        {state === "loading"  && <ScanLoading />}
-        {state === "success"  && <ScanSuccess />}
+        {state === "camera" && <ScanCamera onScan={handleScan} />}
+        {state === "feedback" && (
+          <ScanFeedback onApply={handleApply} onEdit={setEditingProduct} />
+        )}
+        {state === "loading" && <ScanLoading />}
+        {state === "success" && <ScanSuccess />}
       </div>
+
+      <EditModal
+        open={!!editingProduct}
+        onClose={() => setEditingProduct(null)}
+        onSave={handleUpdateStock}
+        title="update quantity"
+        fields={QUANTITY_FIELDS}
+        saving={saving}
+      />
     </Layout>
   );
 }
