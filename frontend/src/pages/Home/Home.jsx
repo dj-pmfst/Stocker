@@ -3,6 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import Search from "../../components/Search/Search";
 import New from "../../components/New/New";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import EditModal from "../../components/EditModal/EditModal";
 import styles from "./home.module.css";
 
 const ALL_ITEMS = [
@@ -14,9 +15,30 @@ const ALL_ITEMS = [
   { id: 6, name: "Matcha", size: "1 kg" },
 ];
 
+const CREATE_FIELDS = [
+  { key: "name", label: "Product name", type: "text" },
+  { key: "size", label: "Size / unit", type: "text" },
+  { key: "category", label: "Category", type: "text" },
+];
+
 export default function Home() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showWhatsNew, setShowWhatsNew] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const handleCreate = async (values) => {
+    setSaving(true);
+    try {
+      console.log("create product", values);
+      await new Promise((r) => setTimeout(r, 600)); //stavit loader
+      return { ok: true };
+    } catch (e) {
+      return { ok: false, error: "Failed to create product." };
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
     <Layout>
@@ -62,11 +84,29 @@ export default function Home() {
               <br />
               to your storage
             </p>
-            <button className="btn-primary" onClick={() => setShowWhatsNew(true)}>what's new?</button>
+            <button className="btn-primary" onClick={() => setShowCreate(true)}>
+              create product
+            </button>
           </div>
         )}
       </div>
+      
+      <div className={styles.whatsNewRow}>
+          <button className={styles.whatsNew} onClick={() => setShowWhatsNew(true)}>
+            see what's new
+          </button>
+      </div>
+
       {showWhatsNew && <New onClose={() => setShowWhatsNew(false)} />}
+
+      <EditModal
+        open={showCreate}
+        onClose={() => setShowCreate(false)}
+        onSave={handleCreate}
+        title="create product"
+        fields={CREATE_FIELDS}
+        saving={saving}
+      />
     </Layout>
   );
 }
