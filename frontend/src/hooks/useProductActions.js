@@ -8,7 +8,24 @@ export function useProductActions(selectedItem, setSelectedItem) {
 
   const handleTransfer = async (values) => {
     if (!selectedItem) return { ok: false, error: "No item selected." };
+
+    const quantity = Number(values.quantity);
+    const minimum = values.minimumQuantity
+      ? Number(values.minimumQuantity)
+      : undefined;
+
+    if (values.quantity === "" || isNaN(quantity) || quantity < 0)
+      return { ok: false, error: "Enter a valid quantity (0 or more)." };
+    if (minimum !== undefined && (isNaN(minimum) || minimum < 0))
+      return { ok: false, error: "Minimum quantity must be 0 or more." };
+    if (minimum !== undefined && minimum > quantity)
+      return {
+        ok: false,
+        error: "Minimum quantity can't exceed initial quantity.",
+      };
+
     setTransferring(true);
+
     try {
       const res = await fetch(`${API}/products`, {
         method: "POST",
@@ -44,6 +61,13 @@ export function useProductActions(selectedItem, setSelectedItem) {
 
   const handleSetQuantity = async (values) => {
     const quantity = Number(values.quantity);
+    if (values.quantity === "")
+      return { ok: false, error: "Enter a quantity." };
+    if (isNaN(quantity) || quantity < 1)
+      return { ok: false, error: "Quantity must be 1 or more." };
+    if (!selectedItem?.id)
+      return { ok: false, error: "Transfer to storage first." };
+
     if (!selectedItem?.id)
       return { ok: false, error: "Transfer to storage first." };
     if (isNaN(quantity) || quantity < 0)

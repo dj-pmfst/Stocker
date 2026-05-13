@@ -29,11 +29,14 @@ export default function Home() {
     useProductActions(selectedItem, setSelectedItem);
 
   const handleCreate = (values) => {
+    if (!values.name?.trim())
+      return { ok: false, error: "Product name is required." };
+
     setSelectedItem({
       id: null,
       defaultProductId: values.defaultProductId ?? null,
-      name: values.name,
-      size: values.size,
+      name: values.name.trim(),
+      size: values.size?.trim() || null,
     });
     return { ok: true };
   };
