@@ -34,7 +34,7 @@ export class DeliveryItemDto {
 }
 
 export class CreateDeliveryDto {
-  @ApiProperty({ enum: Shift, example: 'JUTARNJA' })
+  @ApiProperty({ enum: Shift, example: 'MORNING' })
   @IsEnum(Shift)
   @IsDefined()
   shift: Shift;

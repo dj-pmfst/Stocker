@@ -13,6 +13,7 @@ import { StockModule } from './modules/stock/stock.module';
 import { LocationModule } from './modules/location/location.module';
 import { SalesModule } from './modules/sales/sales.module';
 import { DeliveriesModule } from './modules/deliveries/deliveries.module';
+import { AlertModule } from './modules/alert/alert.module';
 
 
 @Module({
@@ -29,6 +30,7 @@ import { DeliveriesModule } from './modules/deliveries/deliveries.module';
     LocationModule,
     SalesModule,
     DeliveriesModule,
+    AlertModule,
   ],
   controllers: [AppController],
   providers: [AppService],
