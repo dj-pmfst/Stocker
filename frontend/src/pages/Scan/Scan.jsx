@@ -13,7 +13,7 @@ const SCAN_RESULTS = [
 ];
 
 const PulsatingLoader = () => (
-  <img src="/assets/pulse.svg" className={styles.pulseLoader}/>
+  <img src="/assets/pulse.svg" className={styles.pulseLoader} />
 );
 
 function ScanCamera({ onScan }) {
@@ -60,7 +60,7 @@ function ScanLoading() {
   );
 }
 
-function ScanFeedback({ onApply }) {
+function ScanFeedback({ onApply, onBack }) {
   return (
     <>
       <div className={styles.cameraIconWrap}>
@@ -81,11 +81,16 @@ function ScanFeedback({ onApply }) {
           <button
             className="btn-primary"
             style={{ width: "100%" }}
-            onClick={onApply}
-          >
+            onClick={onApply}>
             apply
           </button>
         </div>
+        <button
+          className="btn-outline"
+          style={{ width: "100%" }}
+          onClick={onBack}>
+          back to scan
+        </button>
       </div>
     </>
   );
@@ -117,10 +122,15 @@ export default function Scan() {
   return (
     <Layout>
       <div className={styles.container}>
-        {state === "camera"   && <ScanCamera onScan={handleScan} />}
-        {state === "feedback" && <ScanFeedback onApply={handleApply} />}
-        {state === "loading"  && <ScanLoading />}
-        {state === "success"  && <ScanSuccess />}
+        {state === "camera" && <ScanCamera onScan={handleScan} />}
+        {state === "feedback" && (
+          <ScanFeedback
+            onApply={handleApply}
+            onBack={() => setState("camera")}
+          />
+        )}
+        {state === "loading" && <ScanLoading />}
+        {state === "success" && <ScanSuccess />}
       </div>
     </Layout>
   );
