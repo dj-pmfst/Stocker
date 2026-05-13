@@ -32,6 +32,7 @@ export default function Home() {
     try {
       console.log("create product", values);
       await new Promise((r) => setTimeout(r, 600)); //stavit loader
+      setSelectedItem({ name: values.name, size: values.size });
       return { ok: true };
     } catch (e) {
       return { ok: false, error: "Failed to create product." };
@@ -90,12 +91,16 @@ export default function Home() {
           </div>
         )}
       </div>
-      
-      <div className={styles.whatsNewRow}>
-          <button className={styles.whatsNew} onClick={() => setShowWhatsNew(true)}>
+
+      {!selectedItem && (
+        <div className={styles.whatsNewRow}>
+          <button
+            className={styles.whatsNew}
+            onClick={() => setShowWhatsNew(true)}>
             see what's new
           </button>
-      </div>
+        </div>
+      )}
 
       {showWhatsNew && <New onClose={() => setShowWhatsNew(false)} />}
 
