@@ -7,6 +7,7 @@ import Storage from "./pages/Storage/Storage";
 import Scan from "./pages/Scan/Scan";
 import Order from "./pages/Order/Order";
 import Profile from "./pages/Profile/Profile";
+import NotFound from "./pages/Error/Error";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/scan" element={<Scan />} />
       <Route path="/order" element={<Order />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/error" element={<NotFound />} />
     </Routes>
   );
 }
