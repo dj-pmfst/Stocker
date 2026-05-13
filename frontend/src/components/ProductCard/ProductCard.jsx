@@ -1,8 +1,16 @@
 import styles from "./productcard.module.css";
 
 const PlusIcon = () => <img src="/assets/plus.svg" />;
+const EditIcon = () => <img src="/assets/pencil.svg" />;
 
-export default function ProductCard({ name, sub, warning, image, onAdd }) {
+export default function ProductCard({
+  name,
+  sub,
+  warning,
+  image,
+  onAdd,
+  onEdit,
+}) {
   return (
     <div className={styles.card}>
       {image ? (
@@ -20,6 +28,11 @@ export default function ProductCard({ name, sub, warning, image, onAdd }) {
       {onAdd && (
         <button className={styles.addBtn} onClick={onAdd} aria-label="Add">
           <PlusIcon />
+        </button>
+      )}
+      {onEdit && (
+        <button className={styles.editBtn} onClick={onEdit} aria-label="Edit">
+          <EditIcon />
         </button>
       )}
     </div>

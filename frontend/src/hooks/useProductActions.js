@@ -5,6 +5,7 @@ const API = import.meta.env.VITE_API_URL;
 export function useProductActions(selectedItem, setSelectedItem) {
   const [saving, setSaving] = useState(false);
   const [transferring, setTransferring] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
 
   const handleTransfer = async (values) => {
     if (!selectedItem) return { ok: false, error: "No item selected." };
@@ -88,5 +89,35 @@ export function useProductActions(selectedItem, setSelectedItem) {
     }
   };
 
-  return { handleTransfer, handleSetQuantity, saving, transferring };
+  const handleUpdateStock = async (values) => {
+    const quantity = Number(values.quantity);
+    if (values.quantity === "") return { ok: false, error: "Enter a quantity." };
+    if (isNaN(quantity) || quantity < 0) return { ok: false, error: "Quantity must be 0 or more." };
+    if (!editingProduct?.id) return { ok: false, error: "No product selected." };
+
+    setSaving(true);
+    try {
+      const res = await fetch(`${API}/products/${editingProduct.id}/stock`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity }),
+      });
+      if (!res.ok) throw new Error();
+      return { ok: true };
+    } catch {
+      return { ok: false, error: "Failed to update quantity." };
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return {
+    handleTransfer,
+    handleSetQuantity,
+    handleUpdateStock,
+    editingProduct,
+    setEditingProduct,
+    saving,
+    transferring,
+  };
 }

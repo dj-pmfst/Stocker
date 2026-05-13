@@ -1,15 +1,18 @@
 import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import EditModal from "../../components/EditModal/EditModal";
+import { useProductActions } from "../../hooks/useProductActions";
+import { QUANTITY_FIELDS } from "../../constants/productFields";
 import styles from "./scan.module.css";
 
 const CameraIcon = () => <img src="/assets/camera.svg" />;
 
 const SCAN_RESULTS = [
-  { id: 1, name: "Coca Cola", size: "330 ml", qty: 8 },
-  { id: 2, name: "Sprite", size: "330 ml", qty: 7 },
-  { id: 3, name: "Fanta", size: "330 ml", qty: 4 },
-  { id: 4, name: "Milk", size: "500 ml", qty: 2 },
+  { id: 1, name: "Coca Cola", size: "330 ml", qty: 8, amm: 12 },
+  { id: 2, name: "Sprite", size: "330 ml", qty: 7, amm: 3 },
+  { id: 3, name: "Fanta", size: "330 ml", qty: 4, amm: 8 },
+  { id: 4, name: "Milk", size: "500 ml", qty: 2, amm: 5 },
 ];
 
 const PulsatingLoader = () => (
@@ -60,7 +63,7 @@ function ScanLoading() {
   );
 }
 
-function ScanFeedback({ onApply, onBack }) {
+function ScanFeedback({ onApply, onEdit, onBack }) {
   return (
     <>
       <div className={styles.cameraIconWrap}>
@@ -69,13 +72,15 @@ function ScanFeedback({ onApply, onBack }) {
       <p className={styles.itemsUsedLabel}>items used this day:</p>
       <div className={styles.feedbackList}>
         {SCAN_RESULTS.map((item) => (
-          <ProductCard
-            key={item.id}
-            name={item.name}
-            sub={`${item.size} · ${item.qty} remaining`}
-            image={item.image}
-            onAdd={() => {}}
-          />
+          <div key={item.id} className={styles.productWrapper}>
+            <p className={styles.countLabel}>{item.amm}x {item.name}</p>
+            <ProductCard
+              name={item.name}
+              sub={`${item.size} · ${item.qty} remaining`}
+              image={item.image}
+              onEdit={() => onEdit(item)}
+            />
+          </div>
         ))}
         <div className={styles.orderBtnWrap}>
           <button
@@ -111,6 +116,8 @@ function ScanSuccess() {
 
 export default function Scan() {
   const [state, setState] = useState("camera");
+  const { handleUpdateStock, editingProduct, setEditingProduct, saving } =
+    useProductActions();
 
   const handleScan = () => setState("feedback");
 
@@ -127,11 +134,21 @@ export default function Scan() {
           <ScanFeedback
             onApply={handleApply}
             onBack={() => setState("camera")}
+            onEdit={setEditingProduct}
           />
         )}
         {state === "loading" && <ScanLoading />}
         {state === "success" && <ScanSuccess />}
       </div>
+
+      <EditModal
+        open={!!editingProduct}
+        onClose={() => setEditingProduct(null)}
+        onSave={handleUpdateStock}
+        title="update quantity"
+        fields={QUANTITY_FIELDS}
+        saving={saving}
+      />
     </Layout>
   );
 }
