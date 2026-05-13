@@ -42,11 +42,21 @@ export class DeliveriesService {
       });
 
       for (const item of dto.items) {
-        await tx.productStock.upsert({
+        const updatedStock =await tx.productStock.upsert({
           where: { productId: item.productId },
           create: { productId: item.productId, quantity: item.quantity },
           update: { quantity: { increment: item.quantity } },
         });
+
+
+        const product = products.find((p) => p.id === item.productId);
+        const minimum = product?.minimumQuantity;
+        if (minimum != null && updatedStock.quantity >= minimum) {
+          await tx.alert.updateMany({
+            where: { productId: item.productId, resolved: false },
+            data: { resolved: true },
+          });
+        }
       }
 
       return delivery;
