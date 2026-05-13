@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Search from "../../components/Search/Search";
+import Loader from "../../components/Loader/Loader";
 import { useSearchProducts } from "../../hooks/useSearchProducts";
 import styles from './order.module.css';
 
@@ -28,12 +29,13 @@ export default function Order() {
     setSelectedItem(item);
   };
 
+  if (loading) return <Layout><Loader /></Layout>;
+
   return (
     <Layout>
       <div className={styles.container}>
         <p className={styles.pageTitle}>order more items</p>
 
-        {/* <p className={styles.searchLabel}>search</p> */}
         <Search
           items={products}
           placeholder="Coca Cola (0.33 l)"

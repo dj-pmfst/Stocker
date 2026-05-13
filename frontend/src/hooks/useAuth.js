@@ -1,0 +1,51 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const API = import.meta.env.VITE_API_URL;
+const INITIAL = { firstName: '', lastName: '', email: '', password: '' };
+
+export function useAuth() {
+  const navigate = useNavigate();
+  const [fields, setFields]   = useState(INITIAL);
+  const [error, setError]     = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const set = (key) => (e) => setFields((f) => ({ ...f, [key]: e.target.value }));
+
+  const reset = () => { setFields(INITIAL); setError(''); };
+
+  const submit = async (isRegister) => {
+    setError('');
+    setLoading(true);
+    try {
+      const endpoint = isRegister ? 'register' : 'login';
+      const body = isRegister
+        ? fields
+        : { email: fields.email, password: fields.password };
+
+      const res  = await fetch(`${API}/auth/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || (isRegister ? 'Registration failed' : 'Login failed'));
+
+      if (isRegister) {
+        reset();
+        return { ok: true, registered: true };
+      } else {
+        localStorage.setItem('token', data.data.token);
+        navigate('/home');
+        return { ok: true };
+      }
+    } catch (err) {
+      setError(err.message);
+      return { ok: false };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { fields, set, reset, error, loading, submit };
+}
