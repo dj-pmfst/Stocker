@@ -167,9 +167,9 @@
 }
 
 .countLabel {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 500;
+  font-size: 16px;
+  color: var(--navy);
+  font-weight: 700;
   margin-bottom: 6px;
 }
 
@@ -230,4 +230,10 @@
   font-weight: 700;
   letter-spacing: 0;
   font-family: 'VenscaBold';
+}
+
+.productWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }

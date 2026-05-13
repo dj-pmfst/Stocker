@@ -31,7 +31,7 @@ export default function ProductCard({
         </button>
       )}
       {onEdit && (
-        <button className={styles.addBtn} onClick={onEdit} aria-label="Edit">
+        <button className={styles.editBtn} onClick={onEdit} aria-label="Edit">
           <EditIcon />
         </button>
       )}
