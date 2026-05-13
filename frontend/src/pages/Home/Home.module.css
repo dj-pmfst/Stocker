@@ -17,7 +17,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 20px;
+  padding: 0px 0px;
   text-align: center;
   gap: 14px;
 }
@@ -65,4 +65,30 @@
 .foundActions .btn-primary,
 .foundActions .btn-outline {
   flex: 1;
+}
+
+.whatsNewRow {
+  display: flex;
+  justify-content: center;
+}
+
+.whatsNew{
+  font-family: 'VenscaBold', 'Roboto';
+  background: none;
+  font-size: 20px;
+  color: var(--navy-dark);
+  border: 2px solid var(--navy-dark);
+  padding: 8px;
+  padding-left: 14px;
+  padding-right: 14px;
+  border-radius: 24px;
+  cursor: pointer;
+}
+
+.emptyState img {
+  margin-top: 60px;
+}
+
+.emptyState button {
+  margin-top: 0;   
 }
