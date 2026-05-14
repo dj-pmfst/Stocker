@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./pageHeader.module.css";
-import Notifications from "../Notifications/Notifications";
+import Notifications from "../Notifications/notifications";
 
 export function PageHeader() {
   const [notifOpen, setNotifOpen] = useState(false);
