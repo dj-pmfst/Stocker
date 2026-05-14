@@ -1,0 +1,200 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+   moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userWarehouses  UserWarehouse[]
+  saleEntries     SaleEntry[]
+  deliveryEntries DeliveryEntry[]
+}
+
+model Warehouse {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userWarehouses  UserWarehouse[]
+  products        Product[]
+  saleEntries     SaleEntry[]
+  deliveryEntries DeliveryEntry[]
+}
+
+model UserWarehouse {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  warehouseId Int
+  role        Role     @default(WAITER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, warehouseId])
+}
+
+model DefaultProduct {
+  id          Int           @id @default(autoincrement())
+  name        String
+  category    String?
+  unitOfMeasure UnitOfMeasure
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  products Product[]
+}
+
+model Product {
+  id               Int      @id @default(autoincrement())
+  defaultProductId Int
+  warehouseId      Int
+  minimumQuantity  Float?
+  customName       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  defaultProduct DefaultProduct @relation(fields: [defaultProductId], references: [id], onDelete: Restrict)
+  warehouse      Warehouse      @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  stock          ProductStock?
+  location       Location?
+  alerts         Alert[]
+  saleItems      SaleItem[]
+  deliveryItems  DeliveryItem[]
+
+  @@unique([defaultProductId, warehouseId])
+}
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  productId Int      @unique
+  zone      String
+  shelf     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model ProductStock {
+  id        Int      @id @default(autoincrement())
+  productId Int      @unique
+  quantity  Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Alert {
+  id        Int       @id @default(autoincrement())
+  productId Int
+  type      AlertType
+  message   String
+  date      DateTime  @default(now())
+  resolved  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model SaleEntry {
+  id          Int      @id @default(autoincrement())
+  warehouseId Int
+  userId      Int
+  date        DateTime @default(now())
+  shift       Shift
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  warehouse Warehouse  @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  user      User       @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items     SaleItem[]
+}
+
+model SaleItem {
+  id          Int      @id @default(autoincrement())
+  saleEntryId Int
+  productId   Int
+  quantity    Float
+  price       Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  saleEntry SaleEntry @relation(fields: [saleEntryId], references: [id], onDelete: Cascade)
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+model DeliveryEntry {
+  id          Int      @id @default(autoincrement())
+  warehouseId Int
+  userId      Int
+  date        DateTime @default(now())
+  shift       Shift
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  warehouse Warehouse      @relation(fields: [warehouseId], references: [id], onDelete: Restrict)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items     DeliveryItem[]
+}
+
+model DeliveryItem {
+  id              Int      @id @default(autoincrement())
+  deliveryEntryId Int
+  productId       Int
+  quantity        Float
+  price           Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  deliveryEntry DeliveryEntry @relation(fields: [deliveryEntryId], references: [id], onDelete: Cascade)
+  product       Product       @relation(fields: [productId], references: [id], onDelete: Restrict)
+}
+
+enum Role {
+  ADMIN
+  WAITER
+  WAREHOUSE_MANAGER
+}
+
+enum UnitOfMeasure {
+  KG
+  L
+  PCS
+}
+
+enum AlertType {
+  YELLOW
+  RED
+}
+
+enum Shift {
+  MORNING
+  AFTERNOON
+  NIGHT
+}
+

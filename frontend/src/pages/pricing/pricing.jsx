@@ -1,20 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PLANS } from "../../constants/pricePlans";
 import styles from "./pricing.module.css";
-
-const PLANS = [
-  { id: "monthly", label: "1 Month", price: "$19.99", per: "/month" },
-  { id: "yearly", label: "1 Year", price: "$199.99", per: "/year" },
-  { id: "biannual", label: "6 Months", price: "$109.99", per: "/month" },
-];
-
-//prebacit ovo u konstante folder??
 
 export default function Pricing({ onClose, onSelect }) {
   const [selected, setSelected] = useState("yearly");
+  const navigate = useNavigate();
 
   const handleStart = () => {
     onSelect?.(selected);
+    navigate("/home");
+  };
+  
+  const handleClose = () => {
     onClose?.();
+    navigate("/home");
   };
 
   return (
@@ -28,7 +28,7 @@ export default function Pricing({ onClose, onSelect }) {
         </div>
         <button
           className={styles.closeBtn}
-          onClick={onClose}
+          onClick={handleClose}
           aria-label="Close">
           <img src="/assets/close.svg"/>
         </button>
@@ -36,7 +36,7 @@ export default function Pricing({ onClose, onSelect }) {
 
       <div className={styles.card}>
         <div className={styles.trialRow}>
-          <span className={styles.trialTitle}>7 DAY FREE TRIAL</span>
+          <span className={styles.trialTitle}>7 day free trial</span>
           <span className={styles.trialIcon}>
             <img src="/assets/gem.svg" />
           </span>

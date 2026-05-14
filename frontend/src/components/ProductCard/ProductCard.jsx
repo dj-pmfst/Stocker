@@ -1,16 +1,23 @@
-import styles from './productcard.module.css';
+import styles from "./productcard.module.css";
 
-const PlusIcon = () => (
-    <img src="/assets/plus.svg"/>
-);
+const PlusIcon = () => <img src="/assets/plus.svg" />;
+const EditIcon = () => <img src="/assets/pencil.svg" />;
 
-export default function ProductCard({ name, sub, warning, image, onAdd }) {
+export default function ProductCard({
+  name,
+  sub,
+  warning,
+  image,
+  onAdd,
+  onEdit,
+}) {
   return (
     <div className={styles.card}>
-      {image
-        ? <img src={image} alt={name} className={styles.img} />
-        : <div className={styles.imgPlaceholder}>Img</div>
-      }
+      {image ? (
+        <img src={image} alt={name} className={styles.img} />
+      ) : (
+        <div className={styles.imgPlaceholder}>Img</div>
+      )}
 
       <div className={styles.info}>
         <p className={styles.name}>{name}</p>
@@ -18,9 +25,16 @@ export default function ProductCard({ name, sub, warning, image, onAdd }) {
         {warning && <p className={styles.warning}>{warning}</p>}
       </div>
 
-      <button className={styles.addBtn} onClick={onAdd} aria-label="Add">
-        <PlusIcon />
-      </button>
+      {onAdd && (
+        <button className={styles.addBtn} onClick={onAdd} aria-label="Add">
+          <PlusIcon />
+        </button>
+      )}
+      {onEdit && (
+        <button className={styles.editBtn} onClick={onEdit} aria-label="Edit">
+          <EditIcon />
+        </button>
+      )}
     </div>
   );
 }

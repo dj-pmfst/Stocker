@@ -54,7 +54,7 @@
   margin-top: 2px;
 }
 
-.addBtn {
+.addBtn, .editBtn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -69,11 +69,15 @@
   transition: background 0.15s, color 0.15s;
 }
 
-.addBtn:hover {
+.editBtn {
+  border: 3.5px solid var(--navy);
+}
+
+.addBtn:hover, .editBtn:hover {
   background: var(--navy);
   border: 18px solid var(--navy);
 }
 
-.addBtn img:hover{
+.addBtn img:hover, .editBtn img:hover{
     filter: brightness(20);   
 }

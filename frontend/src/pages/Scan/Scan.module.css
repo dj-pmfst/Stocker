@@ -1,0 +1,239 @@
+.container {
+  padding: 6px 20px 16px;
+  height: 100%;
+}
+
+.pageTitle {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.cameraIconWrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.viewfinder {
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  background: #9ca3af;
+  aspect-ratio: 3/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+
+.viewfinderHint {
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  padding: 20px;
+}
+
+.corners {
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: var(--navy);
+  border-style: solid;
+}
+
+.cornerTl {
+  top: -10px;
+  left: -10px;
+  border-width: 10px 0 0 10px;
+  border-radius: 4px 0 0 0;
+}
+.cornerTr {
+  top: -10px;
+  right: -10px;
+  border-width: 10px 10px 0 0;
+  border-radius: 0 4px 0 0;
+}
+.cornerBl {
+  bottom: -10px;
+  left: -10px;
+  border-width: 0 0 10px 10px;
+  border-radius: 0 0 0 4px;
+}
+.cornerBr {
+  bottom: -10px;
+  right: -10px;
+  border-width: 0 10px 10px 0;
+  border-radius: 0 0 4px 0;
+}
+
+.qrHint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.qrIcon {
+  width: 56px;
+  height: 56px;
+  background: var(--gray-bg);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-mid);
+}
+
+.qrText {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 100%;
+  font-family: 'VenscaBold';
+}
+
+.loadingSection {
+  margin-top: 8px;
+}
+
+.itemsUsedLabel {
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--navy-dark);
+  margin-bottom: 16px;
+  font-family: 'VenscaBold';
+}
+
+.loadingCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+.loadingBox {
+  width: 90px;
+  height: 90px;
+  background: var(--gray-bg);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--gray-border);
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--gray-border);
+  border-top-color: var(--navy);
+  animation: spin 0.9s linear infinite;
+}
+
+.loadingText {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.feedbackList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.countLabel {
+  font-size: 16px;
+  color: var(--navy);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+
+.pulseLoader {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.loadingFullscreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 24px;
+}
+
+.loadingText {
+  text-align: center;
+  font-size: 20px;
+  line-height: 100%;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-family: 'VenscaBold';
+}
+
+.successFullscreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 24px;
+  text-transform: uppercase;
+}
+
+.successIcon {
+  width: 140px;
+  height: 140px;
+}
+
+.successText {
+  text-align: center;
+  font-size: 20px;
+  line-height: 100%;
+  font-weight: 700;
+  letter-spacing: 0;
+  font-family: 'VenscaBold';
+}
+
+.productWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

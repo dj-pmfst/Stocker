@@ -1,5 +1,15 @@
 {
-  "dependencies": {
-    "react-router-dom": "^7.14.2"
+  "name": "stocker",
+  "private": true,
+  "packageManager": "npm@11.6.2",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "turbo run dev start:dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
   }
 }
