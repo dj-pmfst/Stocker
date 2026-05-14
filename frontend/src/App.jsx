@@ -1,12 +1,13 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Welcome from "./pages/Welcome/Welcome";
-import Login from "./pages/auth/auth";
-import Pricing from "./pages/pricing/Pricing";
+import Login from "./pages/Auth/Auth";
+import Pricing from "./pages/Pricing/Pricing";
 import Home from "./pages/Home/Home";
 import Storage from "./pages/Storage/Storage";
 import Scan from "./pages/Scan/Scan";
 import Order from "./pages/Order/Order";
 import Profile from "./pages/Profile/Profile";
+import NotFound from "./pages/Error/Error";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/scan" element={<Scan />} />
       <Route path="/order" element={<Order />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/error" element={<NotFound />} />
     </Routes>
   );
 }

@@ -3,20 +3,43 @@ import Layout from "../../components/Layout/Layout";
 import Search from "../../components/Search/Search";
 import New from "../../components/New/New";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import EditModal from "../../components/EditModal/EditModal";
+import { useProducts } from "../../hooks/useProducts";
+import { useProductActions } from "../../hooks/useProductActions";
+import {
+  CREATE_FIELDS,
+  TRANSFER_FIELDS,
+  QUANTITY_FIELDS,
+} from "../../constants/productFields";
 import styles from "./home.module.css";
-
-const ALL_ITEMS = [
-  { id: 1, name: "Coca Cola", size: "0.33 l" },
-  { id: 2, name: "Fanta", size: "0.33 l" },
-  { id: 3, name: "Sprite", size: "0.33 l" },
-  { id: 4, name: "Espresso beans", size: "0.5 kg" },
-  { id: 5, name: "Milk", size: "1 l" },
-  { id: 6, name: "Matcha", size: "1 kg" },
-];
 
 export default function Home() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showWhatsNew, setShowWhatsNew] = useState(false);
+  const [showCreate, setShowCreate] = useState(false);
+  const [showQuantity, setShowQuantity] = useState(false);
+  const [showTransfer, setShowTransfer] = useState(false);
+
+  const { products: catalogItems, loading: catalogLoading } = useProducts(
+    "All",
+    "default-products"
+  );
+
+  const { handleTransfer, handleSetQuantity, saving, transferring } =
+    useProductActions(selectedItem, setSelectedItem);
+
+  const handleCreate = (values) => {
+    if (!values.name?.trim())
+      return { ok: false, error: "Product name is required." };
+
+    setSelectedItem({
+      id: null,
+      defaultProductId: values.defaultProductId ?? null,
+      name: values.name.trim(),
+      size: values.size?.trim() || null,
+    });
+    return { ok: true };
+  };
 
   return (
     <Layout>
@@ -24,7 +47,8 @@ export default function Home() {
         <p className={styles.sectionLabel}>add items</p>
 
         <Search
-          items={ALL_ITEMS}
+          items={catalogItems}
+          loading={catalogLoading}
           placeholder="Coca Cola (0.33 l)"
           onSelect={setSelectedItem}
         />
@@ -45,13 +69,25 @@ export default function Home() {
                 name={selectedItem.name}
                 sub={selectedItem.size}
                 image={selectedItem.image}
-                onAdd={() => {}}
+                onAdd={null}
               />
             </div>
 
             <div className={styles.foundActions}>
-              <button className="btn-primary">add quantity</button>
-              <button className="btn-outline">transfer to storage</button>
+              <button
+                className="btn-primary"
+                onClick={() =>
+                  selectedItem?.id
+                    ? setShowQuantity(true)
+                    : setShowTransfer(true)
+                }>
+                {selectedItem?.id ? "add quantity" : "set quantity & transfer"}
+              </button>
+              {selectedItem?.id && (
+                <button className="btn-outline" disabled>
+                  in storage
+                </button>
+              )}
             </div>
           </>
         ) : (
@@ -62,11 +98,51 @@ export default function Home() {
               <br />
               to your storage
             </p>
-            <button className="btn-primary" onClick={() => setShowWhatsNew(true)}>what's new?</button>
+            <button className="btn-primary" onClick={() => setShowCreate(true)}>
+              create product
+            </button>
           </div>
         )}
       </div>
+
+      {!selectedItem && (
+        <div className={styles.whatsNewRow}>
+          <button
+            className={styles.whatsNew}
+            onClick={() => setShowWhatsNew(true)}>
+            see what's new
+          </button>
+        </div>
+      )}
+
       {showWhatsNew && <New onClose={() => setShowWhatsNew(false)} />}
+
+      <EditModal
+        open={showCreate}
+        onClose={() => setShowCreate(false)}
+        onSave={handleCreate}
+        title="create product"
+        fields={CREATE_FIELDS}
+        saving={false}
+      />
+
+      <EditModal
+        open={showQuantity}
+        onClose={() => setShowQuantity(false)}
+        onSave={handleSetQuantity}
+        title="set quantity"
+        fields={QUANTITY_FIELDS}
+        saving={saving}
+      />
+
+      <EditModal
+        open={showTransfer}
+        onClose={() => setShowTransfer(false)}
+        onSave={handleTransfer}
+        title="transfer to storage"
+        fields={TRANSFER_FIELDS}
+        saving={transferring}
+      />
     </Layout>
   );
 }

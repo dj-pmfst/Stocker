@@ -78,7 +78,7 @@ body {
   padding: 14px 24px;
   font-family: "VenscaBold", sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
@@ -96,9 +96,9 @@ body {
   border: 2px solid var(--navy);
   border-radius: 999px;
   padding: 12px 20px;
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: "VenscaBold", sans-serif;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: 0;
   text-transform: uppercase;
   cursor: pointer;
