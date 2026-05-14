@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -15,6 +16,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -46,9 +48,17 @@ export class ProductController {
     summary: 'Lista proizvoda u skladištu',
     description: 'Vraća sve proizvode unutar skladišta.',
   })
+  @ApiQuery({
+    name: 'search',
+    required: false,
+    description: 'Pretraga po nazivu proizvoda',
+  })
   @ApiOkResponse({ description: 'List products in warehouse.' })
-  findAll(@Param('warehouseId', ParseIntPipe) warehouseId: number) {
-    return this.productService.findAll(warehouseId);
+  findAll(
+    @Param('warehouseId', ParseIntPipe) warehouseId: number,
+    @Query('search') search?: string,
+  ) {
+    return this.productService.findAll(warehouseId, search);
   }
 
   @Get(':id')

@@ -37,10 +37,22 @@ export class ProductService {
       include: { defaultProduct: true, stock: true },
     });
   }
-  //treba jos dodati da se moze filtrirati 
-  findAll(warehouseId: number) {
+
+  findAll(warehouseId: number, search?: string) {
     return this.prisma.product.findMany({
-      where: { warehouseId },
+      where: {
+        warehouseId,
+        ...(search && {
+          OR: [
+            { customName: { contains: search, mode: 'insensitive' } },
+            {
+              defaultProduct: {
+                name: { contains: search, mode: 'insensitive' },
+              },
+            },
+          ],
+        }),
+      },
       include: {
         defaultProduct: true,
         stock: true,
