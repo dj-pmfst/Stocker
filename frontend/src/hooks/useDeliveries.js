@@ -1,0 +1,59 @@
+import { useState, useEffect, useCallback } from "react";
+
+const API = import.meta.env.VITE_API_URL;
+const WAREHOUSE_ID = 1; //zaminit
+
+function getMostFrequent(deliveries, limit = 5) {
+  const counts = {};
+  for (const delivery of deliveries) {
+    for (const item of delivery.items) {
+      const id = item.product.id;
+      if (!counts[id]) {
+        counts[id] = {
+          id,
+          name:
+            item.product.customName ??
+            item.product.defaultProduct?.name ??
+            "Unknown",
+          sub: item.product.defaultProduct?.size ?? "",
+          image: item.product.defaultProduct?.image ?? null,
+          totalOrdered: 0,
+          lastQuantity: item.quantity,
+        };
+      }
+      counts[id].totalOrdered += item.quantity;
+      counts[id].lastQuantity = item.quantity;
+    }
+  }
+  return Object.values(counts)
+    .sort((a, b) => b.totalOrdered - a.totalOrdered)
+    .slice(0, limit);
+}
+
+export function useDeliveries() {
+  const [usualPurchases, setUsualPurchases] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchDeliveries = useCallback(async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API}/warehouses/${WAREHOUSE_ID}/deliveries`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      setUsualPurchases(getMostFrequent(data));
+    } catch {
+      console.error("Failed to fetch deliveries.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDeliveries();
+  }, [fetchDeliveries]);
+
+  return { usualPurchases, loading };
+}
