@@ -6,6 +6,7 @@ import {
   Param,  
   UseGuards,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -13,6 +14,7 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiQuery
 } from '@nestjs/swagger';
 import { DefaultProductService } from './default-product.service';
 import { CreateDefaultProductDto } from './dto/create-default-product.dto';
@@ -40,11 +42,12 @@ export class DefaultProductController {
   @Get()
   @ApiOperation({
     summary: 'Dohvati cijeli katalog',
-    description: 'Vraća sve proizvode iz globalnog kataloga.',
+    description: 'Vraća sve stavke iz globalnog kataloga proizvoda. ',
   })
+  @ApiQuery({ name: 'search', required: false, description: 'Pretraga po nazivu stavke kataloga' })
   @ApiOkResponse({ description: 'List catalog items.' })
-  findAll() {
-    return this.defaultProductService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.defaultProductService.findAll(search);
   }
 
   @Get(':id')

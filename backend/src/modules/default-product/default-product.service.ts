@@ -11,9 +11,12 @@ export class DefaultProductService {
     return this.prisma.defaultProduct.create({ data: dto });
   }
 
-  //isto kao i za products treba dodati da se moze filtrirati pretraga
-  findAll() {
-    return this.prisma.defaultProduct.findMany();
+   findAll(search?: string) {
+    return this.prisma.defaultProduct.findMany({
+      where: search
+        ? { name: { contains: search, mode: 'insensitive' } }
+        : undefined,
+    });
   }
 
   async findOne(id: number) {
