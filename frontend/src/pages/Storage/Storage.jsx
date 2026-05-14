@@ -46,8 +46,8 @@ export default function Storage() {
         ) : (
           storageData.map((section, i) => (
             <div key={i} className={styles.section}>
-              <p className={styles.shelfZone}>{section.zone}</p>
-              <p className={styles.shelfName}>{section.shelf}</p>
+              <p className={styles.shelfZone}>Zone {section.zone}</p>
+              <p className={styles.shelfName}>Shelf {section.shelf}</p>
               <div className={styles.itemList}>
                 {section.items.map((item) => (
                   <ProductCard

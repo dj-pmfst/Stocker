@@ -4,12 +4,13 @@ import {
   UnitOfMeasure,
   AlertType,
   Shift,
-} from "../dist/generated/prisma";
+} from "../src/generated/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { hash } from 'bcrypt';
 import 'dotenv/config';
 
 const prisma = new PrismaClient({
-  datasources: { db: { url: process.env.DATABASE_URL } },
+  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
 });
 
 function daysAgo(n: number): Date {
@@ -199,14 +200,14 @@ async function main() {
       prisma.location.upsert({
         where: { productId: p.id },
         update: {},
-        create: { productId: p.id, zone: zones[i % 3], shelf: `S${i + 1}` },
+        create: { productId: p.id, zone: zones[i % 3], shelf: `${i + 1}` },
       }),
     ),
     ...productsB.map((p, i) =>
       prisma.location.upsert({
         where: { productId: p.id },
         update: {},
-        create: { productId: p.id, zone: zones[i % 3], shelf: `S${i + 1}` },
+        create: { productId: p.id, zone: zones[i % 3], shelf: `${i + 1}` },
       }),
     ),
   ]);
