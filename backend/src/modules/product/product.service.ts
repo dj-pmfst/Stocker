@@ -29,12 +29,22 @@ export class ProductService {
     return this.prisma.product.create({
       data: {
         defaultProductId: dto.defaultProductId,
-        warehouseId: warehouseId,
+        warehouseId,
         minimumQuantity: dto.minimumQuantity,
         customName: dto.customName,
         stock: { create: { quantity: 0 } },
+        ...(dto.storageZone && dto.shelfNumber
+          ? {
+              location: {
+                create: {
+                  zone: dto.storageZone,
+                  shelf: String(dto.shelfNumber),
+                },
+              },
+            }
+          : {}),
       },
-      include: { defaultProduct: true, stock: true },
+      include: { defaultProduct: true, stock: true, location: true },
     });
   }
 

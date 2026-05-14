@@ -47,18 +47,22 @@ export default function Storage() {
           storageData.map((section, i) => (
             <div key={i} className={styles.section}>
               <p className={styles.shelfZone}>Zone {section.zone}</p>
-              <p className={styles.shelfName}>Shelf {section.shelf}</p>
-              <div className={styles.itemList}>
-                {section.items.map((item) => (
-                  <ProductCard
-                    key={item.id}
-                    name={item.name}
-                    sub={`${item.sub} · ${item.remaining} remaining`}
-                    warning={item.warning}
-                    onEdit={() => setEditingProduct(item)}
-                  />
-                ))}
-              </div>
+              {section.shelves.map((s, j) => (
+                <div key={j}>
+                  <p className={styles.shelfName}>Shelf {s.shelf}</p>
+                  <div className={styles.itemList}>
+                    {s.items.map((item) => (
+                      <ProductCard
+                        key={item.id}
+                        name={item.name}
+                        sub={`${item.sub} · ${item.remaining} remaining`}
+                        warning={item.warning}
+                        onEdit={() => setEditingProduct(item)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           ))
         )}
