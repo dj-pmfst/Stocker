@@ -1,7 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL;
-const WAREHOUSE_ID = 1; // zaminit ovo
+
+function authHeaders() {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+function getWarehouseId() {
+  return localStorage.getItem("warehouseId") ?? "1";
+}
 
 function groupByLocation(products) {
   const map = {};
@@ -31,16 +39,19 @@ export function useStorage() {
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
+    const warehouseId = getWarehouseId();
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API}/warehouses/${WAREHOUSE_ID}/products`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch(`${API}/warehouses/${warehouseId}/products`, {
+        headers: authHeaders(),
       });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      setStorageData(groupByLocation(data));
-    } catch {
-      console.error("Failed to fetch storage products.");
+      if (!res.ok) throw new Error(res.status);
+      const json = await res.json();
+      const products = Array.isArray(json.data)
+        ? json.data
+        : (json.data?.products ?? []);
+      setStorageData(groupByLocation(products));
+    } catch (err) {
+      console.error("useStorage fetch failed:", err);
     } finally {
       setLoading(false);
     }

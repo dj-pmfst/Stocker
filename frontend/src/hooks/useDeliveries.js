@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
 const API = import.meta.env.VITE_API_URL;
-const WAREHOUSE_ID = 1; //zaminit
 
 function getMostFrequent(deliveries, limit = 5) {
   const counts = {};
@@ -38,12 +37,22 @@ export function useDeliveries() {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API}/warehouses/${WAREHOUSE_ID}/deliveries`, {
+      const warehouseId = localStorage.getItem("warehouseId");
+
+      if (!warehouseId) {
+        console.error("No warehouseId in localStorage");
+        return;
+      }
+
+      const res = await fetch(`${API}/warehouses/${warehouseId}/deliveries`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error();
-      const data = await res.json();
-      setUsualPurchases(getMostFrequent(data));
+      const json = await res.json();
+      const deliveries = json.data ?? json;
+      setUsualPurchases(
+        getMostFrequent(Array.isArray(deliveries) ? deliveries : [])
+      );
     } catch {
       console.error("Failed to fetch deliveries.");
     } finally {
