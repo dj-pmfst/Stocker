@@ -12,7 +12,11 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
   app.use(helmet());
-  app.useStaticAssets(join(__dirname, '..', '..', 'public'));
+  app.useStaticAssets(join(__dirname, '..', '..', 'public'), {
+    setHeaders: (res) => {
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    },
+  });
   app.enableCors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],

@@ -57,6 +57,7 @@ export default function Storage() {
                         name={item.name}
                         sub={`${item.sub} · ${item.remaining} remaining`}
                         warning={item.warning}
+                        image={item.image}
                         onEdit={() => setEditingProduct(item)}
                       />
                     ))}

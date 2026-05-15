@@ -48,8 +48,8 @@ export class ProductService {
     });
   }
 
-  findAll(warehouseId: number, search?: string) {
-    return this.prisma.product.findMany({
+  async findAll(warehouseId: number, search?: string) {
+    const result = await this.prisma.product.findMany({
       where: {
         warehouseId,
         ...(search && {
@@ -69,6 +69,8 @@ export class ProductService {
         location: true,
       },
     });
+    console.log('PRODUCT 0:', JSON.stringify(result[0]?.defaultProduct));
+    return result;
   }
 
   async findOne(warehouseId: number, id: number) {
