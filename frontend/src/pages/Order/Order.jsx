@@ -1,16 +1,16 @@
 import { useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import Search from "../../components/Search/Search";
-import Loader from "../../components/Loader/Loader";
-import EditModal from "../../components/EditModal/EditModal";
-import { useSearchProducts } from "../../hooks/useSearchProducts";
-import { useDeliveries } from "../../hooks/useDeliveries";
-import { useCreateDelivery } from "../../hooks/useCreateDelivery";
+import Layout from "src/components/Layout/Layout";
+import ProductCard from "src/components/ProductCard/ProductCard";
+import Search from "src/components/Search/Search";
+import Loader from "src/components/Loader/Loader";
+import EditModal from "src/components/EditModal/EditModal";
+import { useSearchProducts } from "src/hooks/useSearchProducts";
+import { useDeliveries } from "src/hooks/useDeliveries";
+import { useCreateDelivery } from "src/hooks/useCreateDelivery";
 import styles from "./order.module.css";
 
 const API = import.meta.env.VITE_API_URL;
-const WAREHOUSE_ID = 1; // dfgfhjASDFGH
+const WAREHOUSE_ID = 1;
 
 const ORDER_FIELDS = [
   {
@@ -28,8 +28,13 @@ async function resolveWarehouseProduct(defaultProductId) {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error();
-    const data = await res.json();
-    return data.find((p) => p.defaultProductId === defaultProductId) ?? null;
+    const json = await res.json();
+    const products = Array.isArray(json.data)
+      ? json.data
+      : (json.data?.products ?? []);
+    return (
+      products.find((p) => p.defaultProductId === defaultProductId) ?? null
+    );
   } catch {
     return null;
   }
@@ -41,6 +46,7 @@ export default function Order() {
   const [resolveError, setResolveError] = useState("");
   const [ordering, setOrdering] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const {
     products,
@@ -53,7 +59,7 @@ export default function Order() {
 
   const handleSearch = (query) => {
     if (query.trim()) {
-      search(query, "All");
+      search(query);
     } else {
       reset();
       setSelectedItem(null);
@@ -62,9 +68,12 @@ export default function Order() {
   };
 
   const handleSelect = async (catalogItem) => {
+    if (!catalogItem) return;
     setResolveError("");
     setResolving(true);
-    const warehouseProduct = await resolveWarehouseProduct(catalogItem.id);
+    const warehouseProduct = await resolveWarehouseProduct(
+      catalogItem.defaultProductId ?? catalogItem.id
+    );
     setResolving(false);
 
     if (!warehouseProduct) {
@@ -73,10 +82,11 @@ export default function Order() {
     }
 
     setSelectedItem({
-      id: warehouseProduct.id,
-      name: warehouseProduct.customName ?? catalogItem.name,
-      sub: catalogItem.size ?? "",
-      image: catalogItem.image ?? null,
+      id: catalogItem.id,
+      name:
+        catalogItem.customName ?? catalogItem.defaultProduct?.name ?? "Unknown",
+      sub: `${catalogItem.stock?.quantity ?? 0} remaining · ${catalogItem.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
+      image: catalogItem.defaultProduct?.imageUrl?.[0] ?? null,
     });
   };
 
@@ -102,6 +112,8 @@ export default function Order() {
     setOrderModal(false);
     setSelectedItem(null);
     reset();
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
     return { ok: true };
   };
 
@@ -132,7 +144,7 @@ export default function Order() {
         {selectedItem ? (
           <>
             <p className={styles.resultTitle}>
-              {selectedItem.name.toUpperCase()}
+              {selectedItem.name?.toUpperCase()}
             </p>
             <ProductCard
               name={selectedItem.name}
@@ -181,6 +193,10 @@ export default function Order() {
         fields={ORDER_FIELDS}
         saving={ordering}
       />
+
+      {showSuccess && (
+        <div className={styles.toast}>your order has been sent</div>
+      )}
     </Layout>
   );
 }

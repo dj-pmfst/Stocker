@@ -24,4 +24,14 @@ export class CreateProductDto {
   @IsString()
   @IsOptional()
   customName?: string;
+
+  @ApiProperty({ required: false, example: 'A' })
+  @IsString()
+  @IsOptional()
+  storageZone?: string;
+
+  @ApiProperty({ required: false, example: '3' })
+  @IsString()
+  @IsOptional()
+  shelfNumber?: string;
 }

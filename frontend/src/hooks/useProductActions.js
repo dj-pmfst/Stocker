@@ -20,24 +20,31 @@ export function useProductActions(selectedItem, setSelectedItem) {
   const [editingProduct, setEditingProduct] = useState(null);
 
   const handleTransfer = async (values) => {
+    console.log('selectedItem:', selectedItem); // ← does it have storage_zone and shelf_number?
     if (!selectedItem) return { ok: false, error: "No item selected." };
 
     const quantity = Number(values.quantity);
-    const minimum = values.minimumQuantity ? Number(values.minimumQuantity) : undefined;
+    const minimum = values.minimumQuantity
+      ? Number(values.minimumQuantity)
+      : undefined;
+    const storageZone = selectedItem.storage_zone;
+    const shelfNumber = selectedItem.shelf_number;
 
     if (values.quantity === "" || isNaN(quantity) || quantity < 0)
       return { ok: false, error: "Enter a valid quantity (0 or more)." };
     if (minimum !== undefined && (isNaN(minimum) || minimum < 0))
       return { ok: false, error: "Minimum quantity must be 0 or more." };
     if (minimum !== undefined && minimum > quantity)
-      return { ok: false, error: "Minimum quantity can't exceed initial quantity." };
+      return {
+        ok: false,
+        error: "Minimum quantity can't exceed initial quantity.",
+      };
 
     const warehouseId = getWarehouseId();
     if (!warehouseId) return { ok: false, error: "No warehouse selected." };
 
     setTransferring(true);
     try {
-      // 1. If no defaultProductId, create a default product first
       let defaultProductId = selectedItem.defaultProductId;
       if (!defaultProductId) {
         const dpRes = await fetch(`${API}/default-products`, {
@@ -56,7 +63,6 @@ export function useProductActions(selectedItem, setSelectedItem) {
         defaultProductId = dpJson.data?.id ?? dpJson.id;
       }
 
-      // 2. Create the product in the warehouse
       const res = await fetch(`${API}/warehouses/${warehouseId}/products`, {
         method: "POST",
         headers: authHeaders(true),
@@ -64,6 +70,8 @@ export function useProductActions(selectedItem, setSelectedItem) {
           defaultProductId,
           customName: selectedItem.name,
           minimumQuantity: minimum,
+          storageZone: selectedItem.storage_zone,
+          shelfNumber: String(selectedItem.shelf_number),
         }),
       });
       if (!res.ok) {
@@ -73,7 +81,6 @@ export function useProductActions(selectedItem, setSelectedItem) {
       const json = await res.json();
       const id = json.data?.id ?? json.id;
 
-      // 3. Set initial stock if quantity > 0
       if (quantity > 0) {
         await fetch(`${API}/warehouses/${warehouseId}/products/${id}/stock`, {
           method: "PUT",
@@ -85,7 +92,10 @@ export function useProductActions(selectedItem, setSelectedItem) {
       setSelectedItem((prev) => ({ ...prev, id }));
       return { ok: true };
     } catch (err) {
-      return { ok: false, error: err.message || "Failed to transfer to storage." };
+      return {
+        ok: false,
+        error: err.message || "Failed to transfer to storage.",
+      };
     } finally {
       setTransferring(false);
     }
@@ -93,20 +103,26 @@ export function useProductActions(selectedItem, setSelectedItem) {
 
   const handleSetQuantity = async (values) => {
     const quantity = Number(values.quantity);
-    if (values.quantity === "") return { ok: false, error: "Enter a quantity." };
-    if (isNaN(quantity) || quantity < 1) return { ok: false, error: "Quantity must be 1 or more." };
-    if (!selectedItem?.id) return { ok: false, error: "Transfer to storage first." };
+    if (values.quantity === "")
+      return { ok: false, error: "Enter a quantity." };
+    if (isNaN(quantity) || quantity < 1)
+      return { ok: false, error: "Quantity must be 1 or more." };
+    if (!selectedItem?.id)
+      return { ok: false, error: "Transfer to storage first." };
 
     const warehouseId = getWarehouseId();
     if (!warehouseId) return { ok: false, error: "No warehouse selected." };
 
     setSaving(true);
     try {
-      const res = await fetch(`${API}/warehouses/${warehouseId}/products/${selectedItem.id}/stock`, {
-        method: "PUT",
-        headers: authHeaders(true),
-        body: JSON.stringify({ quantity }),
-      });
+      const res = await fetch(
+        `${API}/warehouses/${warehouseId}/products/${selectedItem.id}/stock`,
+        {
+          method: "PUT",
+          headers: authHeaders(true),
+          body: JSON.stringify({ quantity }),
+        }
+      );
       if (!res.ok) throw new Error();
       return { ok: true };
     } catch {
@@ -118,20 +134,26 @@ export function useProductActions(selectedItem, setSelectedItem) {
 
   const handleUpdateStock = async (values) => {
     const quantity = Number(values.quantity);
-    if (values.quantity === "") return { ok: false, error: "Enter a quantity." };
-    if (isNaN(quantity) || quantity < 0) return { ok: false, error: "Quantity must be 0 or more." };
-    if (!editingProduct?.id) return { ok: false, error: "No product selected." };
+    if (values.quantity === "")
+      return { ok: false, error: "Enter a quantity." };
+    if (isNaN(quantity) || quantity < 0)
+      return { ok: false, error: "Quantity must be 0 or more." };
+    if (!editingProduct?.id)
+      return { ok: false, error: "No product selected." };
 
     const warehouseId = getWarehouseId();
     if (!warehouseId) return { ok: false, error: "No warehouse selected." };
 
     setSaving(true);
     try {
-      const res = await fetch(`${API}/warehouses/${warehouseId}/products/${editingProduct.id}/stock`, {
-        method: "PUT",
-        headers: authHeaders(true),
-        body: JSON.stringify({ quantity }),
-      });
+      const res = await fetch(
+        `${API}/warehouses/${warehouseId}/products/${editingProduct.id}/stock`,
+        {
+          method: "PUT",
+          headers: authHeaders(true),
+          body: JSON.stringify({ quantity }),
+        }
+      );
       if (!res.ok) throw new Error();
       return { ok: true };
     } catch {

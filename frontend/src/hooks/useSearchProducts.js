@@ -12,10 +12,6 @@ function getWarehouseId() {
   return localStorage.getItem("warehouseId") ?? "1";
 }
 
-/**
- * Paginated search over warehouse products.
- * GET /warehouses/:warehouseId/products?search=&page=&limit=
- */
 export function useSearchProducts() {
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(false);

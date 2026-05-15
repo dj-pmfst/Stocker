@@ -1,19 +1,12 @@
 import { useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import EditModal from "../../components/EditModal/EditModal";
-import { useProductActions } from "../../hooks/useProductActions";
-import { QUANTITY_FIELDS } from "../../constants/productFields";
+import Layout from "src/components/Layout/Layout";
+import ProductCard from "src/components/ProductCard/ProductCard";
+import EditModal from "src/components/EditModal/EditModal";
+import { QUANTITY_FIELDS } from "src/constants/productFields";
+import { useScanResults } from "src/hooks/useScanResults";
 import styles from "./scan.module.css";
 
 const CameraIcon = () => <img src="/assets/camera.svg" />;
-
-const SCAN_RESULTS = [
-  { id: 1, name: "Coca Cola", size: "330 ml", qty: 8, amm: 12 },
-  { id: 2, name: "Sprite", size: "330 ml", qty: 7, amm: 3 },
-  { id: 3, name: "Fanta", size: "330 ml", qty: 4, amm: 8 },
-  { id: 4, name: "Milk", size: "500 ml", qty: 2, amm: 5 },
-];
 
 const PulsatingLoader = () => (
   <img src="/assets/pulse.svg" className={styles.pulseLoader} />
@@ -63,7 +56,7 @@ function ScanLoading() {
   );
 }
 
-function ScanFeedback({ onApply, onEdit, onBack }) {
+function ScanFeedback({ scanResults, onApply, onEdit, onBack }) {
   return (
     <>
       <div className={styles.cameraIconWrap}>
@@ -71,25 +64,35 @@ function ScanFeedback({ onApply, onEdit, onBack }) {
       </div>
       <p className={styles.itemsUsedLabel}>items used this day:</p>
       <div className={styles.feedbackList}>
-        {SCAN_RESULTS.map((item) => (
-          <div key={item.id} className={styles.productWrapper}>
-            <p className={styles.countLabel}>{item.amm}x {item.name}</p>
-            <ProductCard
-              name={item.name}
-              sub={`${item.size} · ${item.qty} remaining`}
-              image={item.image}
-              onEdit={() => onEdit(item)}
-            />
-          </div>
-        ))}
-        <div className={styles.orderBtnWrap}>
-          <button
-            className="btn-primary"
-            style={{ width: "100%" }}
-            onClick={onApply}>
-            apply
-          </button>
-        </div>
+        {scanResults.length === 0 ? (
+          <p className={styles.noText}>
+            No products scanned
+          </p>
+        ) : (
+          <>
+            {scanResults.map((item) => (
+              <div key={item.id} className={styles.productWrapper}>
+                <p className={styles.countLabel}>
+                  {item.amm}x {item.name}
+                </p>
+                <ProductCard
+                  name={item.name}
+                  sub={`${item.size} · ${item.qty} remaining`}
+                  image={item.image}
+                  onEdit={() => onEdit(item)}
+                />
+              </div>
+            ))}
+            <div className={styles.orderBtnWrap}>
+              <button
+                className="btn-primary"
+                style={{ width: "100%" }}
+                onClick={onApply}>
+                apply
+              </button>
+            </div>
+          </>
+        )}
         <button
           className="btn-outline"
           style={{ width: "100%" }}
@@ -116,13 +119,23 @@ function ScanSuccess() {
 
 export default function Scan() {
   const [state, setState] = useState("camera");
-  const { handleUpdateStock, editingProduct, setEditingProduct, saving } =
-    useProductActions();
+  const { scanResults, updateAmm, applyResults, applying } = useScanResults();
+  const [editingItem, setEditingItem] = useState(null);
 
   const handleScan = () => setState("feedback");
 
-  const handleApply = () => {
+  const handleEditSave = (values) => {
+    const amm = Number(values.quantity);
+    if (!values.quantity || isNaN(amm) || amm < 0)
+      return { ok: false, error: "Enter a valid quantity." };
+    updateAmm(editingItem.id, amm);
+    setEditingItem(null);
+    return { ok: true };
+  };
+
+  const handleApply = async () => {
     setState("loading");
+    await applyResults();
     setTimeout(() => setState("success"), 2200);
   };
 
@@ -132,9 +145,10 @@ export default function Scan() {
         {state === "camera" && <ScanCamera onScan={handleScan} />}
         {state === "feedback" && (
           <ScanFeedback
+            scanResults={scanResults}
             onApply={handleApply}
             onBack={() => setState("camera")}
-            onEdit={setEditingProduct}
+            onEdit={setEditingItem}
           />
         )}
         {state === "loading" && <ScanLoading />}
@@ -142,12 +156,12 @@ export default function Scan() {
       </div>
 
       <EditModal
-        open={!!editingProduct}
-        onClose={() => setEditingProduct(null)}
-        onSave={handleUpdateStock}
+        open={!!editingItem}
+        onClose={() => setEditingItem(null)}
+        onSave={handleEditSave}
         title="update quantity"
         fields={QUANTITY_FIELDS}
-        saving={saving}
+        saving={false}
       />
     </Layout>
   );

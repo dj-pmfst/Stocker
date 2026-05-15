@@ -21,7 +21,7 @@ export default function App() {
       <Route path="/scan" element={<Scan />} />
       <Route path="/order" element={<Order />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/error" element={<NotFound />} />
+      <Route path="/*" element={<NotFound />} />
     </Routes>
   );
 }

@@ -3,6 +3,8 @@ import styles from "./productcard.module.css";
 const PlusIcon = () => <img src="/assets/plus.svg" />;
 const EditIcon = () => <img src="/assets/pencil.svg" />;
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function ProductCard({
   name,
   sub,
@@ -11,10 +13,13 @@ export default function ProductCard({
   onAdd,
   onEdit,
 }) {
+  const imgSrc = image
+  ? image.startsWith('http') ? image : `${API}/${image}`
+  : null;
   return (
     <div className={styles.card}>
-      {image ? (
-        <img src={image} alt={name} className={styles.img} />
+      {imgSrc ? (
+        <img src={imgSrc} alt={name} className={styles.img} />
       ) : (
         <div className={styles.imgPlaceholder}>Img</div>
       )}

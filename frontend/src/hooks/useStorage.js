@@ -16,12 +16,16 @@ function groupByLocation(products) {
   for (const product of products) {
     const zone = product.location?.zone ?? "Unassigned";
     const shelf = product.location?.shelf ?? "Unassigned";
-    const key = `${zone}__${shelf}`;
-    if (!map[key]) map[key] = { zone, shelf, items: [] };
-    map[key].items.push({
+
+    if (!map[zone]) map[zone] = { zone, shelves: {} };
+    if (!map[zone].shelves[shelf])
+      map[zone].shelves[shelf] = { shelf, items: [] };
+
+    map[zone].shelves[shelf].items.push({
       id: product.id,
+      image: product.defaultProduct?.imageUrl?.[0] ?? null,
       name: product.customName ?? product.defaultProduct?.name ?? "Unknown",
-      sub: product.defaultProduct?.size ?? "",
+      sub: product.defaultProduct?.unitOfMeasure ?? "",
       remaining: product.stock?.quantity ?? 0,
       warning:
         product.minimumQuantity != null &&
@@ -29,8 +33,13 @@ function groupByLocation(products) {
           ? "Warning, order more!"
           : undefined,
     });
+    console.log('image:', product.defaultProduct?.imageUrl);
   }
-  return Object.values(map);
+
+  return Object.values(map).map((z) => ({
+    zone: z.zone,
+    shelves: Object.values(z.shelves),
+  }));
 }
 
 export function useStorage() {
@@ -46,6 +55,7 @@ export function useStorage() {
       });
       if (!res.ok) throw new Error(res.status);
       const json = await res.json();
+console.log('raw product 0:', JSON.stringify(json.data?.[0]?.defaultProduct));
       const products = Array.isArray(json.data)
         ? json.data
         : (json.data?.products ?? []);

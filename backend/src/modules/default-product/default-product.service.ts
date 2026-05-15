@@ -25,5 +25,15 @@ export class DefaultProductService {
     return item;
   }
 
+  async update(id: number, dto: UpdateDefaultProductDto) {
+    await this.findOne(id);
+    return this.prisma.defaultProduct.update({ where: { id }, data: dto });
+  }
+  
+  async remove(id: number) {
+    await this.findOne(id);
+    return this.prisma.defaultProduct.delete({ where: { id } });
+  }
+
  
 }

@@ -63,3 +63,20 @@
   max-width: 220px;
   margin-left: 80px;
 }
+
+.toast {
+  position: fixed;
+  bottom: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy-dark);
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-family: 'VenscaBold';
+  font-size: 14px;
+  text-transform: uppercase;
+  z-index: 1000;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
