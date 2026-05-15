@@ -46,6 +46,7 @@ export default function Order() {
   const [resolveError, setResolveError] = useState("");
   const [ordering, setOrdering] = useState(false);
   const [orderModal, setOrderModal] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const {
     products,
@@ -70,17 +71,20 @@ export default function Order() {
     if (!catalogItem) return;
     setResolveError("");
     setResolving(true);
-    const warehouseProduct = await resolveWarehouseProduct(catalogItem.defaultProductId ?? catalogItem.id);
+    const warehouseProduct = await resolveWarehouseProduct(
+      catalogItem.defaultProductId ?? catalogItem.id
+    );
     setResolving(false);
-  
+
     if (!warehouseProduct) {
       setResolveError("This product hasn't been added to your warehouse yet.");
       return;
     }
-  
+
     setSelectedItem({
       id: catalogItem.id,
-      name: catalogItem.customName ?? catalogItem.defaultProduct?.name ?? "Unknown",
+      name:
+        catalogItem.customName ?? catalogItem.defaultProduct?.name ?? "Unknown",
       sub: `${catalogItem.stock?.quantity ?? 0} remaining · ${catalogItem.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
       image: null,
     });
@@ -108,6 +112,8 @@ export default function Order() {
     setOrderModal(false);
     setSelectedItem(null);
     reset();
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
     return { ok: true };
   };
 
@@ -187,6 +193,10 @@ export default function Order() {
         fields={ORDER_FIELDS}
         saving={ordering}
       />
+
+      {showSuccess && (
+        <div className={styles.toast}>your order has been sent</div>
+      )}
     </Layout>
   );
 }

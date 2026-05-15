@@ -35,9 +35,8 @@
 }
 
 .label {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase;
   color: var(--navy);
   letter-spacing: 0.04em;
 }
@@ -72,13 +71,14 @@
 .cancel {
   padding: 9px 18px;
   border-radius: 20px;
-  border: 1.5px solid var(--gray-border);
+  border: 3px solid var(--navy);
   background: transparent;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--navy);
   cursor: pointer;
   transition: background 0.15s;
+  font-family: 'VenscaBold';
 }
 
 .cancel:hover {
@@ -91,10 +91,11 @@
   border: none;
   background: var(--navy);
   color: white;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: opacity 0.15s;
+  font-family: 'VenscaBold';
 }
 
 .save:disabled {
