@@ -3,31 +3,31 @@ import { useState, useEffect, useCallback } from "react";
 const API = import.meta.env.VITE_API_URL;
 
 function getMostFrequent(deliveries, limit = 5) {
-  const counts = {};
-  for (const delivery of deliveries) {
-    for (const item of delivery.items) {
-      const id = item.product.id;
-      if (!counts[id]) {
-        counts[id] = {
-          id,
-          name:
-            item.product.customName ??
-            item.product.defaultProduct?.name ??
-            "Unknown",
-          sub: item.product.defaultProduct?.size ?? "",
-          image: item.product.defaultProduct?.image ?? null,
-          totalOrdered: 0,
-          lastQuantity: item.quantity,
-        };
+    const counts = {};
+    for (const delivery of deliveries) {
+      for (const item of delivery.items) {
+        const id = item.product.id;
+        if (!counts[id]) {
+            counts[id] = {
+                id,
+                name:
+                  item.product.customName ??
+                  item.product.defaultProduct?.name ??
+                  "Unknown",
+                sub: `Last ordered: ${item.quantity} · ${item.product.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
+                image: null,
+                totalOrdered: 0,
+                lastQuantity: item.quantity,
+              };
+        }
+        counts[id].totalOrdered += item.quantity;
+        counts[id].lastQuantity = item.quantity;
       }
-      counts[id].totalOrdered += item.quantity;
-      counts[id].lastQuantity = item.quantity;
     }
+    return Object.values(counts)
+      .sort((a, b) => b.totalOrdered - a.totalOrdered)
+      .slice(0, limit);
   }
-  return Object.values(counts)
-    .sort((a, b) => b.totalOrdered - a.totalOrdered)
-    .slice(0, limit);
-}
 
 export function useDeliveries() {
   const [usualPurchases, setUsualPurchases] = useState([]);
