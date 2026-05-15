@@ -1,0 +1,64 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--navy-dark) 0%,
+    var(--navy) 40%,
+    var(--navy-light) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.ripple {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--white);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.logoWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  background: var(--white);
+  border-radius: 100%;
+  padding: 20px;
+}
+
+.logoIcon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.appName {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--navy);
+  overflow: hidden;
+  font-family: "VenscaBold";
+  text-transform: uppercase;
+  max-width: 0;
+  opacity: 0;
+  letter-spacing: 0;
+}
