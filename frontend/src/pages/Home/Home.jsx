@@ -50,7 +50,15 @@ export default function Home() {
           items={catalogItems}
           loading={catalogLoading}
           placeholder="Coca Cola (0.33 l)"
-          onSelect={setSelectedItem}
+          onSelect={(item) => {
+            if (!item) return setSelectedItem(null);
+            setSelectedItem({
+              ...item,
+              name: item.name,
+              image: item.imageUrl?.[0] ?? null,
+              sub: item.size ?? item.unitOfMeasure ?? "",
+            });
+          }}
         />
 
         {selectedItem ? (

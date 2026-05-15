@@ -25,8 +25,8 @@ function groupByLocation(products) {
       id: product.id,
       image: product.defaultProduct?.imageUrl?.[0] ?? null,
       name: product.customName ?? product.defaultProduct?.name ?? "Unknown",
-      sub: product.defaultProduct?.unitOfMeasure ?? "",
-      remaining: product.stock?.quantity ?? 0,
+      sub: product.defaultProduct?.size ?? product.defaultProduct?.unitOfMeasure ?? "",
+      remaining: product.stock?.quantity ?? "",
       warning:
         product.minimumQuantity != null &&
         (product.stock?.quantity ?? 0) <= product.minimumQuantity

@@ -14,10 +14,11 @@ function getMostFrequent(deliveries, limit = 5) {
                   item.product.customName ??
                   item.product.defaultProduct?.name ??
                   "Unknown",
-                sub: `Last ordered: ${item.quantity} · ${item.product.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
+                sub: `Last ordered: ${item.quantity} · ${item.product.defaultProduct?.size ?? item.product.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
                 image: item.product.defaultProduct?.imageUrl?.[0] ?? null,
                 totalOrdered: 0,
                 lastQuantity: item.stock?.quantity,
+                remaining: item.product.stock?.quantity ?? ""
               };
         }
         counts[id].totalOrdered += item.quantity;
