@@ -19,17 +19,20 @@ import {
 import { AlertService } from './alert.service';
 import { CreateAlertDto } from './dto/create-alert.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 
 
 @ApiTags('Alerts')
-@UseGuards(UserAuthGuard)
+@UseGuards(UserAuthGuard,RolesGuard)
 @ApiBearerAuth()
 @Controller('warehouses/:warehouseId/alerts')
 export class AlertController {
   constructor(private readonly alertService: AlertService) {}
 
   @Post()
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Ručno kreiraj upozorenje',
     description: 'Admin može kreirati upozorenje ručno.',
@@ -69,6 +72,7 @@ export class AlertController {
   }
 
   @Patch(':id/resolve')
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Označi upozorenje kao riješeno',
     description: 'Postavi `rijeseno: true`. Upozorenje ostaje u bazi za povijest, ali ne prikazuje se na aktivnoj listi.',
@@ -82,6 +86,7 @@ export class AlertController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Obriši upozorenje',
     description: 'Potpuno briše upozorenje.',

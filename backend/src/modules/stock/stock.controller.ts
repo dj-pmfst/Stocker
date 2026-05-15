@@ -18,9 +18,11 @@ import { StockService } from './stock.service';
 import { SetStockDto } from './dto/set-stock.dto';
 import { AdjustStockDto } from './dto/adjust-stock.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 
 @ApiTags('Stock')
-@UseGuards(UserAuthGuard)
+@UseGuards(UserAuthGuard,RolesGuard)
 @ApiBearerAuth()
 @Controller('warehouses/:warehouseId/products/:productId/stock')
 export class StockController {
@@ -40,6 +42,7 @@ export class StockController {
   }
 
   @Put()
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Postavi stanje proizvoda',
     description: 'Inicijalno postavljanje stanja.',
@@ -54,6 +57,7 @@ export class StockController {
   }
 
   @Post('increase')
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Povećaj stanje proizvoda',
     description: 'Dodaj kolicinu u stanje',
@@ -68,6 +72,7 @@ export class StockController {
   }
 
   @Post('decrease')
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Smanji stanje proizvoda',
     description: 'Oduzmi kolicinu od stanja. Fail ako nema dovoljno na stanju.',

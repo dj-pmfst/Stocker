@@ -12,6 +12,12 @@ export class WarehouseMemberService {
   constructor(private prisma: PrismaService) {}
 
   async create(warehouseId: number, dto: CreateWarehouseMemberDto) {
+     const user = await this.prisma.user.findUnique({
+      where: { id: dto.userId },
+    });
+    if (!user) {
+      throw new NotFoundException(`User with id ${dto.userId} not found`);
+    }
     const existing = await this.prisma.userWarehouse.findUnique({
       where: {
         userId_warehouseId: { userId: dto.userId, warehouseId: warehouseId },

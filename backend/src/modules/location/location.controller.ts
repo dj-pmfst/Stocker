@@ -17,9 +17,11 @@ import {
 import { LocationService } from './location.service';
 import { SetLocationDto } from './dto/set-location.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 
 @ApiTags('Location')
-@UseGuards(UserAuthGuard)
+@UseGuards(UserAuthGuard,RolesGuard)
 @ApiBearerAuth()
 @Controller('warehouses/:warehouseId/products/:productId/location')
 export class LocationController {
@@ -39,6 +41,7 @@ export class LocationController {
   }
 
   @Put()
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Postavi lokaciju proizvoda',
     description: 'Postavi ili promijeni zonu i policu. Ako lokacija ne postoji, kreira je.',
@@ -53,6 +56,7 @@ export class LocationController {
   }
 
   @Delete()
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Ukloni lokaciju proizvoda',
     description: 'Briše zonu/policu za proizvod',

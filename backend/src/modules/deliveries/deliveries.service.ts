@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException,BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../config/prisma.service';
 import { CreateDeliveryDto } from './dto/create-delivery.dto';
 
@@ -6,11 +6,7 @@ import { CreateDeliveryDto } from './dto/create-delivery.dto';
 export class DeliveriesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(
-    warehouseId: number,
-    userId: number,
-    dto: CreateDeliveryDto,
-  ) {
+  async create(warehouseId: number, userId: number, dto: CreateDeliveryDto) {
     const productIds = dto.items.map((s) => s.productId);
 
     const products = await this.prisma.product.findMany({
@@ -42,12 +38,23 @@ export class DeliveriesService {
       });
 
       for (const item of dto.items) {
-        const updatedStock =await tx.productStock.upsert({
+        const current = await tx.productStock.findUnique({
+          where: { productId: item.productId },
+        });
+        const currentQty = current?.quantity ?? 0;
+        const newQty = currentQty + item.quantity;
+
+        if (newQty > 999) {
+          throw new BadRequestException(
+            `Stock cannot exceed 999. Current: ${currentQty}, requested: ${item.quantity}`,
+          );
+        }
+
+        const updatedStock = await tx.productStock.upsert({
           where: { productId: item.productId },
           create: { productId: item.productId, quantity: item.quantity },
           update: { quantity: { increment: item.quantity } },
         });
-
 
         const product = products.find((p) => p.id === item.productId);
         const minimum = product?.minimumQuantity;
@@ -68,7 +75,9 @@ export class DeliveriesService {
       where: { warehouseId },
       include: {
         items: { include: { product: { include: { defaultProduct: true } } } },
-        user: { select: { id: true, firstName: true, lastName: true, email: true } },
+        user: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
       },
       orderBy: { date: 'desc' },
     });
@@ -79,7 +88,9 @@ export class DeliveriesService {
       where: { id },
       include: {
         items: { include: { product: { include: { defaultProduct: true } } } },
-        user: { select: { id: true, firstName: true, lastName: true, email: true } },
+        user: {
+          select: { id: true, firstName: true, lastName: true, email: true },
+        },
       },
     });
     if (!delivery || delivery.warehouseId !== warehouseId) {

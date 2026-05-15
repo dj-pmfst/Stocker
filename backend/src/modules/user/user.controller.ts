@@ -50,4 +50,14 @@ export class UserController {
   updateProfile(@Req() req, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(req.user.id, updateUserDto);
   }
+
+  @Get('me/warehouses')
+  @ApiOperation({
+    summary: 'Moje skladište',
+    description: 'Vraća listu skladišta kojima korisnik ima pristup, zajedno s njegovom ulogom u svakom od njih.',
+  })
+  @ApiOkResponse({ description: 'List of user warehouses.' })
+  getMyWarehouses(@Req() req) {
+    return this.userService.findWarehouses(req.user.id);
+  }
 }

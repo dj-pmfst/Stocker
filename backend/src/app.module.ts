@@ -1,5 +1,7 @@
 import { MiddlewareConsumer,NestModule,RequestMethod,Module } from '@nestjs/common';
 import { AppController } from './app.controller';
+import { ThrottlerModule,ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';   
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
@@ -20,6 +22,12 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
     PrismaModule,
     UserModule,
     AuthModule,
@@ -34,7 +42,13 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     AlertModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

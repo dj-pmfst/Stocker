@@ -7,9 +7,15 @@ import { PrismaService } from '../../config/prisma.service';
 export class WarehouseService {
   constructor(private prisma: PrismaService) {}
 
-  create(createWarehouseDto: CreateWarehouseDto) {
+  create(createWarehouseDto: CreateWarehouseDto, userId: number) {
     return this.prisma.warehouse.create({
-      data: createWarehouseDto,
+      data: {
+        ...createWarehouseDto,
+        userWarehouses: {
+          create: { userId, role: 'ADMIN' },
+        },
+      },
+      include: { userWarehouses: true },
     });
   }
 

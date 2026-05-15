@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from 'src/hooks/useAuth';
 import PasswordInput from 'src/components/PasswordInput/PasswordInput';
 import styles from './auth.module.css';
-
+//test comment
 export default function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const { fields, set, reset, error, loading, submit } = useAuth();
