@@ -82,11 +82,14 @@ export default function Order() {
     }
 
     setSelectedItem({
-      id: catalogItem.id,
+      id: warehouseProduct.id,
       name:
-        catalogItem.customName ?? catalogItem.defaultProduct?.name ?? "Unknown",
-      sub: `${catalogItem.stock?.quantity ?? 0} remaining · ${catalogItem.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
-      image: catalogItem.defaultProduct?.imageUrl?.[0] ?? null,
+        warehouseProduct.customName ??
+        warehouseProduct.defaultProduct?.name ??
+        "Unknown",
+      sub: warehouseProduct.defaultProduct?.unitOfMeasure ?? "",
+      remaining: warehouseProduct.stock?.quantity ?? 0,
+      image: warehouseProduct.defaultProduct?.imageUrl?.[0] ?? null,
     });
   };
 
@@ -147,10 +150,11 @@ export default function Order() {
               {selectedItem.name?.toUpperCase()}
             </p>
             <ProductCard
+              key={selectedItem.id}
               name={selectedItem.name}
-              sub={selectedItem.sub}
+              sub={`${selectedItem.sub} · ${selectedItem.remaining} remaining`}
               image={selectedItem.image}
-              onAdd={null}
+              onAdd={() => setOrderModal(true)}
             />
             <div className={styles.orderBtnWrap}>
               <button
@@ -170,13 +174,13 @@ export default function Order() {
                   No delivery history yet.
                 </p>
               ) : (
-                usualPurchases.map((item) => (
+                usualPurchases.map((selectedItem) => (
                   <ProductCard
-                    key={item.id}
-                    name={item.name}
-                    sub={item.sub}
-                    image={item.image}
-                    onAdd={() => handleSelectUsual(item)}
+                    key={selectedItem.id}
+                    name={selectedItem.name}
+                    sub={`${selectedItem.sub} · ${selectedItem.remaining} remaining`}
+                    image={selectedItem.image}
+                    onAdd={() => setOrderModal(true)}
                   />
                 ))
               )}

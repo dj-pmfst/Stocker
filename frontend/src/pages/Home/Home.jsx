@@ -10,7 +10,7 @@ import {
   CREATE_FIELDS,
   TRANSFER_FIELDS,
   QUANTITY_FIELDS,
-} from "../../constants/productFields";
+} from "src/constants/productFields";
 import styles from "./home.module.css";
 
 export default function Home() {
@@ -31,17 +31,12 @@ export default function Home() {
   const handleCreate = (values) => {
     if (!values.name?.trim())
       return { ok: false, error: "Product name is required." };
-    if (!values.storage_zone)
-      return { ok: false, error: "Select a storage zone." };
-    if (!values.shelf_number || Number(values.shelf_number) < 1)
-      return { ok: false, error: "Enter a valid shelf number." };
 
     setSelectedItem({
       id: null,
       defaultProductId: values.defaultProductId ?? null,
       name: values.name.trim(),
-      storage_zone: values.storage_zone,
-      shelf_number: Number(values.shelf_number),
+      size: values.size?.trim() || null,
     });
     return { ok: true };
   };
