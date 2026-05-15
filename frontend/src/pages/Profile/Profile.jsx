@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import Loader from "../../components/Loader/Loader";
-import { useProfile } from "../../hooks/useProfile";
-import EditModal from "../../components/EditModal/EditModal";
+import Layout from "src/components/Layout/Layout";
+import Loader from "src/components/Loader/Loader";
+import EditModal from "src/components/EditModal/EditModal";
+import { useProfile } from "src/hooks/useProfile";
 import styles from "./profile.module.css";
 
 const MailIcon = () => <img src="/assets/email.svg" alt="email icon" />;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { INITIAL_SCAN_RESULTS } from "../constants/scanResults";
+import { INITIAL_SCAN_RESULTS } from "src/constants/scanResults";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -22,6 +22,7 @@ export function useScanResults() {
         const p = json.data ?? json;
         return {
           id: p.id,
+          image: p.defaultProduct?.imageUrl?.[0] ?? null,
           name: p.customName ?? p.defaultProduct?.name ?? "Unknown",
           size: p.defaultProduct?.unitOfMeasure ?? "",
           qty: p.stock?.quantity ?? 0,

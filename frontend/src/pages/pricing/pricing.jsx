@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PLANS } from "../../constants/pricePlans";
+import { PLANS } from "src/constants/pricePlans";
 import styles from "./pricing.module.css";
 
 export default function Pricing({ onClose, onSelect }) {

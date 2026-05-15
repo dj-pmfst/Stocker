@@ -23,6 +23,7 @@ function groupByLocation(products) {
 
     map[zone].shelves[shelf].items.push({
       id: product.id,
+      image: product.defaultProduct?.imageUrl?.[0] ?? null,
       name: product.customName ?? product.defaultProduct?.name ?? "Unknown",
       sub: product.defaultProduct?.unitOfMeasure ?? "",
       remaining: product.stock?.quantity ?? 0,
@@ -32,6 +33,7 @@ function groupByLocation(products) {
           ? "Warning, order more!"
           : undefined,
     });
+    console.log('image:', product.defaultProduct?.imageUrl);
   }
 
   return Object.values(map).map((z) => ({
@@ -53,6 +55,7 @@ export function useStorage() {
       });
       if (!res.ok) throw new Error(res.status);
       const json = await res.json();
+console.log('raw product 0:', JSON.stringify(json.data?.[0]?.defaultProduct));
       const products = Array.isArray(json.data)
         ? json.data
         : (json.data?.products ?? []);

@@ -15,7 +15,7 @@ function getMostFrequent(deliveries, limit = 5) {
                   item.product.defaultProduct?.name ??
                   "Unknown",
                 sub: `Last ordered: ${item.quantity} · ${item.product.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
-                image: null,
+                image: item.defaultProduct?.imageUrl?.[0] ?? null,
                 totalOrdered: 0,
                 lastQuantity: item.quantity,
               };

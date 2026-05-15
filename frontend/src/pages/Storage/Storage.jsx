@@ -1,9 +1,9 @@
-import Layout from "../../components/Layout/Layout";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import EditModal from "../../components/EditModal/EditModal";
-import { useStorage } from "../../hooks/useStorage";
-import { useProductActions } from "../../hooks/useProductActions";
-import { QUANTITY_FIELDS } from "../../constants/productFields";
+import Layout from "src/components/Layout/Layout";
+import ProductCard from "src/components/ProductCard/ProductCard";
+import EditModal from "src/components/EditModal/EditModal";
+import { useStorage } from "src/hooks/useStorage";
+import { useProductActions } from "src/hooks/useProductActions";
+import { QUANTITY_FIELDS } from "src/constants/productFields";
 import styles from "./storage.module.css";
 
 export default function Storage() {

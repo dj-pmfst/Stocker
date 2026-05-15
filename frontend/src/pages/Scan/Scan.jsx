@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import EditModal from "../../components/EditModal/EditModal";
-import { QUANTITY_FIELDS } from "../../constants/productFields";
-import { useScanResults } from "../../hooks/useScanResults";
+import Layout from "src/components/Layout/Layout";
+import ProductCard from "src/components/ProductCard/ProductCard";
+import EditModal from "src/components/EditModal/EditModal";
+import { QUANTITY_FIELDS } from "src/constants/productFields";
+import { useScanResults } from "src/hooks/useScanResults";
 import styles from "./scan.module.css";
 
 const CameraIcon = () => <img src="/assets/camera.svg" />;

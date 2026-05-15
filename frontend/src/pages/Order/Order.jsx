@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import Search from "../../components/Search/Search";
-import Loader from "../../components/Loader/Loader";
-import EditModal from "../../components/EditModal/EditModal";
-import { useSearchProducts } from "../../hooks/useSearchProducts";
-import { useDeliveries } from "../../hooks/useDeliveries";
-import { useCreateDelivery } from "../../hooks/useCreateDelivery";
+import Layout from "src/components/Layout/Layout";
+import ProductCard from "src/components/ProductCard/ProductCard";
+import Search from "src/components/Search/Search";
+import Loader from "src/components/Loader/Loader";
+import EditModal from "src/components/EditModal/EditModal";
+import { useSearchProducts } from "src/hooks/useSearchProducts";
+import { useDeliveries } from "src/hooks/useDeliveries";
+import { useCreateDelivery } from "src/hooks/useCreateDelivery";
 import styles from "./order.module.css";
 
 const API = import.meta.env.VITE_API_URL;
@@ -86,7 +86,7 @@ export default function Order() {
       name:
         catalogItem.customName ?? catalogItem.defaultProduct?.name ?? "Unknown",
       sub: `${catalogItem.stock?.quantity ?? 0} remaining · ${catalogItem.defaultProduct?.unitOfMeasure ?? ""}`.trim(),
-      image: null,
+      image: catalogItem.defaultProduct?.imageUrl?.[0] ?? null,
     });
   };
 
