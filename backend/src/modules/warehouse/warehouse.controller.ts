@@ -20,9 +20,11 @@ import { WarehouseService } from './warehouse.service';
 import { CreateWarehouseDto } from './dto/create-warehouse.dto';
 import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Warehouses')
-@UseGuards(UserAuthGuard)
+@UseGuards(UserAuthGuard, RolesGuard)
 @ApiBearerAuth()
 @Controller('warehouses')
 export class WarehouseController {
@@ -38,7 +40,7 @@ export class WarehouseController {
     return this.warehouseService.create(createWarehouseDto);
   }
 
-  @Get()
+  @Get() //maknuti ovaj endpoint jer je viška -> postoji end point koji vraća skladišta kojima korisnik ima pristup
   @ApiOkResponse({ description: 'List all warehouses.' })
   @ApiOperation({
     summary: 'Dohvati sva skladišta',
@@ -58,26 +60,28 @@ export class WarehouseController {
     return this.warehouseService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':warehouseId')
+  @Roles('ADMIN') 
   @ApiOkResponse({ description: 'Warehouse updated.' })
    @ApiOperation({
     summary: 'Update podataka skladišta',
     description: 'Mijenja naziv i/ili adresu postojećeg skladišta.',
   })
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('warehouseId', ParseIntPipe) warehouseId: number,
     @Body() updateWarehouseDto: UpdateWarehouseDto,
   ) {
-    return this.warehouseService.update(id, updateWarehouseDto);
+    return this.warehouseService.update(warehouseId, updateWarehouseDto);
   }
 
-  @Delete(':id')
+  @Delete(':warehouseId')
+  @Roles('ADMIN') 
   @ApiOkResponse({ description: 'Warehouse deleted.' })
     @ApiOperation({
     summary: 'Obriši skladište',
     description: 'Brisanje kaskadno briše sve članove (KorisnikSkladiste) i proizvode unutar skladišta.',
   })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.warehouseService.remove(id);
+  remove(@Param('warehouseId', ParseIntPipe) warehouseId: number) {
+    return this.warehouseService.remove(warehouseId);
   }
 }

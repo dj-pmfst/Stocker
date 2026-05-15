@@ -20,9 +20,11 @@ import { WarehouseMemberService } from './warehouse-member.service';
 import { CreateWarehouseMemberDto } from './dto/create-warehouse-member.dto';
 import { UpdateWarehouseMemberDto } from './dto/update-warehouse-member.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles} from '../auth/roles.decorator';
 
 @ApiTags('Warehouse Members')
-@UseGuards(UserAuthGuard)
+@UseGuards(UserAuthGuard,RolesGuard)
 @ApiBearerAuth()
 @Controller('warehouses/:warehouseId/members')
 export class WarehouseMemberController {
@@ -31,6 +33,7 @@ export class WarehouseMemberController {
   ) {}
 
   @Post()
+  @Roles('ADMIN')
   @ApiOperation({
   summary: 'Dodaj korisnika u skladište',
   description: 'Veže postojećeg korisnika za skladište s zadanom ulogom (default: KONOBAR).',
@@ -61,6 +64,7 @@ export class WarehouseMemberController {
   }
 
   @Patch(':userId')
+  @Roles('ADMIN')
   @ApiOkResponse({ description: 'Member role updated.' })
   @ApiOperation({
   summary: 'Promijeni ulogu člana',
@@ -75,6 +79,7 @@ export class WarehouseMemberController {
   }
 
   @Delete(':userId')
+  @Roles('ADMIN')
   @ApiOkResponse({ description: 'Member removed.' })
   @ApiOperation({ summary: 'Izbaci korisnika iz skladišta' })
   remove(

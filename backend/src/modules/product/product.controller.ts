@@ -22,15 +22,18 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { UserAuthGuard } from '../auth/user-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
 
 @ApiTags('Products')
-@UseGuards(UserAuthGuard)
+@UseGuards(UserAuthGuard,RolesGuard)
 @ApiBearerAuth()
 @Controller('warehouses/:warehouseId/products')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post()
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Dodaj proizvod u skladište',
     description: 'Kreira instancu proizvoda u skladištu',
@@ -75,6 +78,7 @@ export class ProductController {
   }
 
   @Patch(':id')
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Update proizvoda u skladištu',
     description: 'Mijenja minimalnu količinu ili custom naziv.',
@@ -89,6 +93,7 @@ export class ProductController {
   }
 
   @Delete(':id')
+  @Roles('ADMIN', 'WAREHOUSE_MANAGER')
   @ApiOperation({
     summary: 'Ukloni proizvod iz skladišta',
     description: 'Briše proizvod iz skladišta.',
