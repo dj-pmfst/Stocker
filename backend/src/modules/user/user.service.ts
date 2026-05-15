@@ -23,7 +23,7 @@ export class UserService {
   return this.prisma.user.findMany({
     select: { id: true, email: true, firstName: true, lastName: true, createdAt: true, updatedAt: true },
   });
-}
+  }
 
   async findOne(id: number) {
     const user = await this.prisma.user.findUnique({
@@ -42,5 +42,13 @@ export class UserService {
     });
     const { password, ...result } = user;
     return result;
+  }
+
+  findWarehouses(userId: number){
+    return this.prisma.userWarehouse.findMany({
+      where: {userId },
+      include: {warehouse: true},
+      orderBy: {warehouse: {name: 'asc'}}
+    })
   }
 }
