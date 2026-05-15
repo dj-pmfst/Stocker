@@ -24,29 +24,9 @@
   object-fit: contain;
 }
 
-.link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  color: var(--text-light);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.active {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  color: var(--brown);
-  text-decoration: none;
-}
-
 .notifBtn {
   background: none;
   border: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
+  padding-bottom: 5px;
 }
