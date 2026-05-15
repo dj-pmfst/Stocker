@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  Req
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -36,8 +37,8 @@ export class WarehouseController {
     summary: 'Kreiraj novo skladište',
     description: 'Dodaje novo skladište u sustav. Naziv je obavezan, adresa opcionalna.',
   })
-  create(@Body() createWarehouseDto: CreateWarehouseDto) {
-    return this.warehouseService.create(createWarehouseDto);
+   create(@Body() createWarehouseDto: CreateWarehouseDto, @Req() req) {
+    return this.warehouseService.create(createWarehouseDto, req.user.id);
   }
 
   @Get() //maknuti ovaj endpoint jer je viška -> postoji end point koji vraća skladišta kojima korisnik ima pristup
