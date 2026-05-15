@@ -24,7 +24,7 @@ const ORDER_FIELDS = [
 async function resolveWarehouseProduct(defaultProductId) {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${API}/warehouses/${WAREHOUSE_ID}/products`, {
+    const res = await fetch(`${API}/api/warehouses/${WAREHOUSE_ID}/products`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error();
@@ -87,9 +87,13 @@ export default function Order() {
         warehouseProduct.customName ??
         warehouseProduct.defaultProduct?.name ??
         "Unknown",
-      sub: warehouseProduct.defaultProduct?.unitOfMeasure ?? "",
-      remaining: warehouseProduct.stock?.quantity ?? 0,
-      image: warehouseProduct.defaultProduct?.imageUrl?.[0] ?? null,
+      sub: warehouseProduct.defaultProduct?.size
+        ?? warehouseProduct.defaultProduct?.unitOfMeasure
+        ?? "",                                           
+      lastQuantity: warehouseProduct.stock?.quantity ?? 0, 
+      image: warehouseProduct.defaultProduct?.imageUrl?.[0]
+        ? `${API}/${warehouseProduct.defaultProduct.imageUrl[0]}`
+        : null,                                       
     });
   };
 

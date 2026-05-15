@@ -21,7 +21,7 @@ export function useProducts() {
       if (search?.trim()) params.set("search", search.trim());
       const query = params.size ? `?${params}` : "";
 
-      const res = await fetch(`${API}/default-products${query}`, {
+      const res = await fetch(`${API}/api/default-products${query}`, {
         headers: authHeaders(),
       });
       if (!res.ok) throw new Error(`${res.status}`);

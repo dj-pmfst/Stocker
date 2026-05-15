@@ -13,6 +13,8 @@ import {
 } from "src/constants/productFields";
 import styles from "./home.module.css";
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function Home() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showWhatsNew, setShowWhatsNew] = useState(false);
@@ -31,12 +33,18 @@ export default function Home() {
   const handleCreate = (values) => {
     if (!values.name?.trim())
       return { ok: false, error: "Product name is required." };
+    if (!values.storage_zone)
+      return { ok: false, error: "Select a storage zone." };
+    if (!values.shelf_number || Number(values.shelf_number) < 1)
+      return { ok: false, error: "Enter a valid shelf number." };
 
     setSelectedItem({
       id: null,
       defaultProductId: values.defaultProductId ?? null,
       name: values.name.trim(),
       size: values.size?.trim() || null,
+      storage_zone: values.storage_zone,
+      shelf_number: Number(values.shelf_number),
     });
     return { ok: true };
   };
@@ -50,7 +58,15 @@ export default function Home() {
           items={catalogItems}
           loading={catalogLoading}
           placeholder="Coca Cola (0.33 l)"
-          onSelect={setSelectedItem}
+          onSelect={(item) => {
+            if (!item) return setSelectedItem(null);
+            setSelectedItem({
+              ...item,
+              name: item.name,
+             image: item.imageUrl?.[0] ?? null,
+              sub: item.size ?? item.unitOfMeasure ?? "",
+            });
+          }}
         />
 
         {selectedItem ? (
@@ -67,7 +83,7 @@ export default function Home() {
             <div className={styles.cardWrap}>
               <ProductCard
                 name={selectedItem.name}
-                sub={selectedItem.size}
+                sub={selectedItem.sub}
                 image={selectedItem.image}
                 onAdd={null}
               />

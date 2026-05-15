@@ -14,7 +14,7 @@ export function useScanResults() {
     Promise.all(
       INITIAL_SCAN_RESULTS.map(async ({ id, amm }) => {
         const res = await fetch(
-          `${API}/warehouses/${warehouseId}/products/${id}`,
+          `${API}/api/warehouses/${warehouseId}/products/${id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) return null;
@@ -52,7 +52,7 @@ export function useScanResults() {
         scanResults.map(async (item) => {
           const newQty = Math.max(0, item.qty - item.amm);
           await fetch(
-            `${API}/warehouses/${warehouseId}/products/${item.id}/stock`,
+            `${API}/api/warehouses/${warehouseId}/products/${item.id}/stock`,
             {
               method: "PUT",
               headers: {
