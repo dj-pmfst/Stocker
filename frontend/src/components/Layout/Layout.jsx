@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { PageHeader } from '../PageHeader/PageHeader';
-import { NAV_ITEMS } from '../../constants/navItems';
+import { PageHeader } from 'src/components/PageHeader/PageHeader';
+import { NAV_ITEMS } from 'src/constants/navItems';
 import styles from './layout.module.css';
 
 

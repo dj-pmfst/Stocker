@@ -1,22 +1,34 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./search.module.css";
 
-const SearchIcon = () => <img src="/assets/search.svg" />;
-
 export default function Search({
   items = [],
   placeholder = "Search...",
   onSelect,
+  onSearch,
+  loading,
 }) {
   const [query, setQuery] = useState("");
   const [focused, setFocused] = useState(false);
   const wrapRef = useRef(null);
 
-  const suggestions = query.trim()
-    ? items.filter((i) =>
-        `${i.name} (${i.size})`.toLowerCase().includes(query.toLowerCase())
-      )
-    : items;
+  const SearchIcon = () => <img src="/assets/search.svg" />;
+
+  const getLabel = (item) =>
+    item.size !== undefined
+      ? `${item.name} (${item.size})`
+      : (item.customName ??
+        item.defaultProduct?.name ??
+        item.name ??
+        "Unknown");
+
+  const suggestions = onSearch
+    ? items
+    : query.trim()
+      ? items.filter((i) =>
+          getLabel(i).toLowerCase().includes(query.toLowerCase())
+        )
+      : items;
 
   const showDropdown = focused && suggestions.length > 0;
 
@@ -31,14 +43,16 @@ export default function Search({
   }, []);
 
   const handleSelect = (item) => {
-    setQuery(`${item.name} (${item.size})`);
+    setQuery(getLabel(item));
     setFocused(false);
     onSelect?.(item);
   };
 
   const handleChange = (e) => {
-    setQuery(e.target.value);
+    const val = e.target.value;
+    setQuery(val);
     onSelect?.(null);
+    onSearch?.(val);
   };
 
   return (
@@ -51,9 +65,8 @@ export default function Search({
           onChange={handleChange}
           onFocus={() => setFocused(true)}
         />
-        <SearchIcon />
+        {loading ? <span className={styles.spinner} /> : <SearchIcon />}
       </div>
-
       {showDropdown && (
         <div className={styles.dropdown}>
           {suggestions.map((item) => (
@@ -61,7 +74,7 @@ export default function Search({
               key={item.id}
               className={styles.item}
               onMouseDown={() => handleSelect(item)}>
-              {item.name} ({item.size})
+              {getLabel(item)}
             </button>
           ))}
         </div>

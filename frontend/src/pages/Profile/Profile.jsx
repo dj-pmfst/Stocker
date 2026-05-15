@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import Loader from "../../components/Loader/Loader";
-import { useProfile } from "../../hooks/useProfile";
-import EditModal from "../../components/EditModal/EditModal";
+import Layout from "src/components/Layout/Layout";
+import Loader from "src/components/Loader/Loader";
+import EditModal from "src/components/EditModal/EditModal";
+import { useProfile } from "src/hooks/useProfile";
 import styles from "./profile.module.css";
 
 const MailIcon = () => <img src="/assets/email.svg" alt="email icon" />;
@@ -68,6 +68,7 @@ export default function Profile() {
     employees,
     loading,
     saving,
+    role,
     updateUserField,
     addEmployee,
     updateEmployee,
@@ -83,7 +84,12 @@ export default function Profile() {
     setModal({ open: true, config, onSave });
   const closeModal = () => setModal((m) => ({ ...m, open: false }));
 
-  if (loading) return <Layout><Loader /></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -107,8 +113,10 @@ export default function Profile() {
               <EditIcon />
             </button>
           </div>
-          <p className={styles.role}>{user?.role ?? "Dev_Test"}</p>
-          <p className={styles.name}>{user?.name ?? "—"}</p>
+          <p className={styles.role}>{role ?? "—"}</p>
+          <p className={styles.name}>
+            {user ? `${user.firstName} ${user.lastName}` : "—"}
+          </p>
         </div>
 
         <div className={styles.fieldGrid}>
@@ -171,39 +179,46 @@ export default function Profile() {
           ))}
         </div>
 
-        <div className={styles.addEmployeesRow}>
-          <p className={styles.sectionLabel}>add employees</p>
-          <button
-            className={styles.addBtn}
-            aria-label="Add employee"
-            onClick={() =>
-              openModal(employeeModalConfig(null), (vals) =>
-                addEmployee({ name: vals.name, email: vals.email })
-              )
-            }>
-            <PlusIcon />
-          </button>
-        </div>
-
-        {employees.map((emp) => (
-          <div key={emp.id ?? emp.email} className={styles.employeeRow}>
-            <PersonAddIcon />
-            <div className={styles.employeeInfo}>
-              <p className={styles.employeeName}>{emp.name}</p>
-              <p className={styles.employeeEmail}>{emp.email}</p>
+        {role === "ADMIN" && (
+          <>
+            <div className={styles.addEmployeesRow}>
+              <p className={styles.sectionLabel}>add employees</p>
+              <button
+                className={styles.addBtn}
+                aria-label="Add employee"
+                onClick={() =>
+                  openModal(employeeModalConfig(null), (vals) =>
+                    addEmployee({ name: vals.name, email: vals.email })
+                  )
+                }>
+                <PlusIcon />
+              </button>
             </div>
-            <button
-              className={styles.addBtn}
-              aria-label={`Edit ${emp.name}`}
-              onClick={() =>
-                openModal(employeeModalConfig(emp), (vals) =>
-                  updateEmployee(emp.id, { name: vals.name, email: vals.email })
-                )
-              }>
-              <EditIcon />
-            </button>
-          </div>
-        ))}
+
+            {employees.map((emp) => (
+              <div key={emp.id ?? emp.email} className={styles.employeeRow}>
+                <PersonAddIcon />
+                <div className={styles.employeeInfo}>
+                  <p className={styles.employeeName}>{emp.name}</p>
+                  <p className={styles.employeeEmail}>{emp.email}</p>
+                </div>
+                <button
+                  className={styles.addBtn}
+                  aria-label={`Edit ${emp.name}`}
+                  onClick={() =>
+                    openModal(employeeModalConfig(emp), (vals) =>
+                      updateEmployee(emp.id, {
+                        name: vals.name,
+                        email: vals.email,
+                      })
+                    )
+                  }>
+                  <EditIcon />
+                </button>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       {modal.config && (

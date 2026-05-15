@@ -1,19 +1,31 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL;
-const WAREHOUSE_ID = 1; // zaminit ovo
+
+function authHeaders() {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+function getWarehouseId() {
+  return localStorage.getItem("warehouseId") ?? "1";
+}
 
 function groupByLocation(products) {
   const map = {};
   for (const product of products) {
     const zone = product.location?.zone ?? "Unassigned";
     const shelf = product.location?.shelf ?? "Unassigned";
-    const key = `${zone}__${shelf}`;
-    if (!map[key]) map[key] = { zone, shelf, items: [] };
-    map[key].items.push({
+
+    if (!map[zone]) map[zone] = { zone, shelves: {} };
+    if (!map[zone].shelves[shelf])
+      map[zone].shelves[shelf] = { shelf, items: [] };
+
+    map[zone].shelves[shelf].items.push({
       id: product.id,
+      image: product.defaultProduct?.imageUrl?.[0] ?? null,
       name: product.customName ?? product.defaultProduct?.name ?? "Unknown",
-      sub: product.defaultProduct?.size ?? "",
+      sub: product.defaultProduct?.unitOfMeasure ?? "",
       remaining: product.stock?.quantity ?? 0,
       warning:
         product.minimumQuantity != null &&
@@ -21,8 +33,13 @@ function groupByLocation(products) {
           ? "Warning, order more!"
           : undefined,
     });
+    console.log('image:', product.defaultProduct?.imageUrl);
   }
-  return Object.values(map);
+
+  return Object.values(map).map((z) => ({
+    zone: z.zone,
+    shelves: Object.values(z.shelves),
+  }));
 }
 
 export function useStorage() {
@@ -31,16 +48,20 @@ export function useStorage() {
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
+    const warehouseId = getWarehouseId();
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(`${API}/warehouses/${WAREHOUSE_ID}/products`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch(`${API}/warehouses/${warehouseId}/products`, {
+        headers: authHeaders(),
       });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      setStorageData(groupByLocation(data));
-    } catch {
-      console.error("Failed to fetch storage products.");
+      if (!res.ok) throw new Error(res.status);
+      const json = await res.json();
+console.log('raw product 0:', JSON.stringify(json.data?.[0]?.defaultProduct));
+      const products = Array.isArray(json.data)
+        ? json.data
+        : (json.data?.products ?? []);
+      setStorageData(groupByLocation(products));
+    } catch (err) {
+      console.error("useStorage fetch failed:", err);
     } finally {
       setLoading(false);
     }

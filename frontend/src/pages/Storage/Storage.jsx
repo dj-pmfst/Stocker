@@ -1,9 +1,9 @@
-import Layout from "../../components/Layout/Layout";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import EditModal from "../../components/EditModal/EditModal";
-import { useStorage } from "../../hooks/useStorage";
-import { useProductActions } from "../../hooks/useProductActions";
-import { QUANTITY_FIELDS } from "../../constants/productFields";
+import Layout from "src/components/Layout/Layout";
+import ProductCard from "src/components/ProductCard/ProductCard";
+import EditModal from "src/components/EditModal/EditModal";
+import { useStorage } from "src/hooks/useStorage";
+import { useProductActions } from "src/hooks/useProductActions";
+import { QUANTITY_FIELDS } from "src/constants/productFields";
 import styles from "./storage.module.css";
 
 export default function Storage() {
@@ -46,19 +46,24 @@ export default function Storage() {
         ) : (
           storageData.map((section, i) => (
             <div key={i} className={styles.section}>
-              <p className={styles.shelfZone}>{section.zone}</p>
-              <p className={styles.shelfName}>{section.shelf}</p>
-              <div className={styles.itemList}>
-                {section.items.map((item) => (
-                  <ProductCard
-                    key={item.id}
-                    name={item.name}
-                    sub={`${item.sub} · ${item.remaining} remaining`}
-                    warning={item.warning}
-                    onEdit={() => setEditingProduct(item)}
-                  />
-                ))}
-              </div>
+              <p className={styles.shelfZone}>Zone {section.zone}</p>
+              {section.shelves.map((s, j) => (
+                <div key={j}>
+                  <p className={styles.shelfName}>Shelf {s.shelf}</p>
+                  <div className={styles.itemList}>
+                    {s.items.map((item) => (
+                      <ProductCard
+                        key={item.id}
+                        name={item.name}
+                        sub={`${item.sub} · ${item.remaining} remaining`}
+                        warning={item.warning}
+                        image={item.image}
+                        onEdit={() => setEditingProduct(item)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           ))
         )}

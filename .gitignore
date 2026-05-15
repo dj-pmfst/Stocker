@@ -6,3 +6,4 @@ build
 *.local
 node_modules/
 .turbo
+.vercel

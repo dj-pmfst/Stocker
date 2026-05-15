@@ -29,17 +29,27 @@ export class ProductService {
     return this.prisma.product.create({
       data: {
         defaultProductId: dto.defaultProductId,
-        warehouseId: warehouseId,
+        warehouseId,
         minimumQuantity: dto.minimumQuantity,
         customName: dto.customName,
         stock: { create: { quantity: 0 } },
+        ...(dto.storageZone && dto.shelfNumber
+          ? {
+              location: {
+                create: {
+                  zone: dto.storageZone,
+                  shelf: String(dto.shelfNumber),
+                },
+              },
+            }
+          : {}),
       },
-      include: { defaultProduct: true, stock: true },
+      include: { defaultProduct: true, stock: true, location: true },
     });
   }
 
-  findAll(warehouseId: number, search?: string) {
-    return this.prisma.product.findMany({
+  async findAll(warehouseId: number, search?: string) {
+    const result = await this.prisma.product.findMany({
       where: {
         warehouseId,
         ...(search && {
@@ -59,6 +69,8 @@ export class ProductService {
         location: true,
       },
     });
+    console.log('PRODUCT 0:', JSON.stringify(result[0]?.defaultProduct));
+    return result;
   }
 
   async findOne(warehouseId: number, id: number) {

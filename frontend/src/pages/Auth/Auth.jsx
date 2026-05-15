@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import PasswordInput from '../../components/PasswordInput/PasswordInput';
+import { useAuth } from 'src/hooks/useAuth';
+import PasswordInput from 'src/components/PasswordInput/PasswordInput';
 import styles from './auth.module.css';
 
 export default function Login() {

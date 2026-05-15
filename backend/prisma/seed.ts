@@ -4,12 +4,13 @@ import {
   UnitOfMeasure,
   AlertType,
   Shift,
-} from "../dist/generated/prisma";
+} from '../src/generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { hash } from 'bcrypt';
 import 'dotenv/config';
 
 const prisma = new PrismaClient({
-  datasources: { db: { url: process.env.DATABASE_URL } },
+  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
 });
 
 function daysAgo(n: number): Date {
@@ -101,23 +102,43 @@ async function main() {
       name: 'Sprite',
       category: 'Drink',
       unitOfMeasure: UnitOfMeasure.L,
+      size: '330ml',
+      imageUrl: ['images/sprite.png'],
     },
-    { name: 'Milk', category: 'Drink', unitOfMeasure: UnitOfMeasure.L },
+    {
+      name: 'Milk',
+      category: 'Drink',
+      unitOfMeasure: UnitOfMeasure.L,
+      size: '1L',
+      imageUrl: ['images/milk.png']
+    },
     {
       name: 'Espresso beans',
       category: 'Dry goods',
       unitOfMeasure: UnitOfMeasure.KG,
+      size: '1kg',
+      imageUrl: ['images/espresso.png'],
     },
     {
-      name: 'Mineral Water',
+      name: 'Beer',
       category: 'Drink',
       unitOfMeasure: UnitOfMeasure.L,
+      size: '500ml',
+      imageUrl: ['images/beer.png'],
     },
-    { name: 'Sugar', category: 'Dry Goods', unitOfMeasure: UnitOfMeasure.KG },
+    {
+      name: 'Matcha',
+      category: 'Dry Goods',
+      unitOfMeasure: UnitOfMeasure.KG,
+      size: '250g',
+      imageUrl: ['images/matcha.png'],
+    },
     {
       name: 'Coca-Cola',
       category: 'Drink',
       unitOfMeasure: UnitOfMeasure.L,
+      size: '330ml',
+      imageUrl: ['images/cola.png'],
     },
   ];
 
@@ -199,14 +220,14 @@ async function main() {
       prisma.location.upsert({
         where: { productId: p.id },
         update: {},
-        create: { productId: p.id, zone: zones[i % 3], shelf: `S${i + 1}` },
+        create: { productId: p.id, zone: zones[i % 3], shelf: `${i + 1}` },
       }),
     ),
     ...productsB.map((p, i) =>
       prisma.location.upsert({
         where: { productId: p.id },
         update: {},
-        create: { productId: p.id, zone: zones[i % 3], shelf: `S${i + 1}` },
+        create: { productId: p.id, zone: zones[i % 3], shelf: `${i + 1}` },
       }),
     ),
   ]);

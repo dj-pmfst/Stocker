@@ -1,16 +1,16 @@
 import { useState } from "react";
-import Layout from "../../components/Layout/Layout";
-import Search from "../../components/Search/Search";
-import New from "../../components/New/New";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import EditModal from "../../components/EditModal/EditModal";
-import { useProducts } from "../../hooks/useProducts";
-import { useProductActions } from "../../hooks/useProductActions";
+import Layout from "src/components/Layout/Layout";
+import Search from "src/components/Search/Search";
+import New from "src/components/New/New";
+import ProductCard from "src/components/ProductCard/ProductCard";
+import EditModal from "src/components/EditModal/EditModal";
+import { useProducts } from "src/hooks/useProducts";
+import { useProductActions } from "src/hooks/useProductActions";
 import {
   CREATE_FIELDS,
   TRANSFER_FIELDS,
   QUANTITY_FIELDS,
-} from "../../constants/productFields";
+} from "src/constants/productFields";
 import styles from "./home.module.css";
 
 export default function Home() {

@@ -61,6 +61,8 @@ model DefaultProduct {
   unitOfMeasure UnitOfMeasure
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  imageUrl    String[]
+  size          String?
 
   products Product[]
 }

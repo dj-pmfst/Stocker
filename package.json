@@ -7,7 +7,7 @@
     "backend"
   ],
   "scripts": {
-    "dev": "turbo run dev start:dev"
+    "dev": "turbo run dev"
   },
   "devDependencies": {
     "turbo": "^2.0.0"
