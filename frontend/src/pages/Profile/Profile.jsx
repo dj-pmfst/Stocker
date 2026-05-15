@@ -83,7 +83,12 @@ export default function Profile() {
     setModal({ open: true, config, onSave });
   const closeModal = () => setModal((m) => ({ ...m, open: false }));
 
-  if (loading) return <Layout><Loader /></Layout>;
+  if (loading)
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -107,8 +112,10 @@ export default function Profile() {
               <EditIcon />
             </button>
           </div>
-          <p className={styles.role}>{user?.role ?? "Dev_Test"}</p>
-          <p className={styles.name}>{user?.name ?? "—"}</p>
+          <p className={styles.role}>{user?.role ?? "worker"}</p>
+          <p className={styles.name}>
+            {user ? `${user.firstName} ${user.lastName}` : "—"}
+          </p>
         </div>
 
         <div className={styles.fieldGrid}>
