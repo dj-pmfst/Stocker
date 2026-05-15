@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PLANS } from "src/constants/pricePlans";
 import styles from "./pricing.module.css";
+//test comment
 
 export default function Pricing({ onClose, onSelect }) {
   const [selected, setSelected] = useState("yearly");

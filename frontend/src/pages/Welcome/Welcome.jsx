@@ -1,6 +1,7 @@
 import { useState } from "react";
 import WelcomeAnimation from "src/components/Animation/Animation";
 import Login from "src/pages/Auth/Auth";
+//test comment
 
 export default function App() {
   const [animDone, setAnimDone] = useState(false);
