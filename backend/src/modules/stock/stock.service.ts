@@ -64,6 +64,9 @@ export class StockService {
 
   async set(warehouseId: number, productId: number, dto: SetStockDto) {
     const product = await this.assertProductInWarehouse(warehouseId, productId);
+     if (dto.quantity > 999) {
+    throw new BadRequestException(`Stock cannot exceed 999. Requested: ${dto.quantity}`);
+  }
     return this.prisma.$transaction(async (tx) => {
       const updated = await tx.productStock.upsert({
         where: { productId },
@@ -81,6 +84,9 @@ export class StockService {
     dto: AdjustStockDto,
   ) {
     const product = await this.assertProductInWarehouse(warehouseId, productId);
+     if (dto.quantity > 999) {
+    throw new BadRequestException(`Stock cannot exceed 999. Requested: ${dto.quantity}`);
+  }
     return this.prisma.$transaction(async (tx) => {
       const updated = await tx.productStock.upsert({
         where: { productId },
