@@ -13,6 +13,8 @@ import {
 } from "src/constants/productFields";
 import styles from "./home.module.css";
 
+const API = import.meta.env.VITE_API_URL;
+
 export default function Home() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [showWhatsNew, setShowWhatsNew] = useState(false);
@@ -55,7 +57,7 @@ export default function Home() {
             setSelectedItem({
               ...item,
               name: item.name,
-              image: item.imageUrl?.[0] ?? null,
+              image: item.imageUrl?.[0] ? `${API}/${item.imageUrl[0]}` : null,
               sub: item.size ?? item.unitOfMeasure ?? "",
             });
           }}
@@ -75,7 +77,7 @@ export default function Home() {
             <div className={styles.cardWrap}>
               <ProductCard
                 name={selectedItem.name}
-                sub={selectedItem.size}
+                sub={selectedItem.sub}
                 image={selectedItem.image}
                 onAdd={null}
               />

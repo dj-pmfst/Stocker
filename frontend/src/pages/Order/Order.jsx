@@ -87,9 +87,13 @@ export default function Order() {
         warehouseProduct.customName ??
         warehouseProduct.defaultProduct?.name ??
         "Unknown",
-      sub: warehouseProduct.defaultProduct?.unitOfMeasure ?? "",
-      remaining: warehouseProduct.stock?.quantity ?? 0,
-      image: warehouseProduct.defaultProduct?.imageUrl?.[0] ?? null,
+      sub: warehouseProduct.defaultProduct?.size
+        ?? warehouseProduct.defaultProduct?.unitOfMeasure
+        ?? "",                                           
+      remaining: warehouseProduct.stock?.quantity ?? 0, 
+      image: warehouseProduct.defaultProduct?.imageUrl?.[0]
+        ? `${API}/${warehouseProduct.defaultProduct.imageUrl[0]}`
+        : null,                                       
     });
   };
 
