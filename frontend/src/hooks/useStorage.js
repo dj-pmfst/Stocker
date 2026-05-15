@@ -35,7 +35,6 @@ function groupByLocation(products) {
           ? "Warning, order more!"
           : undefined,
     });
-    console.log("location raw:", JSON.stringify(product.location));
   }
 
   return Object.values(map).map((z) => ({
@@ -57,10 +56,7 @@ export function useStorage() {
       });
       if (!res.ok) throw new Error(res.status);
       const json = await res.json();
-      console.log(
-        "raw product 0:",
-        JSON.stringify(json.data?.[0]?.defaultProduct)
-      );
+
       const products = Array.isArray(json.data)
         ? json.data
         : (json.data?.products ?? []);

@@ -20,7 +20,6 @@ export function useProductActions(selectedItem, setSelectedItem) {
   const [editingProduct, setEditingProduct] = useState(null);
 
   const handleTransfer = async (values) => {
-    console.log('selectedItem:', selectedItem);
     if (!selectedItem) return { ok: false, error: "No item selected." };
 
     const quantity = Number(values.quantity);
@@ -147,7 +146,7 @@ export function useProductActions(selectedItem, setSelectedItem) {
     setSaving(true);
     try {
       const res = await fetch(
-        `${API}/warehouses/${warehouseId}/products/${editingProduct.id}/stock`,
+        `${API}/api/warehouses/${warehouseId}/products/${editingProduct.id}/stock`,
         {
           method: "PUT",
           headers: authHeaders(true),

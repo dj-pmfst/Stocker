@@ -1,0 +1,219 @@
+.sectionHeader {
+  padding: 18px 20px 4px;
+}
+
+.sectionTitle, .reportTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  text-transform: uppercase;
+  font-family: 'VenscaBold';
+  margin-bottom: 14px;
+}
+
+.sectionSub {
+  font-size: 16px;
+  color: var(--gray-border);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px 0;
+}
+
+.exportBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.exportBtn i {
+  font-size: 18px;
+}
+
+.avWrap {
+  position: relative;
+}
+
+.onlineDot {
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+}
+
+
+.statCards {
+  padding: 16px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statCard {
+  background: var(--white);
+  border: 0.5px solid var(--gray-border);
+  border-radius: 18px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.statCardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: var(--gray);
+  font-weight: 400;
+}
+
+.dotsBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 2px 4px;
+}
+
+.dotsBtn span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gray);
+  display: block;
+}
+
+.statCardBot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy-dark);
+  line-height: 1;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.badgeUp {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badgeDown {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge i {
+  font-size: 14px;
+}
+
+
+.salesReportCard {
+  margin: 16px 20px 0;
+  background: var(--white);
+  border: 0.5px solid var(--gray-border);
+  border-radius: 18px;
+  padding: 18px 20px 0;
+  overflow: hidden;
+}
+
+.periodTabs {
+  display: flex;
+  border-bottom: 1.5px solid var(--gray-border);
+  margin: 0 -20px;
+  padding: 0 20px;
+}
+
+.periodTab {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray);
+  padding: 8px 14px 10px;
+  cursor: pointer;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1.5px;
+  background: none;
+  transition: color 0.15s;
+}
+
+.periodTabActive {
+  color: var(--navy);
+  border-bottom-color: var(--navy);
+  font-weight: 700;
+}
+
+
+.chartArea {
+  padding: 16px 0 4px;
+  height: 110px;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.barWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 4px;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  background: #e8eaf4;
+  min-height: 8px;
+  transition: background 0.15s;
+}
+
+.barHighlight {
+  background: var(--nav);
+}
+
+.barLbl {
+  font-size: 10px;
+  color: #9ca3af;
+  text-align: center;
+  white-space: nowrap;
+}
