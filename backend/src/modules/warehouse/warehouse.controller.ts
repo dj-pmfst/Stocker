@@ -41,7 +41,7 @@ export class WarehouseController {
     return this.warehouseService.create(createWarehouseDto, req.user.id);
   }
 
-  @Get() //maknuti ovaj endpoint jer je viška -> postoji end point koji vraća skladišta kojima korisnik ima pristup
+  @Get() 
   @ApiOkResponse({ description: 'List all warehouses.' })
   @ApiOperation({
     summary: 'Dohvati sva skladišta',

@@ -145,7 +145,7 @@ export default function Profile() {
             <PhoneIcon />
             <div className={styles.fieldInfo}>
               <p className={styles.fieldLabel}>Phone</p>
-              <p className={styles.fieldValue}>{user?.phone ?? "—"}</p>
+              <p className={styles.fieldValue}>{user?.phone ?? "99 4536 123"}</p>
             </div>
             <button
               className={styles.addBtn}
