@@ -35,7 +35,7 @@ function groupByLocation(products) {
           ? "Warning, order more!"
           : undefined,
     });
-    console.log("image:", product.defaultProduct?.imageUrl);
+    console.log("location raw:", JSON.stringify(product.location));
   }
 
   return Object.values(map).map((z) => ({
@@ -52,7 +52,7 @@ export function useStorage() {
     setLoading(true);
     const warehouseId = getWarehouseId();
     try {
-      const res = await fetch(`${API}/warehouses/${warehouseId}/products`, {
+      const res = await fetch(`${API}/api/warehouses/${warehouseId}/products`, {
         headers: authHeaders(),
       });
       if (!res.ok) throw new Error(res.status);

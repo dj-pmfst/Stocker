@@ -27,7 +27,7 @@ export function useProfile() {
       setLoading(false);
       return;
     }
-    fetch(`${API}/users/me`, { headers: authHeaders(token) })
+    fetch(`${API}/api/users/me`, { headers: authHeaders(token) })
       .then((r) => r.json())
       .then((json) => setUser(json.data))
       .finally(() => setLoading(false));
@@ -37,7 +37,7 @@ export function useProfile() {
     async (fields) => {
       setSaving(true);
       try {
-        const res = await fetch(`${API}/users/me`, {
+        const res = await fetch(`${API}/api/users/me`, {
           method: "PUT",
           headers: authHeaders(token, true),
           body: JSON.stringify(fields),
@@ -58,7 +58,7 @@ export function useProfile() {
     if (!token) return;
     const warehouseId = localStorage.getItem("warehouseId");
     if (!warehouseId) return;
-    fetch(`${API}/warehouses/${warehouseId}/members`, {
+    fetch(`${API}/api/warehouses/${warehouseId}/members`, {
       headers: authHeaders(token),
     })
       .then((r) => (r.ok ? r.json() : null))

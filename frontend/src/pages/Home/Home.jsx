@@ -33,12 +33,18 @@ export default function Home() {
   const handleCreate = (values) => {
     if (!values.name?.trim())
       return { ok: false, error: "Product name is required." };
+    if (!values.storage_zone)
+      return { ok: false, error: "Select a storage zone." };
+    if (!values.shelf_number || Number(values.shelf_number) < 1)
+      return { ok: false, error: "Enter a valid shelf number." };
 
     setSelectedItem({
       id: null,
       defaultProductId: values.defaultProductId ?? null,
       name: values.name.trim(),
       size: values.size?.trim() || null,
+      storage_zone: values.storage_zone,
+      shelf_number: Number(values.shelf_number),
     });
     return { ok: true };
   };
@@ -57,7 +63,7 @@ export default function Home() {
             setSelectedItem({
               ...item,
               name: item.name,
-              image: item.imageUrl?.[0] ? `${API}/${item.imageUrl[0]}` : null,
+             image: item.imageUrl?.[0] ?? null,
               sub: item.size ?? item.unitOfMeasure ?? "",
             });
           }}

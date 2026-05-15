@@ -20,7 +20,7 @@ export function useProductActions(selectedItem, setSelectedItem) {
   const [editingProduct, setEditingProduct] = useState(null);
 
   const handleTransfer = async (values) => {
-    console.log('selectedItem:', selectedItem); // ← does it have storage_zone and shelf_number?
+    console.log('selectedItem:', selectedItem);
     if (!selectedItem) return { ok: false, error: "No item selected." };
 
     const quantity = Number(values.quantity);
@@ -47,7 +47,7 @@ export function useProductActions(selectedItem, setSelectedItem) {
     try {
       let defaultProductId = selectedItem.defaultProductId;
       if (!defaultProductId) {
-        const dpRes = await fetch(`${API}/default-products`, {
+        const dpRes = await fetch(`${API}/api/default-products`, {
           method: "POST",
           headers: authHeaders(true),
           body: JSON.stringify({
@@ -63,7 +63,7 @@ export function useProductActions(selectedItem, setSelectedItem) {
         defaultProductId = dpJson.data?.id ?? dpJson.id;
       }
 
-      const res = await fetch(`${API}/warehouses/${warehouseId}/products`, {
+      const res = await fetch(`${API}/api/warehouses/${warehouseId}/products`, {
         method: "POST",
         headers: authHeaders(true),
         body: JSON.stringify({
@@ -82,7 +82,7 @@ export function useProductActions(selectedItem, setSelectedItem) {
       const id = json.data?.id ?? json.id;
 
       if (quantity > 0) {
-        await fetch(`${API}/warehouses/${warehouseId}/products/${id}/stock`, {
+        await fetch(`${API}/api/warehouses/${warehouseId}/products/${id}/stock`, {
           method: "PUT",
           headers: authHeaders(true),
           body: JSON.stringify({ quantity }),
@@ -116,7 +116,7 @@ export function useProductActions(selectedItem, setSelectedItem) {
     setSaving(true);
     try {
       const res = await fetch(
-        `${API}/warehouses/${warehouseId}/products/${selectedItem.id}/stock`,
+        `${API}/api/warehouses/${warehouseId}/products/${selectedItem.id}/stock`,
         {
           method: "PUT",
           headers: authHeaders(true),

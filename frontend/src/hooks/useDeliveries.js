@@ -22,8 +22,8 @@ function getMostFrequent(deliveries, limit = 5) {
             ? `${API}/${item.product.defaultProduct.imageUrl[0]}`
             : null,
           totalOrdered: 0,
-          lastQuantity: item.quantity,
-          remaining: item.product.stock?.quantity ?? 0,
+          lastQuantity: item.stock.quantity ?? 0,
+          remaining: item.quantity ?? 0
         };
       }
       counts[id].totalOrdered += item.quantity;
@@ -50,7 +50,7 @@ export function useDeliveries() {
         return;
       }
 
-      const res = await fetch(`${API}/warehouses/${warehouseId}/deliveries`, {
+      const res = await fetch(`${API}/api/warehouses/${warehouseId}/deliveries`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error();

@@ -27,7 +27,7 @@ export function useAuth() {
         ? fields
         : { email: fields.email, password: fields.password };
 
-      const res = await fetch(`${API}/auth/${endpoint}`, {
+      const res = await fetch(`${API}/api/auth/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -46,7 +46,7 @@ export function useAuth() {
         localStorage.setItem("token", token);
 
         try {
-          const whRes = await fetch(`${API}/warehouses`, {
+          const whRes = await fetch(`${API}/api/warehouses`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           const whJson = await whRes.json();

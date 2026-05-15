@@ -28,7 +28,7 @@ export function useSearchProducts() {
 
     try {
       const res = await fetch(
-        `${API}/warehouses/${warehouseId}/products?${params}`,
+        `${API}/api/warehouses/${warehouseId}/products?${params}`,
         { headers: authHeaders() }
       );
       if (!res.ok) throw new Error(res.status);
