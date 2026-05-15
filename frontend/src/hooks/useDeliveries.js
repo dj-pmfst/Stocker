@@ -22,7 +22,7 @@ function getMostFrequent(deliveries, limit = 5) {
             ? `${API}/${item.product.defaultProduct.imageUrl[0]}`
             : null,
           totalOrdered: 0,
-          lastQuantity: item.stock.quantity ?? 0,
+          lastQuantity: item.quantity ?? 0,
           remaining: item.quantity ?? 0
         };
       }
@@ -42,8 +42,8 @@ export function useDeliveries() {
   const fetchDeliveries = useCallback(async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const warehouseId = localStorage.getItem("warehouseId");
+        const token = localStorage.getItem("token");
+        const warehouseId = localStorage.getItem("warehouseId");
 
       if (!warehouseId) {
         console.error("No warehouseId in localStorage");
