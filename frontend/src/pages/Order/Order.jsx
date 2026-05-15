@@ -10,7 +10,6 @@ import { useCreateDelivery } from "src/hooks/useCreateDelivery";
 import styles from "./order.module.css";
 
 const API = import.meta.env.VITE_API_URL;
-const WAREHOUSE_ID = 1;
 
 const ORDER_FIELDS = [
   {
@@ -24,7 +23,8 @@ const ORDER_FIELDS = [
 async function resolveWarehouseProduct(defaultProductId) {
   try {
     const token = localStorage.getItem("token");
-    const res = await fetch(`${API}/warehouses/${WAREHOUSE_ID}/products`, {
+    const warehouseId = localStorage.getItem("warehouseId");
+    const res = await fetch(`${API}/api/warehouses/${warehouseId}/products`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (!res.ok) throw new Error();
@@ -87,9 +87,13 @@ export default function Order() {
         warehouseProduct.customName ??
         warehouseProduct.defaultProduct?.name ??
         "Unknown",
-      sub: warehouseProduct.defaultProduct?.unitOfMeasure ?? "",
-      remaining: warehouseProduct.stock?.quantity ?? 0,
-      image: warehouseProduct.defaultProduct?.imageUrl?.[0] ?? null,
+      sub: warehouseProduct.defaultProduct?.size
+        ?? warehouseProduct.defaultProduct?.unitOfMeasure
+        ?? "",                                           
+      remaining: warehouseProduct.stock?.quantity ?? 0, 
+      image: warehouseProduct.defaultProduct?.imageUrl?.[0]
+        ? `${API}/${warehouseProduct.defaultProduct.imageUrl[0]}`
+        : null,                                       
     });
   };
 
@@ -174,13 +178,16 @@ export default function Order() {
                   No delivery history yet.
                 </p>
               ) : (
-                usualPurchases.map((selectedItem) => (
+                usualPurchases.map((item) => (
                   <ProductCard
-                    key={selectedItem.id}
-                    name={selectedItem.name}
-                    sub={`${selectedItem.sub} · ${selectedItem.remaining} remaining`}
-                    image={selectedItem.image}
-                    onAdd={() => setOrderModal(true)}
+                    key={item.id}
+                    name={item.name}
+                    sub={`${item.sub} · ${item.remaining} remaining`}
+                    image={item.image}
+                    onAdd={() => {
+                      setSelectedItem(item);
+                      setOrderModal(true);
+                    }}
                   />
                 ))
               )}

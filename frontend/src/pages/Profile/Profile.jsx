@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Layout from "src/components/Layout/Layout";
 import Loader from "src/components/Loader/Loader";
 import EditModal from "src/components/EditModal/EditModal";
@@ -80,6 +81,8 @@ export default function Profile() {
     onSave: null,
   });
 
+  const navigate = useNavigate();
+
   const openModal = (config, onSave) =>
     setModal({ open: true, config, onSave });
   const closeModal = () => setModal((m) => ({ ...m, open: false }));
@@ -156,7 +159,10 @@ export default function Profile() {
             </button>
           </div>
 
-          <div className={`${styles.field} ${styles.analyticsField}`}>
+          <div
+            className={`${styles.field} ${styles.analyticsField}`}
+            onClick={() => navigate("/sales")} 
+            style={{ cursor: "pointer" }}>
             <StatIcon />
             <div className={styles.fieldInfo}>
               <p>View Analytics</p>

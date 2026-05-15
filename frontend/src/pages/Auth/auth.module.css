@@ -84,19 +84,6 @@
   width: 100%;
 }
 
-.forgotWrap {
-  text-align: right;
-  margin-bottom: 30px;
-  margin-top: -6px;
-}
-
-.forgotLink {
-  font-size: 14px;
-  color: #3b82f6;
-  font-weight: 500;
-  cursor: pointer;
-}
-
 .submitBtn {
   width: 100%;
   padding: 16px;

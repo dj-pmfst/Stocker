@@ -119,10 +119,6 @@ export default function Login() {
             <PasswordInput value={fields.password} onChange={set('password')} />
           </div>
 
-          <div className={styles.forgotWrap}>
-            <span className={styles.forgotLink}>Forgot password</span>
-          </div>
-
           <button className={styles.submitBtn} type="submit" disabled={loading}>
             {loading ? 'Logging in…' : 'Log in'}
           </button>

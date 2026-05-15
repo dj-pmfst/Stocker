@@ -16,7 +16,7 @@ export function useCreateDelivery() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${API}/warehouses/${warehouseId}/deliveries`, {
+      const res = await fetch(`${API}/api/warehouses/${warehouseId}/deliveries`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
