@@ -52,6 +52,27 @@ export function useProfile() {
     [token]
   );
 
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    if (!token) return;
+    const warehouseId = localStorage.getItem("warehouseId");
+    if (!warehouseId) return;
+    fetch(`${API}/warehouses/${warehouseId}/members`, {
+      headers: authHeaders(token),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((json) => {
+        if (!json) return;
+        const members = json.data ?? json;
+        const me = members.find(
+          (m) => m.userId === user?.id || m.user?.email === user?.email
+        );
+        if (me) setRole(me.role);
+      })
+      .catch(() => {});
+  }, [token, user]);
+
   const addEmployee = useCallback(({ name, email }) => {
     const newEmp = { id: Date.now(), name, email };
     setEmployees((prev) => {
@@ -76,6 +97,7 @@ export function useProfile() {
     employees,
     loading,
     saving,
+    role,
     updateUserField,
     addEmployee,
     updateEmployee,

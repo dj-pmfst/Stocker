@@ -68,6 +68,7 @@ export default function Profile() {
     employees,
     loading,
     saving,
+    role,
     updateUserField,
     addEmployee,
     updateEmployee,
@@ -112,7 +113,7 @@ export default function Profile() {
               <EditIcon />
             </button>
           </div>
-          <p className={styles.role}>{user?.role ?? "worker"}</p>
+          <p className={styles.role}>{role ?? "—"}</p>
           <p className={styles.name}>
             {user ? `${user.firstName} ${user.lastName}` : "—"}
           </p>
@@ -178,39 +179,46 @@ export default function Profile() {
           ))}
         </div>
 
-        <div className={styles.addEmployeesRow}>
-          <p className={styles.sectionLabel}>add employees</p>
-          <button
-            className={styles.addBtn}
-            aria-label="Add employee"
-            onClick={() =>
-              openModal(employeeModalConfig(null), (vals) =>
-                addEmployee({ name: vals.name, email: vals.email })
-              )
-            }>
-            <PlusIcon />
-          </button>
-        </div>
-
-        {employees.map((emp) => (
-          <div key={emp.id ?? emp.email} className={styles.employeeRow}>
-            <PersonAddIcon />
-            <div className={styles.employeeInfo}>
-              <p className={styles.employeeName}>{emp.name}</p>
-              <p className={styles.employeeEmail}>{emp.email}</p>
+        {role === "ADMIN" && (
+          <>
+            <div className={styles.addEmployeesRow}>
+              <p className={styles.sectionLabel}>add employees</p>
+              <button
+                className={styles.addBtn}
+                aria-label="Add employee"
+                onClick={() =>
+                  openModal(employeeModalConfig(null), (vals) =>
+                    addEmployee({ name: vals.name, email: vals.email })
+                  )
+                }>
+                <PlusIcon />
+              </button>
             </div>
-            <button
-              className={styles.addBtn}
-              aria-label={`Edit ${emp.name}`}
-              onClick={() =>
-                openModal(employeeModalConfig(emp), (vals) =>
-                  updateEmployee(emp.id, { name: vals.name, email: vals.email })
-                )
-              }>
-              <EditIcon />
-            </button>
-          </div>
-        ))}
+
+            {employees.map((emp) => (
+              <div key={emp.id ?? emp.email} className={styles.employeeRow}>
+                <PersonAddIcon />
+                <div className={styles.employeeInfo}>
+                  <p className={styles.employeeName}>{emp.name}</p>
+                  <p className={styles.employeeEmail}>{emp.email}</p>
+                </div>
+                <button
+                  className={styles.addBtn}
+                  aria-label={`Edit ${emp.name}`}
+                  onClick={() =>
+                    openModal(employeeModalConfig(emp), (vals) =>
+                      updateEmployee(emp.id, {
+                        name: vals.name,
+                        email: vals.email,
+                      })
+                    )
+                  }>
+                  <EditIcon />
+                </button>
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       {modal.config && (
